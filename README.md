@@ -41,7 +41,7 @@ npm install --save-exact sass@1.78.0
 
 - chạy lại dự án nếu sass ko hoạt động
 
-### Cài axios
+### Cài axios để gọi API
 npm i --save-exact axios@1.7.2
 
 ### Cài Redux Toolkit
