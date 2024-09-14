@@ -1,21 +1,55 @@
 # React Ultimate Starter Template
-Template này được sử dụng cho series React Ultimate (Vite) của tác giả Hỏi Dân IT (Eric)
 
 ### Môi trường chạy dự án: Node.js v20.14.0
 https://nodejs.org/download/release/v20.14.0/
 
-## Về tác giả
-Mọi thông tin về Tác giả Hỏi Dân IT, các bạn có thể tìm kiếm tại đây:
+### Cài Extension
+React Developer Tools
+Redux DevTools
 
-Website chính thức: https://hoidanit.vn/
+### Cài Router để chuyển trang
+npm i --save-exact react-router-dom@6.23.1
 
-Youtube “Hỏi Dân IT” : https://www.youtube.com/@hoidanit
+ở file main.jsx:
 
-Tiktok “Hỏi Dân IT” :  https://www.tiktok.com/@hoidanit
+Bước 1:
+import {
+ createBrowserRouter,
+ RouterProvider,
+} from "react-router-dom";
 
-Fanpage “Hỏi Dân IT” : https://www.facebook.com/askITwithERIC/
+Bước 2:
+const router = createBrowserRouter([
+ {
+ path: "/",
+ element: <App />    // <div>Hello world!</div>,
+ },        // có thể thêm nhiều trang ở đây
+]);
 
-Udemy Hỏi Dân IT: https://www.udemy.com/user/eric-7039/
+Bước 3:
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <RouterProvider router={router} /> //
+  </React.StrictMode>
+);
+
+### Cài Ant Design
+npm i --save-exact antd@5.18.1 @ant-design/icons@5.3.7
+
+### Cài SASS
+npm install --save-exact sass@1.78.0
+
+- chạy lại dự án nếu sass ko hoạt động
+
+### Cài axios
+npm i --save-exact axios@1.7.2
+
+### Cài Redux Toolkit
+npm install --save-exact @reduxjs/toolkit@1.9.7 react-redux@8.1.3
+
+- @reduxjs/toolkit => đây là thư viện giúp tạo ra "global state" của redux
+
+- react-redux => sử dụng redux với react component
 
 ===
 
