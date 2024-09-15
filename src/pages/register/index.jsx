@@ -60,8 +60,9 @@ const RegisterPage = () => {
                             </Form.Item>
 
                             <Divider>Or</Divider>
-                            <p className="text text-normal">Bạn đã có tài khoản?</p>
-                            <span><Link to='/login'>Đăng nhập</Link></span>
+                            <p className="text text-normal">Bạn đã có tài khoản?
+                                <span><Link to='/login'> Đăng nhập</Link></span>
+                            </p>
                         </Form>
                     </section>
                 </div>

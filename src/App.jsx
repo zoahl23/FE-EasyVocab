@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     createBrowserRouter,
     RouterProvider,
@@ -31,7 +30,7 @@ export default function App() {
                 { index: true, element: <Home /> },
                 {
                     path: "hello",
-                    element: <LoginPage />
+                    element: <div>Hello</div>
                 },
             ],
         },
