@@ -1,9 +1,9 @@
-import { Button, Checkbox, Divider, Form, Input } from 'antd';
+import { Button, Divider, Form, Input } from 'antd';
 
 
 const RegisterPage = () => {
 
-    const onFinish = () => {
+    const onFinish = (values) => {
         console.log('Success:', values);
     };
 
