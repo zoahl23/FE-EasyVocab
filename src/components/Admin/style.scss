@@ -1,0 +1,18 @@
+.layout-admin {
+    .admin-header {
+        background: #ffffff;
+        height: 50px;
+        border-bottom: 1px solid #ebebeb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px 0 0;
+    }
+    .admin-content {
+        margin: 16px 16px;
+        padding: 24px;
+        min-height: 280px;
+        background: #ffffff;
+        border-radius: 8px;
+    }
+}

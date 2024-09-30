@@ -1,0 +1,135 @@
+:root {
+  --generalColumnWidth: 56vw;
+
+  --header-height: 60px;
+
+  --color-background: #fff;
+  --color-background-hover: #f2f2f2;
+
+  --box-shadow-header: 3px 5px 5px hsla(0, 0%, 84%, .58);
+
+  --color-text: #000;
+  --color-user: #000;
+}
+
+.header-container {
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-background);
+  box-shadow: var(--box-shadow-header);
+  position: relative;
+
+  .page-header__logo {
+    width: calc((100% - var(--generalColumnWidth)) / 2);
+  }
+
+  .page-header__navbar {
+    width: var(--generalColumnWidth);
+    display: flex;
+    justify-content: center;
+
+    .navbar-item {
+      width: 25%;
+      height: var(--header-height);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &__icon{
+        height: 30px;
+        margin-top: 5px;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &__title{
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 3px;
+        text-align: center;
+        user-select: none;
+        color: var(--color-text);
+      }
+    }
+  }
+
+  .page-header__user {
+    width: calc((100% - var(--generalColumnWidth)) / 2);
+    display: flex;
+    justify-content: flex-end;
+    user-select: none;
+    font-size: 16px;
+    cursor: pointer;
+
+    .guest{
+      margin-right: 10%;
+      height: 25px;
+    }
+
+    span{
+      margin-right: 10%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    a {
+      margin-right: 10%;
+      color: var(--color-user);
+      font-size: 14px;
+      font-weight: 500;
+
+      .iconSet {
+        display: flex;
+        align-items: center;
+        font-size: 28px;
+      }
+
+      .user-say-hi {
+        display: block;
+      }
+      .user-mobile {
+        display: none;
+      }
+    }
+  }
+}
+
+
+
+
+@media (max-width: 1080px) {
+
+  .header-container {
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: none;
+
+    .page-header__navbar {
+      display: none;
+    }
+
+    .page-header__user{
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      a{
+        .user-say-hi {
+          display: none;
+        }
+
+        .user-mobile {
+          height: 35px;
+          font-size: 35px;
+          display: block;
+        }
+      }
+    }
+  }
+}
