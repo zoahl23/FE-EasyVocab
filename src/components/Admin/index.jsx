@@ -10,10 +10,12 @@ import {
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, Space } from 'antd';
+import { Button, Dropdown, Layout, Menu, message, Space } from 'antd';
 import './style.scss';
-import { Link, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { callLogout } from '../../services/api';
+import { doLogoutAction } from '../../redux/account/accountSlice';
 
 const { Header, Sider, Content } = Layout;
 
@@ -56,21 +58,38 @@ const items = [
     },
 ];
 
-const itemsDropdown = [
-    {
-        label: <label>Quản lý tài khoản</label>,
-        key: 'account',
-    },
-    {
-        label: <label>Đăng xuất</label>,
-        key: 'logout',
-    },
-];
-
 const LayoutAdmin = () => {
     const [collapsed, setCollapsed] = useState(false); // đóng mở của slidebar(sider)
     const [activeMenu, setActiveMenu] = useState('dashboard'); // đang ở menu nào
     const user = useSelector(state => state.account.user); // lấy tt user trong Redux
+
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        const res = await callLogout();
+        if (res && res.data) {
+            dispatch(doLogoutAction());
+            message.success('Đăng xuất thành công');
+            navigate('/')
+        }
+    }
+
+
+    const itemsDropdown = [
+        {
+            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
+            key: 'account',
+        },
+        {
+            label: <label
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleLogout()}
+            >Đăng xuất</label>,
+            key: 'logout',
+        },
+    ];
 
     return (
         <Layout
