@@ -14,13 +14,14 @@ import { callFetchAccount } from "./services/api";
 import { useEffect } from "react";
 import { doGetAccountAction } from "./redux/account/accountSlice";
 import Loading from "./components/Loading";
-import AdminPage from "./pages/admin";
+import AdminPage from "./pages/admin/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LayoutAdmin from "./components/Admin";
 import './styles/reset.scss';
 import Learn from "./components/Learn";
 import Notebook from "./components/Notebook";
 import Event from "./components/Event";
+import ManageUserPage from "./pages/admin/user";
 
 const Layout = () => {
     return (
@@ -80,18 +81,30 @@ export default function App() {
             errorElement: <ErrorPage />,
             children: [
                 {
-                    index: true, element:
+                    index: true,
+                    element:
                         <ProtectedRoute>
                             <AdminPage />
                         </ProtectedRoute>
                 },
                 {
                     path: "user",
-                    element: <div>hello</div>//<ContactPage />,
+                    element:
+                        <ProtectedRoute>
+                            <ManageUserPage />
+                        </ProtectedRoute>
                 },
                 {
-                    path: "book",
-                    element: <div>hello</div>//<BookPage />,
+                    path: "course",
+                    element: <div>hello2</div>//<BookPage />,
+                },
+                {
+                    path: "topic",
+                    element: <div>hello3</div>//<BookPage />,
+                },
+                {
+                    path: "vocab",
+                    element: <div>hello4</div>//<BookPage />,
                 },
             ],
         },
