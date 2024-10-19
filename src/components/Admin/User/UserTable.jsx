@@ -11,17 +11,24 @@ const UserTable = () => {
     const [total, setTotal] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("");
+
 
     useEffect(() => {
         fetchUser();
-    }, [current, pageSize]);
+    }, [current, pageSize, filter, sortQuery]);
 
-    const fetchUser = async (searchFilter) => {
+    const fetchUser = async () => {
         setIsLoading(true);
         let query = `current=${current}&pageSize=${pageSize}`;
-        if (searchFilter) {
-            query += `&${searchFilter}`
+        if (filter) {
+            query += `&${filter}`;
         }
+        if (sortQuery) {
+            query += `&${sortQuery}`;
+        }
+
         const res = await callFetchListUser(query);
         if (res && res.data) {
             setListUser(res.data.result);
@@ -31,7 +38,7 @@ const UserTable = () => {
     }
 
     const handleSearch = (query) => {
-        fetchUser(query)
+        setFilter(query);
     }
 
     const columns = [
@@ -68,7 +75,11 @@ const UserTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
-        console.log('params', pagination, filters, sorter, extra);
+        //console.log('params', pagination, filters, sorter, extra);
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
+            setSortQuery(q);
+        }
     };
 
     const renderHeader = () => {
@@ -93,7 +104,10 @@ const UserTable = () => {
                         type="primary"
                         style={{ backgroundColor: '#FFA500', borderColor: '#FFA500' }}
                     >Thêm mới</Button>
-                    <Button type='ghost' onClick={() => fetchUser()}>
+                    <Button type='ghost' onClick={() => {
+                        setFilter("");
+                        setSortQuery("");
+                    }}>
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -105,7 +119,10 @@ const UserTable = () => {
     return (
         <Row gutter={[20, 20]}>
             <Col span={24}>
-                <UserSearch handleSearch={handleSearch} />
+                <UserSearch
+                    handleSearch={handleSearch}
+                    setFilter={setFilter}
+                />
             </Col>
             <Col span={24}>
                 <Table
