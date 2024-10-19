@@ -10,20 +10,29 @@ const UserTable = () => {
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         fetchUser();
     }, [current, pageSize]);
 
-    const fetchUser = async () => {
-        const query = `current=${current}&pageSize=${pageSize}`;
+    const fetchUser = async (searchFilter) => {
+        setIsLoading(true);
+        let query = `current=${current}&pageSize=${pageSize}`;
+        if (searchFilter) {
+            query += `&${searchFilter}`
+        }
         const res = await callFetchListUser(query);
         if (res && res.data) {
             setListUser(res.data.result);
             setTotal(res.data.meta.total)
         }
+        setIsLoading(false)
     }
 
-
+    const handleSearch = (query) => {
+        fetchUser(query)
+    }
 
     const columns = [
         {
@@ -84,7 +93,7 @@ const UserTable = () => {
                         type="primary"
                         style={{ backgroundColor: '#FFA500', borderColor: '#FFA500' }}
                     >Thêm mới</Button>
-                    <Button type='ghost'>
+                    <Button type='ghost' onClick={() => fetchUser()}>
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -96,11 +105,12 @@ const UserTable = () => {
     return (
         <Row gutter={[20, 20]}>
             <Col span={24}>
-                <UserSearch />
+                <UserSearch handleSearch={handleSearch} />
             </Col>
             <Col span={24}>
                 <Table
                     title={renderHeader}
+                    loading={isLoading}
                     columns={columns}
                     dataSource={listUser}
                     onChange={onChange}
