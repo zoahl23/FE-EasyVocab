@@ -1,8 +1,8 @@
 import { Button, Col, Row, Table } from "antd";
 import UserSearch from "./UserSearch";
-import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { callFetchListUser } from "../../../services/api";
+import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -62,6 +62,37 @@ const UserTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+    const renderHeader = () => {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Table List Users</span>
+                <span style={{ display: 'flex', gap: 15 }}>
+                    <Button
+                        icon={<ExportOutlined />}
+                        type="primary"
+                        style={{ backgroundColor: '#007BFF', borderColor: '#007BFF' }}
+                    >Export</Button>
+
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type="primary"
+                        style={{ backgroundColor: '#28A745', borderColor: '#28A745' }}
+                    >Import</Button>
+
+                    <Button
+                        icon={<PlusOutlined />}
+                        type="primary"
+                        style={{ backgroundColor: '#FFA500', borderColor: '#FFA500' }}
+                    >Thêm mới</Button>
+                    <Button type='ghost'>
+                        <ReloadOutlined />
+                    </Button>
+                </span>
+            </div>
+
+        )
+    }
+
     return (
         <Row gutter={[20, 20]}>
             <Col span={24}>
@@ -69,7 +100,7 @@ const UserTable = () => {
             </Col>
             <Col span={24}>
                 <Table
-                    className='def'
+                    title={renderHeader}
                     columns={columns}
                     dataSource={listUser}
                     onChange={onChange}
