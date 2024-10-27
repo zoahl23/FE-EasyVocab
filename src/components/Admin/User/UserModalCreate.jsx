@@ -38,6 +38,7 @@ const UserModalCreate = (props) => {
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}
                 confirmLoading={isSubmit}
+                maskClosable={false}
             >
                 <Divider />
 
