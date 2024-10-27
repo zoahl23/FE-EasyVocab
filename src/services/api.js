@@ -32,3 +32,7 @@ export const callBulkCreateUser = (data) => {
 export const callUpdateUser = (_id, fullName, phone) => {
     return axios.put('/api/v1/user', { _id, fullName, phone })
 }
+
+export const callDeleteUser = (id) => {
+    return axios.delete(`/api/v1/user/${id}`)
+}
