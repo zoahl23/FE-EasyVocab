@@ -83,6 +83,10 @@ const LayoutAdmin = () => {
             key: 'account',
         },
         {
+            label: <Link to={'/'}>Trang chủ</Link>,
+            key: 'home',
+        },
+        {
             label: <label
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleLogout()}
