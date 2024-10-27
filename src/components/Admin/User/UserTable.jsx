@@ -5,6 +5,8 @@ import { callFetchListUser } from "../../../services/api";
 import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
+import moment from "moment";
+import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -69,6 +71,17 @@ const UserTable = () => {
             title: 'Email',
             dataIndex: 'email',
             sorter: true
+        },
+        {
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
+
         },
         {
             title: 'Action',
@@ -170,6 +183,7 @@ const UserTable = () => {
             <UserModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
+                fetchUser={fetchUser}
             />
 
             <UserViewDetail
