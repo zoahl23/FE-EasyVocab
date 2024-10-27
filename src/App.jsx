@@ -22,6 +22,9 @@ import Learn from "./components/Learn";
 import Notebook from "./components/Notebook";
 import Event from "./components/Event";
 import ManageUserPage from "./pages/admin/user";
+import ManageTopicPage from "./pages/admin/topic";
+import ManageVocabPage from "./pages/admin/vocab";
+import ManageCoursePage from "./pages/admin/course";
 
 const Layout = () => {
     return (
@@ -96,15 +99,24 @@ export default function App() {
                 },
                 {
                     path: "course",
-                    element: <div>hello2</div>//<BookPage />,
+                    element:
+                        <ProtectedRoute>
+                            <ManageCoursePage />
+                        </ProtectedRoute>
                 },
                 {
                     path: "topic",
-                    element: <div>hello3</div>//<BookPage />,
+                    element:
+                        <ProtectedRoute>
+                            <ManageTopicPage />
+                        </ProtectedRoute>
                 },
                 {
                     path: "vocab",
-                    element: <div>hello4</div>//<BookPage />,
+                    element:
+                        <ProtectedRoute>
+                            <ManageVocabPage />
+                        </ProtectedRoute>
                 },
             ],
         },

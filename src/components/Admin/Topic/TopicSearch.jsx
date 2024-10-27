@@ -1,6 +1,6 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Input, Row, Select } from "antd";
 
-const UserSearch = (props) => {
+const TopicSearch = () => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -8,22 +8,10 @@ const UserSearch = (props) => {
         background: '#fff',
         borderRadius: '8px',
         padding: 24,
-
     };
 
     const onFinish = (values) => {
-        let query = "";
-
-        if (values.fullName) {
-            query += `&fullName=/${values.fullName}/i`
-        }
-        if (values.email) {
-            query += `&email=/${values.email}/i`
-        }
-
-        if (query) {
-            props.handleSearch(query);
-        }
+        console.log("Received values of form: ", values);
     };
 
     return (
@@ -37,8 +25,8 @@ const UserSearch = (props) => {
                 <Col span={10}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`fullName`}
-                        label={`Name`}
+                        name={`topicName`}
+                        label={`Topic Name`}
                     >
                         <Input />
                     </Form.Item>
@@ -46,10 +34,14 @@ const UserSearch = (props) => {
                 <Col span={10}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`email`}
-                        label={`Email`}
+                        name={`courseName`}
+                        label={`Course Name`}
                     >
-                        <Input />
+                        <Select>
+                            <Select.Option value="demo">TOEIC</Select.Option>
+                            <Select.Option value="demo">IELTS</Select.Option>
+                            <Select.Option value="demo">VSTEP</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Col>
                 <Col
@@ -66,7 +58,6 @@ const UserSearch = (props) => {
                         style={{ margin: '0 0 0 8px', backgroundColor: '#D3D3D3', borderColor: '#D3D3D3' }}
                         onClick={() => {
                             form.resetFields();
-                            props.setFilter("");
                         }}
                     >
                         Clear
@@ -76,5 +67,4 @@ const UserSearch = (props) => {
         </Form >
     );
 }
-
-export default UserSearch;
+export default TopicSearch;
