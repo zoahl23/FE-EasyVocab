@@ -58,7 +58,6 @@ const UserSearch = (props) => {
                     <Button
                         type="primary"
                         htmlType="submit"
-                        style={{ backgroundColor: '#5B9BD5', borderColor: '#5B9BD5' }}
                     >
                         Search
                     </Button>
