@@ -12,7 +12,7 @@ const RegisterPage = () => {
         // console.log(">>>> Check values: ", values);
         const { username, email, password } = values;
         setIsSubmit(true);
-        const res = await callRegister(username, email, password, password);
+        const res = await callRegister(username, email, password);
         setIsSubmit(false);
         console.log("succes", res);
         if (res.data) {
@@ -23,7 +23,7 @@ const RegisterPage = () => {
             notification.error({
                 message: "Có lỗi xảy ra",
                 description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,//JSON.stringify(res.message)
-                duration: 5
+                duration: 5 // 5 seconds
             })
         }
     }
