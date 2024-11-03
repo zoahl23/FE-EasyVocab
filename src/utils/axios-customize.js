@@ -25,6 +25,15 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    if (error.config && error.response
+        && +error.response.status === 401) {
+        // Xóa token khỏi localStorage
+        localStorage.removeItem('access_token');
+
+        // Chuyển hướng người dùng về trang login
+        window.location.href = '/login';
+    }
+
     return error?.response?.data ?? Promise.reject(error);
 });
 
