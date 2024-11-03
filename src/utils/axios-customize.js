@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true, // gửi kèm cookie
+    //withCredentials: true, // gửi kèm cookie
 });
+
+// gửi kèm token với mọi request
+instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {

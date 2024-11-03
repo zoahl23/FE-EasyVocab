@@ -1,6 +1,6 @@
 import axios from '../utils/axios-customize';
 
-const callRegister = (fullName, email, password) => {
+export const callRegister = (fullName, email, password) => {
     return axios.post('/api/users/register', { email, password, fullName },
         {
             headers: {
@@ -10,7 +10,7 @@ const callRegister = (fullName, email, password) => {
     )
 }
 
-const callLogin = (email, password) => {
+export const callLogin = (email, password) => {
     return axios.post('/api/users/login', { email, password },
         {
             headers: {
@@ -20,4 +20,6 @@ const callLogin = (email, password) => {
     )
 }
 
-export { callRegister, callLogin }
+export const callFetchAccount = () => {
+    return axios.get('/api/users/account')
+}
