@@ -1,12 +1,33 @@
-import { Button, Divider, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Divider, Form, Input, message, notification } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import './login.scss';
+import { useState } from 'react';
+import { callLogin } from '../../services/api';
 
 
 const LoginPage = () => {
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const navigate = useNavigate();
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const onFinish = async (values) => {
+        // console.log('Success:', values);
+        const { username, password } = values;
+        setIsSubmit(true);
+        const res = await callLogin(username, password);
+        setIsSubmit(false);
+        console.log('Success:', res);
+        if (res.data) {
+            message.success("Đăng nhập thành công!");
+            navigate('/');
+        }
+        else {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: res.message,
+                duration: 5 // 5 seconds
+            })
+        }
     };
 
 
@@ -47,11 +68,11 @@ const LoginPage = () => {
                             <Form.Item
                             // wrapperCol={{ offset: 6, span: 16 }}
                             >
-                                <Button type="primary" htmlType="submit" loading={false}>
+                                <Button type="primary" htmlType="submit" loading={isSubmit}>
                                     Đăng nhập
                                 </Button>
                             </Form.Item>
-                            <Divider>Or</Divider>
+                            <Divider>Hoặc</Divider>
                             <p className="text text-normal">Chưa có tài khoản ?
                                 <span>
                                     <Link to='/register' > Đăng Ký </Link>

@@ -1,11 +1,23 @@
 import axios from '../utils/axios-customize';
 
 const callRegister = (fullName, email, password) => {
-    return axios.post('/api/users/register', { email, password, fullName }, {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+    return axios.post('/api/users/register', { email, password, fullName },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
         }
-    })
+    )
 }
 
-export { callRegister }
+const callLogin = (email, password) => {
+    return axios.post('/api/users/login', { email, password },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
+
+export { callRegister, callLogin }

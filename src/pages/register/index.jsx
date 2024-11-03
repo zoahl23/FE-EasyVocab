@@ -22,7 +22,8 @@ const RegisterPage = () => {
         else {
             notification.error({
                 message: "Có lỗi xảy ra",
-                description: JSON.stringify(res.message)
+                description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,//JSON.stringify(res.message)
+                duration: 5 // 5 seconds
             })
         }
     }
