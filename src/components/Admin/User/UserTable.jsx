@@ -2,6 +2,7 @@ import { Button, Col, Row, Table, Tag } from "antd";
 import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
 import { callFetchListUser } from "../../../services/api";
+import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -78,6 +79,31 @@ const UserTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+    const renderHeader = () => {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Table List Users</span>
+                <span style={{ display: 'flex', gap: 15 }}>
+                    <Button
+                        icon={<ExportOutlined />}
+                        type="primary"
+                    >Export</Button>
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type="primary"
+                    >Import</Button>
+                    <Button
+                        icon={<PlusOutlined />}
+                        type="primary"
+                    >Thêm mới</Button>
+                    <Button type='ghost'>
+                        <ReloadOutlined />
+                    </Button>
+                </span>
+            </div>
+        )
+    }
+
     return (
         <Row gutter={[20, 20]}>
             <Col span={24}>
@@ -85,7 +111,7 @@ const UserTable = () => {
             </Col>
             <Col span={24}>
                 <Table
-                    className='def'
+                    title={renderHeader}
                     columns={columns}
                     dataSource={listUser}
                     onChange={onChange}
