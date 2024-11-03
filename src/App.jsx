@@ -18,6 +18,9 @@ import AdminPage from "./pages/admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LayoutAdmin from "./components/Admin";
 import './styles/reset.scss';
+import Learn from "./components/Learn";
+import Notebook from "./components/Notebook";
+import Event from "./components/Event";
 
 const Layout = () => {
     return (
@@ -29,32 +32,15 @@ const Layout = () => {
     )
 }
 
-// const LayoutAdmin = () => {
-//     const isAdminRoute = window.location.pathname.startsWith('/admin');
-//     const user = useSelector(state => state.account.user);
-//     const userRole = user.role;
-
-//     return (
-//         <div className='layout-app'>
-//             {isAdminRoute && userRole === 'ROLE_ADMIN' && <Header />}
-//             {/* <Header /> */}
-//             <Outlet />
-//             {/* <Footer /> */}
-//             {isAdminRoute && userRole === 'ROLE_ADMIN' && <Footer />}
-//         </div>
-//     )
-// }
-
 export default function App() {
 
     const dispatch = useDispatch();
-    const isAuthenticated = useSelector(state => state.account.isAuthenticated)
+    const isLoading = useSelector(state => state.account.isLoading)
 
     const getAccount = async () => {
         if (
             window.location.pathname === '/login'
             || window.location.pathname === '/register'
-            || window.location.pathname === '/'
         ) return;
 
         const res = await callFetchAccount();
@@ -77,8 +63,16 @@ export default function App() {
             children: [
                 { index: true, element: <Home /> },
                 {
-                    path: "hello",
-                    element: <div>Hello</div>
+                    path: "/learn",
+                    element: <Learn />
+                },
+                {
+                    path: "/notebook",
+                    element: <Notebook />
+                },
+                {
+                    path: "/events",
+                    element: <Event />
                 },
             ],
         },
@@ -106,19 +100,24 @@ export default function App() {
         {
             path: "/login",
             element: <LoginPage />,
+            errorElement: <ErrorPage />
         },
         {
             path: "/register",
             element: <RegisterPage />,
+            errorElement: <ErrorPage />
         },
     ]);
 
     return (
         <>
-            {isAuthenticated === true
+            {isLoading === false
                 || window.location.pathname === '/login'
                 || window.location.pathname === '/register'
                 || window.location.pathname === '/'
+                || window.location.pathname === '/learn'
+                || window.location.pathname === '/notebook'
+                || window.location.pathname === '/events'
                 ?
                 <RouterProvider router={router} />
                 :

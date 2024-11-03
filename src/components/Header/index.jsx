@@ -1,23 +1,39 @@
 import './style.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Dropdown, Space } from 'antd';
-import { FcAdvertising, FcComboChart, FcGraduationCap, FcReading, FcRules, } from "react-icons/fc";
+import { Dropdown, message, Space } from 'antd';
+import { FcAdvertising, FcComboChart, FcGraduationCap, FcReading, FcReadingEbook, FcRules, } from "react-icons/fc";
 import '../../styles/reset.scss';
 import imgGuest from '../../assets/imgGuest.png';
+import { doLogoutAction } from '../../redux/account/accountSlice';
+import { callLogout } from '../../services/api';
+
 
 const Header = () => {
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
     const user = useSelector((state) => state.account.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const handleLogout = async () => {
+        const res = await callLogout();
+        if (res && res.data) {
+            dispatch(doLogoutAction());
+            message.success('Đăng xuất thành công');
+            navigate('/')
+        }
+    }
 
     const items = [
         {
-            label: <label>Quản lý tài khoản</label>,
+            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
             key: 'account',
         },
         {
-            label: <label >Đăng xuất</label>,
+            label: <label
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleLogout()}
+            >Đăng xuất</label>,
             key: 'logout',
         },
     ];
@@ -25,7 +41,7 @@ const Header = () => {
     const navbarItems = [
         {
             title: 'Ôn tập',
-            link: '/review',
+            link: '/',
             icon: <FcComboChart />
         },
         {
@@ -50,10 +66,10 @@ const Header = () => {
             <div className="page-header__logo">
                 <a href='/' style={{ marginLeft: '10%' }}>
                     <img
-                        src='https://learn.mochidemy.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVocabLogo.da46507f.webp&w=640&q=75'
+                        src='/public/nameWeb.png'
                         alt="logo"
                         width="190px"
-                        height="50px"
+                        height="35px"
                         style={{ marginTop: 5 }}
                     />
                 </a>
@@ -73,7 +89,7 @@ const Header = () => {
             <div className="page-header__user">
                 {!isAuthenticated ? (
                     <div className='guest' onClick={() => navigate('/login')}>
-                        <img src={imgGuest} height='25px' width='auto' />
+                        <img src={imgGuest} height='22px' width='auto' />
                     </div>
                 ) : (
                     <Dropdown menu={{ items }} trigger={['click']}>
@@ -82,12 +98,12 @@ const Header = () => {
                                 <Space>
                                     Xin chào, {user?.fullName.trim().split(' ').pop()}
                                     <div className='iconSet'>
-                                        <FcReading />
+                                        <FcReadingEbook />
                                     </div>
                                 </Space>
                             </div>
                             <div className="user-mobile">
-                                <FcReading />
+                                <FcReadingEbook />
                             </div>
                         </a>
                     </Dropdown>

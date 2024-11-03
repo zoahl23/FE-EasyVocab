@@ -23,3 +23,7 @@ export const callLogin = (email, password) => {
 export const callFetchAccount = () => {
     return axios.get('/api/users/account')
 }
+
+export const callLogout = () => {
+    return axios.post('/api/users/logout')
+}
