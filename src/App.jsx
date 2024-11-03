@@ -16,6 +16,8 @@ import { doGetAccountAction } from "./redux/account/accountSlice";
 import Loading from "./components/Loading";
 import AdminPage from "./pages/admin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LayoutAdmin from "./components/Admin";
+import './styles/reset.scss';
 
 const Layout = () => {
     return (
@@ -27,21 +29,21 @@ const Layout = () => {
     )
 }
 
-const LayoutAdmin = () => {
-    const isAdminRoute = window.location.pathname.startsWith('/admin');
-    const user = useSelector(state => state.account.user);
-    const userRole = user.role;
+// const LayoutAdmin = () => {
+//     const isAdminRoute = window.location.pathname.startsWith('/admin');
+//     const user = useSelector(state => state.account.user);
+//     const userRole = user.role;
 
-    return (
-        <div className='layout-app'>
-            {isAdminRoute && userRole === 'ROLE_ADMIN' && <Header />}
-            {/* <Header /> */}
-            <Outlet />
-            {/* <Footer /> */}
-            {isAdminRoute && userRole === 'ROLE_ADMIN' && <Footer />}
-        </div>
-    )
-}
+//     return (
+//         <div className='layout-app'>
+//             {isAdminRoute && userRole === 'ROLE_ADMIN' && <Header />}
+//             {/* <Header /> */}
+//             <Outlet />
+//             {/* <Footer /> */}
+//             {isAdminRoute && userRole === 'ROLE_ADMIN' && <Footer />}
+//         </div>
+//     )
+// }
 
 export default function App() {
 
