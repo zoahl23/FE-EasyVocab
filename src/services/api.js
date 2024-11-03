@@ -27,3 +27,8 @@ export const callFetchAccount = () => {
 export const callLogout = () => {
     return axios.post('/api/users/logout')
 }
+
+export const callFetchListUser = (query) => {
+    // page=1 & size=3
+    return axios.get(`/api/users/page?${query}`);
+}
