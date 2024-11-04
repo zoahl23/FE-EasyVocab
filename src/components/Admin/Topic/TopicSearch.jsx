@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 
-const UserSearch = () => {
+const TopicSearch = () => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -26,7 +26,7 @@ const UserSearch = () => {
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`fullName`}
-                        label={`Tên hiển thị`}
+                        label={`Tên chủ đề (Tiếng Việt)`}
                     >
                         <Input />
                     </Form.Item>
@@ -35,7 +35,7 @@ const UserSearch = () => {
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`email`}
-                        label={`Email`}
+                        label={`Tên chủ đề (Tiếng Anh)`}
                     >
                         <Input />
                     </Form.Item>
@@ -44,11 +44,14 @@ const UserSearch = () => {
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`role`}
-                        label={`Phân loại`}
+                        label={`Khóa học`}
                     >
-                        <Select>
-                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
-                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                        <Select
+                            showSearch
+                        >
+                            <Select.Option value="ROLE_ADMIN">IELTS</Select.Option>
+                            <Select.Option value="ROLE_USER">TOEIC</Select.Option>
+                            <Select.Option value="ROLE_USER">VSTEP</Select.Option>
                         </Select>
                     </Form.Item>
                 </Col>
@@ -74,4 +77,4 @@ const UserSearch = () => {
     );
 }
 
-export default UserSearch;
+export default TopicSearch;

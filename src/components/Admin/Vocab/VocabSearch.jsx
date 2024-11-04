@@ -1,6 +1,6 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Cascader, Col, Form, Input, Row } from "antd";
 
-const UserSearch = () => {
+const VocabSearch = () => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -25,8 +25,8 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`fullName`}
-                        label={`Tên hiển thị`}
+                        name={`word`}
+                        label={`Từ vựng`}
                     >
                         <Input />
                     </Form.Item>
@@ -34,8 +34,8 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`email`}
-                        label={`Email`}
+                        name={`meaning`}
+                        label={`Nghĩa tiếng việt`}
                     >
                         <Input />
                     </Form.Item>
@@ -43,13 +43,38 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`role`}
-                        label={`Phân loại`}
+                        name={`topicName`}
+                        label={`Tên chủ đề`}
                     >
-                        <Select>
-                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
-                            <Select.Option value="ROLE_USER">USER</Select.Option>
-                        </Select>
+                        <Cascader
+                            showSearch
+                            options={[
+                                {
+                                    value: 'toeic',
+                                    label: 'TOEIC',
+                                    children: [
+                                        {
+                                            value: 'fruits',
+                                            label: 'Fruits',
+                                        },
+                                    ],
+                                },
+                                {
+                                    value: 'ielts',
+                                    label: 'IELTS',
+                                    children: [
+                                        {
+                                            value: 'fruits',
+                                            label: 'Animals',
+                                        },
+                                        {
+                                            value: 'toys',
+                                            label: 'Toys',
+                                        },
+                                    ],
+                                },
+                            ]}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
@@ -74,4 +99,4 @@ const UserSearch = () => {
     );
 }
 
-export default UserSearch;
+export default VocabSearch;

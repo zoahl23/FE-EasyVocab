@@ -82,16 +82,16 @@ const UserTable = () => {
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Table List Users</span>
+                <span>Danh sách người dùng</span>
                 <span style={{ display: 'flex', gap: 15 }}>
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
-                    >Export</Button>
+                    >Xuất dữ liệu</Button>
                     <Button
                         icon={<CloudUploadOutlined />}
                         type="primary"
-                    >Import</Button>
+                    >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"

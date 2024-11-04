@@ -1,6 +1,6 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Input, Row } from "antd";
 
-const UserSearch = () => {
+const CourseSearch = () => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -25,8 +25,8 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`fullName`}
-                        label={`Tên hiển thị`}
+                        name={`course_name`}
+                        label={`Tên khóa học`}
                     >
                         <Input />
                     </Form.Item>
@@ -34,8 +34,8 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`email`}
-                        label={`Email`}
+                        name={`course_target`}
+                        label={`Mục tiêu khóa học`}
                     >
                         <Input />
                     </Form.Item>
@@ -43,13 +43,10 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`role`}
-                        label={`Phân loại`}
+                        name={`course_description`}
+                        label={`Nội dung khóa học`}
                     >
-                        <Select>
-                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
-                            <Select.Option value="ROLE_USER">USER</Select.Option>
-                        </Select>
+                        <Input />
                     </Form.Item>
                 </Col>
             </Row>
@@ -74,4 +71,4 @@ const UserSearch = () => {
     );
 }
 
-export default UserSearch;
+export default CourseSearch;

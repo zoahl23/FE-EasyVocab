@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 
-const UserSearch = () => {
+const SubscriptionSearch = () => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -43,12 +43,13 @@ const UserSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`role`}
-                        label={`Phân loại`}
+                        name={`subscription_plan`}
+                        label={`Gói dịch vụ đăng kí`}
                     >
                         <Select>
-                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
-                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                            <Select.Option value="6_months">6 tháng</Select.Option>
+                            <Select.Option value="1_year">1 năm</Select.Option>
+                            <Select.Option value="3_years">3 năm</Select.Option>
                         </Select>
                     </Form.Item>
                 </Col>
@@ -74,4 +75,4 @@ const UserSearch = () => {
     );
 }
 
-export default UserSearch;
+export default SubscriptionSearch;

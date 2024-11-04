@@ -31,13 +31,13 @@ const items = [
         icon: <UserOutlined />,
         children: [
             {
-                label: <Link to='/admin/user'>CRUD</Link>,
-                key: 'crud',
+                label: <Link to='/admin/user'>ROLE</Link>,
+                key: 'role_management',
                 icon: <TeamOutlined />,
             },
             {
-                label: 'Files1',
-                key: 'file1',
+                label: <Link to='/admin/subscription'>Subscription</Link>,
+                key: 'subscription_management',
                 icon: <TeamOutlined />,
             }
         ]
