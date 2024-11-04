@@ -10,6 +10,7 @@ const UserModalCreate = (props) => {
                 open={openModalCreate}
                 onOk={() => setOpenModalCreate(false)}
                 onCancel={() => setOpenModalCreate(false)}
+                maskClosable={false}
             >
                 <p>Some contents...</p>
                 <p>Some contents...</p>
