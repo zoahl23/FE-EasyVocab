@@ -6,6 +6,7 @@ import { callFetchListUser } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import SubscriptionViewDetail from "./SubscriptionViewDetail";
+import * as XLSX from 'xlsx';
 
 const SubscriptionTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -84,6 +85,7 @@ const SubscriptionTable = () => {
         },
         {
             title: 'Hành động',
+            width: 130,
             render: (text, record, index) => {
                 return (
                     <>
@@ -125,6 +127,15 @@ const SubscriptionTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+    const handleExportData = () => {
+        if (listUser.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listUser);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportUser.csv");
+        }
+    }
+
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -133,11 +144,8 @@ const SubscriptionTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
+                        onClick={() => handleExportData()}
                     >Xuất dữ liệu</Button>
-                    <Button
-                        icon={<PlusOutlined />}
-                        type="primary"
-                    >Thêm mới</Button>
                     <Button type='ghost'>
                         <ReloadOutlined />
                     </Button>
