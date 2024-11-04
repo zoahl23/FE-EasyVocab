@@ -42,7 +42,7 @@ const Header = () => {
 
     if (user?.role === 'ROLE_ADMIN') {
         items.unshift({
-            label: <Link to='/admin'>Trang quản trị</Link>,
+            label: <a href='/admin'>Trang quản trị</a>,
             key: 'admin',
         })
     }
