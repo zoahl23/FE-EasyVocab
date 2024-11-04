@@ -1,8 +1,8 @@
-import { Button, Col, Row, Table, Tag } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table, Tag } from "antd";
 import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
-import { callFetchListUser } from "../../../services/api";
-import { CloudUploadOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { callDeleteUser, callFetchListUser } from "../../../services/api";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
 import UserModalUpdate from './UserModalUpdate';
@@ -39,6 +39,19 @@ const UserTable = () => {
             setTotal(res.data.totalElements);
         }
     }
+
+    const handleDeleteUser = async (userId) => {
+        const res = await callDeleteUser(userId);
+        if (res && res.data) {
+            message.success('Xóa user thành công');
+            fetchUser();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -96,6 +109,19 @@ const UserTable = () => {
             render: (text, record, index) => {
                 return (
                     <>
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa user"}
+                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            onConfirm={() => handleDeleteUser(record.userId)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f" />
+                            </span>
+                        </Popconfirm>
+
                         <EditTwoTone
                             twoToneColor="#f57800" style={{ cursor: "pointer" }}
                             onClick={() => {

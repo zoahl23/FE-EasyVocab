@@ -44,3 +44,7 @@ export const callUpdateUser = (id, fullName, role, paid) => {
         }
     )
 }
+
+export const callDeleteUser = (id) => {
+    return axios.delete(`/api/users/${id}`)
+}
