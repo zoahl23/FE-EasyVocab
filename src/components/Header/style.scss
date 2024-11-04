@@ -2,7 +2,8 @@
   --generalColumnWidth: 56vw;
   --header-height: 60px;
   --color-background: #fff;
-  --color-background-hover: #f2f2f2;
+  --color-background-hover: #E9E9E9;
+  --color-background-click: #F2F2F2;
   --box-shadow-header: 3px 5px 5px hsla(0, 0%, 84%, .58);
   --color-text: #000;
   --color-user: #000;
@@ -17,6 +18,7 @@
   background-color: var(--color-background);
   box-shadow: var(--box-shadow-header);
   position: relative;
+  z-index: 10;
 
   .page-header__logo {
     width: calc((100% - var(--generalColumnWidth)) / 2);
@@ -33,6 +35,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background-color 0.3s;
+      cursor: pointer;
 
       &__icon{
         height: 30px;
@@ -50,6 +54,14 @@
         text-align: center;
         user-select: none;
         color: var(--color-text);
+      }
+
+      &:hover {
+        background-color: var(--color-background-hover);
+      }
+
+      &.selected {
+        background-color: var(--color-background-click);
       }
     }
   }
@@ -69,13 +81,6 @@
 
     span{
       margin-right: 10%;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    a {
-      margin-right: 10%;
       color: var(--color-user);
       font-size: 14px;
       font-weight: 500;
@@ -89,7 +94,7 @@
       .user-say-hi {
         display: block;
       }
-      
+
       .user-mobile {
         display: none;
       }
@@ -113,11 +118,11 @@
       align-items: center;
       height: 100%;
 
-      a{
+      span {
         .user-say-hi {
           display: none;
         }
-        
+
         .user-mobile {
           height: 35px;
           font-size: 35px;

@@ -2,14 +2,16 @@ import './style.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, message, Space } from 'antd';
-import { FcAdvertising, FcComboChart, FcGraduationCap, FcReading, FcReadingEbook, FcRules, } from "react-icons/fc";
+import { FcAdvertising, FcComboChart, FcGraduationCap, FcReadingEbook, FcRules, } from "react-icons/fc";
 import '../../styles/reset.scss';
 import imgGuest from '../../assets/imgGuest.png';
 import { doLogoutAction } from '../../redux/account/accountSlice';
 import { callLogout } from '../../services/api';
+import { useState } from 'react';
 
 
 const Header = () => {
+    const [selectedItem, setSelectedItem] = useState(0);
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
     const user = useSelector((state) => state.account.user);
     const navigate = useNavigate();
@@ -71,7 +73,7 @@ const Header = () => {
     return (
         <div className='header-container'>
             <div className="page-header__logo">
-                <a href='/' style={{ marginLeft: '10%' }}>
+                <Link to='/' style={{ marginLeft: '10%' }}>
                     <img
                         src='/public/nameWeb.png'
                         alt="logo"
@@ -79,17 +81,24 @@ const Header = () => {
                         height="35px"
                         style={{ marginTop: 5 }}
                     />
-                </a>
+                </Link>
             </div>
             <div className="page-header__navbar">
                 {navbarItems.map((item, index) => (
-                    <div className="navbar-item" key={index}>
-                        <a href={item.link} style={{ textDecoration: 'none' }}>
-                            <div className="navbar-item__icon">
-                                {item.icon}
-                            </div>
-                            <div className="navbar-item__title">{item.title}</div>
-                        </a>
+                    <div
+                        className={`navbar-item ${selectedItem === index ? 'selected' : ''}`}
+                        key={index}
+                        onClick={
+                            () => {
+                                setSelectedItem(index);
+                                navigate(item.link);
+                            }
+                        }
+                    >
+                        <div className="navbar-item__icon">
+                            {item.icon}
+                        </div>
+                        <div className="navbar-item__title">{item.title}</div>
                     </div>
                 ))}
             </div>
@@ -100,7 +109,7 @@ const Header = () => {
                     </div>
                 ) : (
                     <Dropdown menu={{ items }} trigger={['click']}>
-                        <a onClick={(e) => e.preventDefault()}>
+                        <span onClick={(e) => e.preventDefault()}>
                             <div className="user-say-hi">
                                 <Space>
                                     Xin chào, {user?.fullName.trim().split(' ').pop()}
@@ -112,7 +121,7 @@ const Header = () => {
                             <div className="user-mobile">
                                 <FcReadingEbook />
                             </div>
-                        </a>
+                        </span>
                     </Dropdown>
                 )}
             </div>

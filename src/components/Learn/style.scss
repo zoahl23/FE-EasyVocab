@@ -1,0 +1,30 @@
+.homepage-container {
+    margin: 0 auto;
+    .ant-row {
+        .ant-col {
+            &:nth-child(1),
+            &:nth-child(3){
+                background-color: #ECECEC;
+                height: calc(100vh - 60px);
+            }
+            &:nth-child(2) {
+                height: calc(100vh - 60px);
+            }
+        }
+    }
+    @media (max-width: 1080px) {
+    .ant-row {
+        .ant-col {
+            &:nth-child(1),
+            &:nth-child(3) {
+            display: none; // Ẩn các cột xanh lá ở 2 bên
+            }
+            &:nth-child(2) {
+            width: 100%; // Cột đỏ chiếm toàn bộ chiều rộng
+            max-width: 100%;
+            flex: 0 0 100%;
+            }
+        }
+        }
+    }
+}
