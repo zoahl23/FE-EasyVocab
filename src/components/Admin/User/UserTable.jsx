@@ -227,6 +227,7 @@ const UserTable = () => {
             <UserModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
+                fetchUser={fetchUser}
             />
 
             <UserViewDetail

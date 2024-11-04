@@ -35,6 +35,16 @@ export const callFetchListUser = (query) => {
     return axios.get(`/api/users/page?${query}`);
 }
 
+export const callCreateAUser = (fullName, password, email, role) => {
+    return axios.post('/api/users', { email, password, fullName, role },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
+
 export const callUpdateUser = (id, fullName, role, paid) => {
     return axios.put(`/api/users/${id}`, { fullName, role, paid },
         {
