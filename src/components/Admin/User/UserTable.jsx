@@ -2,7 +2,7 @@ import { Button, Col, message, notification, Popconfirm, Row, Table, Tag } from 
 import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
 import { callDeleteUser, callFetchListUser } from "../../../services/api";
-import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
 import UserModalUpdate from './UserModalUpdate';
@@ -106,9 +106,18 @@ const UserTable = () => {
         },
         {
             title: 'Hành động',
+            width: 130,
             render: (text, record, index) => {
                 return (
                     <>
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
+                        />
+
                         <Popconfirm
                             placement="leftTop"
                             title={"Xác nhận xóa user"}
