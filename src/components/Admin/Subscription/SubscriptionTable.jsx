@@ -5,12 +5,16 @@ import { useEffect, useState } from "react";
 import { callFetchListUser } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
+import SubscriptionViewDetail from "./SubscriptionViewDetail";
 
 const SubscriptionTable = () => {
     const [listUser, setListUser] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
+
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
         fetchUser();
@@ -29,7 +33,15 @@ const SubscriptionTable = () => {
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'userId'
+            dataIndex: 'userId',
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.userId}</a>
+                )
+            }
         },
         {
             title: 'Tên hiển thị',
@@ -75,7 +87,13 @@ const SubscriptionTable = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <EyeTwoTone twoToneColor="#1890ff" />
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
+                        />
 
                         <Popconfirm
                             placement="leftTop"
@@ -129,35 +147,44 @@ const SubscriptionTable = () => {
     }
 
     return (
-        <Row gutter={[20, 20]}>
-            <Col span={24}>
-                <SubscriptionSearch />
-            </Col>
-            <Col span={24}>
-                <Table
-                    title={renderHeader}
-                    columns={columns}
-                    dataSource={listUser}
-                    onChange={onChange}
-                    rowKey="_id"
-                    pagination={
-                        {
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
-                            showTotal: (total, range) => {
-                                return (
-                                    <div>
-                                        {range[0]} - {range[1]} trên {total} rows
-                                    </div>
-                                );
+        <>
+            <Row gutter={[20, 20]}>
+                <Col span={24}>
+                    <SubscriptionSearch />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        title={renderHeader}
+                        columns={columns}
+                        dataSource={listUser}
+                        onChange={onChange}
+                        rowKey="_id"
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} rows
+                                        </div>
+                                    );
+                                }
                             }
                         }
-                    }
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+            </Row>
+
+            <SubscriptionViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
+            />
+        </>
     );
 }
 
