@@ -34,3 +34,13 @@ export const callFetchListUser = (query) => {
     // page=1 & size=3
     return axios.get(`/api/users/page?${query}`);
 }
+
+export const callUpdateUser = (id, fullName, role, paid) => {
+    return axios.put(`/api/users/${id}`, { fullName, role, paid },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}

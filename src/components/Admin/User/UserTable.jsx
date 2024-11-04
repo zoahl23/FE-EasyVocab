@@ -2,9 +2,10 @@ import { Button, Col, Row, Table, Tag } from "antd";
 import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
 import { callFetchListUser } from "../../../services/api";
-import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
+import UserModalUpdate from './UserModalUpdate';
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import UserImport from "./data/UserImport";
@@ -22,6 +23,9 @@ const UserTable = () => {
 
     const [openModalImport, setOpenModalImport] = useState(false);
 
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
+
     useEffect(() => {
         fetchUser();
     }, [current, pageSize]);
@@ -29,7 +33,7 @@ const UserTable = () => {
     const fetchUser = async () => {
         const query = `page=${current - 1}&size=${pageSize}`;
         const res = await callFetchListUser(query);
-        console.log("test", res)
+        //console.log("test", res)
         if (res && res.data) {
             setListUser(res.data.content);
             setTotal(res.data.totalElements);
@@ -92,8 +96,15 @@ const UserTable = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <Button>Delete</Button>
-                    </>)
+                        <EditTwoTone
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(record);
+                            }}
+                        />
+                    </>
+                )
             }
         },
     ];
@@ -193,6 +204,14 @@ const UserTable = () => {
             <UserImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+            />
+
+            <UserModalUpdate
+                openModalUpdate={openModalUpdate}
+                setOpenModalUpdate={setOpenModalUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
+                fetchUser={fetchUser}
             />
         </>
     );
