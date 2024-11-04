@@ -1,8 +1,31 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Popconfirm, Row, Table, Tag } from "antd";
 import SubscriptionSearch from "./SubscriptionSearch";
-import { ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { callFetchListUser } from "../../../services/api";
+import moment from "moment";
+import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 
 const SubscriptionTable = () => {
+    const [listUser, setListUser] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        fetchUser();
+    }, [current, pageSize]);
+
+    const fetchUser = async () => {
+        const query = `page=${current - 1}&size=${pageSize}`;
+        const res = await callFetchListUser(query);
+        //console.log("test", res)
+        if (res && res.data) {
+            setListUser(res.data.content);
+            setTotal(res.data.totalElements);
+        }
+    }
+
     const columns = [
         {
             title: 'ID',
@@ -20,35 +43,67 @@ const SubscriptionTable = () => {
         },
         {
             title: 'Gói đăng ký',
-            dataIndex: 'subscriptionPlan'
+            dataIndex: 'subscriptionPlan',
+            render: (subPlan) => {
+                let color = '';
+                let text = subPlan;
+                if (subPlan === 'none') {
+                    color = 'geekblue';
+                } else {
+                    color = 'green';
+                    text = 'null';
+                }
+                return (
+                    <Tag color={color} key={subPlan}>
+                        {text}
+                    </Tag>
+                );
+            },
         },
         {
             title: 'Ngày hết hạn gói',
             dataIndex: 'subscriptionEndDate',
-            sorter: true
+            sorter: true,
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.subscriptionEndDate).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
         },
         {
             title: 'Hành động',
             render: (text, record, index) => {
                 return (
                     <>
-                        <Button>Nâng cấp</Button>
-                    </>)
+                        <EyeTwoTone twoToneColor="#1890ff" />
+
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa user"}
+                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f" />
+                            </span>
+                        </Popconfirm>
+
+                        <EditTwoTone twoToneColor="#f57800" />
+                    </>
+                )
             }
         }
     ];
 
-    const data = [
-        {
-            userId: '1',
-            fullName: 'John',
-            email: 'john@example.com',
-            subscriptionPlan: '6 tháng',
-            subscriptionEndDate: '2024-11-01T10:08:13.000+00:00'
-        }
-    ];
-
     const onChange = (pagination, filters, sorter, extra) => {
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current)
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize)
+            setCurrent(1);
+        }
         console.log('params', pagination, filters, sorter, extra);
     };
 
@@ -82,8 +137,24 @@ const SubscriptionTable = () => {
                 <Table
                     title={renderHeader}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={listUser}
                     onChange={onChange}
+                    rowKey="_id"
+                    pagination={
+                        {
+                            current: current,
+                            pageSize: pageSize,
+                            showSizeChanger: true,
+                            total: total,
+                            showTotal: (total, range) => {
+                                return (
+                                    <div>
+                                        {range[0]} - {range[1]} trên {total} rows
+                                    </div>
+                                );
+                            }
+                        }
+                    }
                 />
             </Col>
         </Row>
