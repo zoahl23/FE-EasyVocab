@@ -7,6 +7,7 @@ import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
+import UserImport from "./data/UserImport";
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -17,6 +18,8 @@ const UserTable = () => {
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
+
+    const [openModalImport, setOpenModalImport] = useState(false);
 
     useEffect(() => {
         fetchUser();
@@ -117,6 +120,7 @@ const UserTable = () => {
                     <Button
                         icon={<CloudUploadOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalImport(true)}
                     >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
@@ -173,6 +177,11 @@ const UserTable = () => {
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
+            />
+
+            <UserImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
             />
         </>
     );
