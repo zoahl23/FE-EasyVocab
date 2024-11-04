@@ -1,5 +1,6 @@
 import axios from '../utils/axios-customize';
 
+// AUTH
 export const callRegister = (fullName, email, password) => {
     return axios.post('/api/users/register', { email, password, fullName },
         {
@@ -28,6 +29,7 @@ export const callLogout = () => {
     return axios.post('/api/users/logout')
 }
 
+// Manager User
 export const callFetchListUser = (query) => {
     // page=1 & size=3
     return axios.get(`/api/users/page?${query}`);

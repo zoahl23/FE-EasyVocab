@@ -1,6 +1,6 @@
 import './style.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, message, Space } from 'antd';
 import { FcAdvertising, FcComboChart, FcGraduationCap, FcReading, FcReadingEbook, FcRules, } from "react-icons/fc";
 import '../../styles/reset.scss';
@@ -24,7 +24,7 @@ const Header = () => {
         }
     }
 
-    const items = [
+    let items = [
         {
             label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
             key: 'account',
@@ -37,6 +37,13 @@ const Header = () => {
             key: 'logout',
         },
     ];
+
+    if (user?.role === 'ADMIN') {
+        items.unshift({
+            label: <Link to='/admin'>Trang quản trị</Link>,
+            key: 'admin',
+        })
+    }
 
     const navbarItems = [
         {

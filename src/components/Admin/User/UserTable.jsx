@@ -3,12 +3,18 @@ import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
 import { callFetchListUser } from "../../../services/api";
 import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import UserModalCreate from "./UserModalCreate";
+import UserViewDetail from "./UserViewDetail";
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
+
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
         fetchUser();
@@ -28,6 +34,14 @@ const UserTable = () => {
         {
             title: 'ID',
             dataIndex: 'userId',
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.userId}</a>
+                )
+            }
         },
         {
             title: 'Tên hiển thị',
@@ -95,6 +109,7 @@ const UserTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
                     <Button type='ghost'>
                         <ReloadOutlined />
@@ -105,28 +120,49 @@ const UserTable = () => {
     }
 
     return (
-        <Row gutter={[20, 20]}>
-            <Col span={24}>
-                <UserSearch />
-            </Col>
-            <Col span={24}>
-                <Table
-                    title={renderHeader}
-                    columns={columns}
-                    dataSource={listUser}
-                    onChange={onChange}
-                    rowKey="_id"
-                    pagination={
-                        {
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
+        <>
+            <Row gutter={[20, 20]}>
+                <Col span={24}>
+                    <UserSearch />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        title={renderHeader}
+                        columns={columns}
+                        dataSource={listUser}
+                        onChange={onChange}
+                        rowKey="_id"
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} rows
+                                        </div>
+                                    );
+                                }
+                            }
                         }
-                    }
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+            </Row>
+
+            <UserModalCreate
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
+            />
+
+            <UserViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
+            />
+        </>
     );
 }
 
