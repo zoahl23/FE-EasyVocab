@@ -58,3 +58,9 @@ export const callUpdateUser = (id, fullName, role, paid) => {
 export const callDeleteUser = (id) => {
     return axios.delete(`/api/users/${id}`)
 }
+
+// Manager Course
+export const callFetchListCourse = (query) => {
+    // page=1 & size=3
+    return axios.get(`/api/course/page?${query}`);
+}
