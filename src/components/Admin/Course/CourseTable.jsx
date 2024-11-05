@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListCourse } from "../../../services/api";
+import CourseModalCreate from "./CourseModalCreate";
 
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
+
+    const [openModalCreate, setOpenModalCreate] = useState(false);
 
     useEffect(() => {
         fetchCourse();
@@ -94,6 +97,7 @@ const CourseTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
                     <Button type='ghost'>
                         <ReloadOutlined />
@@ -104,35 +108,43 @@ const CourseTable = () => {
     }
 
     return (
-        <Row gutter={[20, 20]}>
-            <Col span={24}>
-                <CourseSearch />
-            </Col>
-            <Col span={24}>
-                <Table
-                    title={renderHeader}
-                    columns={columns}
-                    dataSource={listCourse}
-                    onChange={onChange}
-                    rowKey="_id"
-                    pagination={
-                        {
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
-                            showTotal: (total, range) => {
-                                return (
-                                    <div>
-                                        {range[0]} - {range[1]} trên {total} rows
-                                    </div>
-                                );
+        <>
+            <Row gutter={[20, 20]}>
+                <Col span={24}>
+                    <CourseSearch />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        title={renderHeader}
+                        columns={columns}
+                        dataSource={listCourse}
+                        onChange={onChange}
+                        rowKey="_id"
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} rows
+                                        </div>
+                                    );
+                                }
                             }
                         }
-                    }
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+            </Row>
+
+            <CourseModalCreate
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
+                fetchCourse={fetchCourse}
+            />
+        </>
     );
 }
 

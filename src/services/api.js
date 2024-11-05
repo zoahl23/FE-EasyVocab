@@ -64,3 +64,13 @@ export const callFetchListCourse = (query) => {
     // page=1 & size=3
     return axios.get(`/api/course/page?${query}`);
 }
+
+export const callCreateACourse = (courseName, description, courseTarget) => {
+    return axios.post('/api/course', { courseName, description, courseTarget },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
