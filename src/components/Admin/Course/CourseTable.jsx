@@ -7,6 +7,7 @@ import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListCourse } from "../../../services/api";
 import CourseModalCreate from "./CourseModalCreate";
 import CourseViewDetail from "./CourseViewDetail";
+import CourseImport from "./data/CourseImport";
 
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
@@ -18,6 +19,8 @@ const CourseTable = () => {
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
+
+    const [openModalImport, setOpenModalImport] = useState(false);
 
     useEffect(() => {
         fetchCourse();
@@ -104,6 +107,7 @@ const CourseTable = () => {
                     <Button
                         icon={<CloudUploadOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalImport(true)}
                     >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
@@ -161,6 +165,11 @@ const CourseTable = () => {
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
+            />
+
+            <CourseImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
             />
         </>
     );

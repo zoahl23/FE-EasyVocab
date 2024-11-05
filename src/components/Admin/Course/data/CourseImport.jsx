@@ -6,7 +6,7 @@ import * as XLSX from 'xlsx';
 import templateFile from './template.xlsx?url';
 
 const { Dragger } = Upload;
-const UserImport = (props) => {
+const CourseImport = (props) => {
     const { setOpenModalImport, openModalImport } = props;
     const [dataExcel, setDataExcel] = useState([])
 
@@ -38,7 +38,7 @@ const UserImport = (props) => {
                         const sheet = workbook.Sheets[workbook.SheetNames[0]];
                         // const json = XLSX.utils.sheet_to_json(sheet);
                         const json = XLSX.utils.sheet_to_json(sheet, {
-                            header: ["fullName", "email"],
+                            header: ["courseName", "courseTarget", "description"],
                             range: 1 //skip header row
                         });
                         if (json && json.length > 0) setDataExcel(json)
@@ -46,7 +46,7 @@ const UserImport = (props) => {
                 }
                 message.success(`${info.file.name} đã tải lên thành công.`);
             } else if (status === 'error') {
-                message.error(`${info.file.name} tải lên thất bại`);
+                message.error(`${info.file.name} tải lên thất bại.`);
             }
         },
         onDrop(e) {
@@ -56,7 +56,7 @@ const UserImport = (props) => {
 
     return (
         <>
-            <Modal title="Nhập dữ liệu người dùng"
+            <Modal title="Nhập dữ liệu khóa học"
                 width={"50vw"}
                 open={openModalImport}
                 onOk={() => setOpenModalImport(false)}
@@ -84,8 +84,9 @@ const UserImport = (props) => {
                         dataSource={dataExcel}
                         title={() => <span>Dữ liệu tải lên: </span>}
                         columns={[
-                            { dataIndex: 'fullName', title: 'Tên hiển thị' },
-                            { dataIndex: 'email', title: 'Email' }
+                            { dataIndex: 'courseName', title: 'Tên khóa học' },
+                            { dataIndex: 'courseTarget', title: 'Mục tiêu' },
+                            { dataIndex: 'description', title: 'Nội dung' },
                         ]}
                     />
                 </div>
@@ -94,4 +95,4 @@ const UserImport = (props) => {
     )
 }
 
-export default UserImport;
+export default CourseImport;
