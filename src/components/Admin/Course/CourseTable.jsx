@@ -1,11 +1,12 @@
 import { Button, Col, Row, Table } from "antd";
 import CourseSearch from "./CourseSearch";
-import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListCourse } from "../../../services/api";
 import CourseModalCreate from "./CourseModalCreate";
+import CourseViewDetail from "./CourseViewDetail";
 
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
@@ -14,6 +15,9 @@ const CourseTable = () => {
     const [total, setTotal] = useState(0);
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
+
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
         fetchCourse();
@@ -64,8 +68,15 @@ const CourseTable = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <Button>Delete</Button>
-                    </>)
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
+                        />
+                    </>
+                )
             }
         }
     ];
@@ -143,6 +154,13 @@ const CourseTable = () => {
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
                 fetchCourse={fetchCourse}
+            />
+
+            <CourseViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
             />
         </>
     );
