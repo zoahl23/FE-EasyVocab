@@ -8,6 +8,7 @@ import { callFetchListCourse } from "../../../services/api";
 import CourseModalCreate from "./CourseModalCreate";
 import CourseViewDetail from "./CourseViewDetail";
 import CourseImport from "./data/CourseImport";
+import * as XLSX from 'xlsx';
 
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
@@ -95,6 +96,15 @@ const CourseTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+    const handleExportData = () => {
+        if (listCourse.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listCourse);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportUser.csv");
+        }
+    }
+
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -103,6 +113,7 @@ const CourseTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
+                        onClick={() => handleExportData()}
                     >Xuất dữ liệu</Button>
                     <Button
                         icon={<CloudUploadOutlined />}
