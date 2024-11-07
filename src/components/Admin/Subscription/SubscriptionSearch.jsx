@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 
-const SubscriptionSearch = () => {
+const SubscriptionSearch = (props) => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -11,7 +11,24 @@ const SubscriptionSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.fullName) {
+            query += `&fullName=${values.fullName}`
+        }
+
+        if (values.email) {
+            query += `&email=${values.email}`
+        }
+
+        if (values.subscriptionPlan) {
+            query += `&subscriptionPlan=${values.subscriptionPlan}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
     };
 
     return (
@@ -43,13 +60,14 @@ const SubscriptionSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`subscription_plan`}
+                        name={`subscriptionPlan`}
                         label={`Gói dịch vụ đăng kí`}
                     >
                         <Select>
                             <Select.Option value="6_months">6 tháng</Select.Option>
                             <Select.Option value="1_year">1 năm</Select.Option>
                             <Select.Option value="3_years">3 năm</Select.Option>
+                            <Select.Option value="none">Không</Select.Option>
                         </Select>
                     </Form.Item>
                 </Col>
@@ -65,6 +83,7 @@ const SubscriptionSearch = () => {
                         style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
                         Xóa
