@@ -9,13 +9,13 @@ const UserModalCreate = (props) => {
     const [form] = Form.useForm();
 
     const onFinish = async (values) => {
-        const { fullName, password, email } = values;
+        const { fullName, password, email, role } = values;
         setIsSubmit(true)
         // console.log("value:", values);
-        const res = await callCreateAUser(fullName, password, email, 'user');
+        const res = await callCreateAUser(fullName, password, email, role, 'none');
         // console.log("res:", res);
         if (res && res.data) {
-            message.success('Tạo mới user thành công');
+            message.success('Tạo mới người dùng thành công');
             form.resetFields();
             setOpenModalCreate(false);
             await props.fetchUser()
