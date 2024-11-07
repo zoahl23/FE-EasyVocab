@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 
-const UserSearch = () => {
+const UserSearch = (props) => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -11,7 +11,24 @@ const UserSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        //console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.fullName) {
+            query += `&fullName=${values.fullName}`
+        }
+
+        if (values.email) {
+            query += `&email=${values.email}`
+        }
+
+        if (values.role) {
+            query += `&role=${values.role}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
     };
 
     return (
@@ -64,6 +81,7 @@ const UserSearch = () => {
                         style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
                         Xóa

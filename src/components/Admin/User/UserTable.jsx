@@ -17,6 +17,10 @@ const UserTable = () => {
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [filter, setFilter] = useState("");
+
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
@@ -28,16 +32,26 @@ const UserTable = () => {
 
     useEffect(() => {
         fetchUser();
-    }, [current, pageSize]);
+    }, [current, pageSize, filter]);
 
     const fetchUser = async () => {
-        const query = `page=${current - 1}&size=${pageSize}`;
+        setIsLoading(true);
+        let query = `page=${current - 1}&size=${pageSize}`;
+        if (filter) {
+            query += `&${filter}`
+        }
         const res = await callFetchListUser(query);
         //console.log("test", res)
         if (res && res.data) {
             setListUser(res.data.content);
             setTotal(res.data.page.totalElements);
         }
+        setIsLoading(false)
+    }
+
+    const handleSearch = (query) => {
+        setCurrent(1);
+        setFilter(query);
     }
 
     const handleDeleteUser = async (userId) => {
@@ -184,7 +198,12 @@ const UserTable = () => {
                         type="primary"
                         onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
-                    <Button type='ghost'>
+                    <Button
+                        type='ghost'
+                        onClick={() => {
+                            setFilter("");
+                        }}
+                    >
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -196,11 +215,15 @@ const UserTable = () => {
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <UserSearch />
+                    <UserSearch
+                        handleSearch={handleSearch}
+                        setFilter={setFilter}
+                    />
                 </Col>
                 <Col span={24}>
                     <Table
                         title={renderHeader}
+                        loading={isLoading}
                         columns={columns}
                         dataSource={listUser}
                         onChange={onChange}
