@@ -1,9 +1,10 @@
-import { Modal, Table } from "antd";
+import { Modal, notification, Table } from "antd";
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { useState } from "react";
 import * as XLSX from 'xlsx';
 import templateFile from './template.xlsx?url';
+import { callBulkCreateUser } from "../../../../services/api";
 
 const { Dragger } = Upload;
 const UserImport = (props) => {
@@ -58,12 +59,34 @@ const UserImport = (props) => {
         },
     };
 
+    const handleSubmit = async () => {
+        const data = dataExcel.map(item => {
+            item.password = '123456';
+            return item;
+        })
+        const res = await callBulkCreateUser(data);
+        if (res.statusCode === 201) {
+            notification.success({
+                description: `Thành công: ${res.data.countSuccess}, Thất bại: ${res.data.countError}`,
+                message: "Nhập dữ liệu thành công",
+            })
+            setDataExcel([]);
+            setOpenModalImport(false);
+            props.fetchUser();
+        } else {
+            notification.error({
+                description: `${res.data.error.join(", ")} không hợp lệ hoặc đã tồn tại`,
+                message: "Đã có lỗi xảy ra",
+            })
+        }
+    }
+
     return (
         <>
             <Modal title="Nhập dữ liệu người dùng"
                 width={"50vw"}
                 open={openModalImport}
-                onOk={() => setOpenModalImport(false)}
+                onOk={() => handleSubmit()}
                 onCancel={() => {
                     setOpenModalImport(false);
                     setDataExcel([]);
@@ -72,12 +95,12 @@ const UserImport = (props) => {
                 okText="Nhập dữ liệu"
                 cancelText="Hủy"
                 okButtonProps={{
-                    disabled: true
+                    disabled: dataExcel.length < 1
                 }}
                 //do not close when click outside
                 maskClosable={false}
             >
-                <Dragger {...propsUpload} >
+                <Dragger {...propsUpload} showUploadList={dataExcel.length > 0} >
                     <p className="ant-upload-drag-icon">
                         <InboxOutlined />
                     </p>
