@@ -8,7 +8,8 @@ import templateFile from './template.xlsx?url';
 const { Dragger } = Upload;
 const UserImport = (props) => {
     const { setOpenModalImport, openModalImport } = props;
-    const [dataExcel, setDataExcel] = useState([])
+    const [dataExcel, setDataExcel] = useState([]);
+    const [fileList, setFileList] = useState([]);
 
     const dummyRequest = ({ file, onSuccess }) => {
         setTimeout(() => {
@@ -22,8 +23,11 @@ const UserImport = (props) => {
         maxCount: 1,
         accept: ".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         customRequest: dummyRequest,
+        fileList: fileList,
         onChange(info) {
             const { status } = info.file;
+            setFileList(info.fileList);
+
             if (status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
@@ -60,7 +64,11 @@ const UserImport = (props) => {
                 width={"50vw"}
                 open={openModalImport}
                 onOk={() => setOpenModalImport(false)}
-                onCancel={() => setOpenModalImport(false)}
+                onCancel={() => {
+                    setOpenModalImport(false);
+                    setDataExcel([]);
+                    setFileList([]);
+                }}
                 okText="Nhập dữ liệu"
                 cancelText="Hủy"
                 okButtonProps={{

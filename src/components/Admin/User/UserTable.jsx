@@ -240,6 +240,7 @@ const UserTable = () => {
             <UserImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+                fetchUser={fetchUser}
             />
 
             <UserModalUpdate

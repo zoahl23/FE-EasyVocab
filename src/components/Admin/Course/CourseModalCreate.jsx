@@ -34,7 +34,10 @@ const CourseModalCreate = (props) => {
                 title="Thêm mới khóa học"
                 open={openModalCreate}
                 onOk={() => form.submit()}
-                onCancel={() => setOpenModalCreate(false)}
+                onCancel={() => {
+                    setOpenModalCreate(false);
+                    form.resetFields();
+                }}
                 maskClosable={false}
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}

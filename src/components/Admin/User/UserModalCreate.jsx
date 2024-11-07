@@ -1,4 +1,4 @@
-import { Divider, Form, Input, message, Modal, notification } from 'antd';
+import { Divider, Form, Input, message, Modal, notification, Select } from 'antd';
 import { useState } from 'react';
 import { callCreateAUser } from '../../../services/api';
 
@@ -34,7 +34,10 @@ const UserModalCreate = (props) => {
                 title="Thêm mới người dùng"
                 open={openModalCreate}
                 onOk={() => form.submit()}
-                onCancel={() => setOpenModalCreate(false)}
+                onCancel={() => {
+                    setOpenModalCreate(false);
+                    form.resetFields();
+                }}
                 maskClosable={false}
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}
@@ -66,11 +69,22 @@ const UserModalCreate = (props) => {
                     </Form.Item>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        label="Password"
+                        label="Mật khẩu"
                         name="password"
                         rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
                     >
                         <Input.Password />
+                    </Form.Item>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label={`Phân loại`}
+                        name={`role`}
+                        rules={[{ required: true, message: 'Vui lòng chọn quyền!' }]}
+                    >
+                        <Select>
+                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
+                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>
