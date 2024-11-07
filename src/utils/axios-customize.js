@@ -30,8 +30,11 @@ instance.interceptors.response.use(function (response) {
         // Xóa token khỏi localStorage
         localStorage.removeItem('access_token');
 
-        // Chuyển hướng người dùng về trang login
-        window.location.href = '/login';
+        const allowedPaths = ['/', '/learn', '/notebook', '/events'];
+        // Kiểm tra nếu người dùng không ở trang chủ, thì chuyển hướng về trang login
+        if (!allowedPaths.includes(window.location.pathname)) {
+            window.location.href = '/login';
+        }
     }
 
     return error?.response?.data ?? Promise.reject(error);
