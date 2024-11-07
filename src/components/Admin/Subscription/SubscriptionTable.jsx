@@ -7,6 +7,7 @@ import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import SubscriptionViewDetail from "./SubscriptionViewDetail";
 import * as XLSX from 'xlsx';
+import SubModalUpdate from "./SubModalUpdate";
 
 const SubscriptionTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -16,6 +17,9 @@ const SubscriptionTable = () => {
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
 
     useEffect(() => {
         fetchUser();
@@ -134,7 +138,13 @@ const SubscriptionTable = () => {
                             </span>
                         </Popconfirm>
 
-                        <EditTwoTone twoToneColor="#f57800" />
+                        <EditTwoTone
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(record);
+                            }}
+                        />
                     </>
                 )
             }
@@ -216,6 +226,14 @@ const SubscriptionTable = () => {
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
+            />
+
+            <SubModalUpdate
+                openModalUpdate={openModalUpdate}
+                setOpenModalUpdate={setOpenModalUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
+                fetchUser={fetchUser}
             />
         </>
     );
