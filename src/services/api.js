@@ -45,8 +45,8 @@ export const callCreateAUser = (fullName, password, email, role, subscriptionPla
     )
 }
 
-export const callUpdateUser = (id, fullName, role, paid) => {
-    return axios.put(`/api/users/${id}`, { fullName, role, paid },
+export const callUpdateUser = (id, fullName, role, subscriptionPlan) => {
+    return axios.put(`/api/users/${id}`, { fullName, role, subscriptionPlan },
         {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

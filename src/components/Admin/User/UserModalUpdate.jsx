@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Divider, Form, Input, message, Modal, notification } from 'antd';
+import { Divider, Form, Input, message, Modal, notification, Select } from 'antd';
 import { callUpdateUser } from '../../../services/api';
 
 const UserModalUpdate = (props) => {
@@ -9,13 +9,13 @@ const UserModalUpdate = (props) => {
     const [form] = Form.useForm();
 
     const onFinish = async (values) => {
-        const { userId, fullName, role, paid } = values;
+        const { userId, fullName, role, subscriptionPlan } = values;
         //console.log("value: ", values);
         setIsSubmit(true)
-        const res = await callUpdateUser(userId, fullName, 'admin', paid);
+        const res = await callUpdateUser(userId, fullName, role, subscriptionPlan);
         //console.log(">>>check: ", res);
         if (res && res.data) {
-            message.success('Cập nhật user thành công');
+            message.success('Cập nhật người dùng thành công');
             setOpenModalUpdate(false);
             await props.fetchUser()
         } else {
@@ -82,18 +82,21 @@ const UserModalUpdate = (props) => {
                     <Form.Item
                         hidden
                         labelCol={{ span: 24 }}
-                        label="Role"
-                        name="role"
+                        label="subscriptionPlan"
+                        name="subscriptionPlan"
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        hidden
                         labelCol={{ span: 24 }}
-                        label="paid"
-                        name="paid"
+                        label="Phân loại"
+                        name="role"
+                        rules={[{ required: true, message: 'Vui lòng chọn quyền!' }]}
                     >
-                        <Input />
+                        <Select>
+                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
+                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>
