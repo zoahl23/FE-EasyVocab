@@ -36,7 +36,7 @@ const UserTable = () => {
         //console.log("test", res)
         if (res && res.data) {
             setListUser(res.data.content);
-            setTotal(res.data.totalElements);
+            setTotal(res.data.page.totalElements);
         }
     }
 
@@ -214,7 +214,7 @@ const UserTable = () => {
                                 showTotal: (total, range) => {
                                     return (
                                         <div>
-                                            {range[0]} - {range[1]} trên {total} rows
+                                            {range[0]} - {range[1]} trên {total} hàng
                                         </div>
                                     );
                                 }
