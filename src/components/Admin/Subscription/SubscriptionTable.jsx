@@ -18,6 +18,7 @@ const SubscriptionTable = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("sort=-subscriptionEndDate");
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
@@ -27,13 +28,16 @@ const SubscriptionTable = () => {
 
     useEffect(() => {
         fetchUser();
-    }, [current, pageSize, filter]);
+    }, [current, pageSize, filter, sortQuery]);
 
     const fetchUser = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
         if (filter) {
             query += `&${filter}`
+        }
+        if (sortQuery) {
+            query += `&${sortQuery}`;
         }
         const res = await callFetchListUser(query);
         //console.log("test", res)
@@ -173,7 +177,11 @@ const SubscriptionTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
-        console.log('params', pagination, filters, sorter, extra);
+        // console.log('params', pagination, filters, sorter, extra);
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
+            setSortQuery(q);
+        }
     };
 
     const handleExportData = () => {
@@ -199,6 +207,7 @@ const SubscriptionTable = () => {
                         type='ghost'
                         onClick={() => {
                             setFilter("");
+                            setSortQuery("");
                         }}
                     >
                         <ReloadOutlined />
