@@ -74,3 +74,7 @@ export const callCreateACourse = (courseName, description, courseTarget) => {
         }
     )
 }
+
+export const callDeleteCourse = (id) => {
+    return axios.delete(`/api/course/${id}`)
+}

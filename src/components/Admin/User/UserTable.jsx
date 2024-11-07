@@ -43,7 +43,7 @@ const UserTable = () => {
     const handleDeleteUser = async (userId) => {
         const res = await callDeleteUser(userId);
         if (res && res.data) {
-            message.success('Xóa user thành công');
+            message.success('Xóa người dùng thành công');
             fetchUser();
         } else {
             notification.error({
@@ -120,8 +120,8 @@ const UserTable = () => {
 
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xóa user"}
-                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            title={"Xác nhận xóa người dùng"}
+                            description={"Bạn có chắc chắn muốn xóa người dùng này ?"}
                             onConfirm={() => handleDeleteUser(record.userId)}
                             okText="Xác nhận"
                             cancelText="Hủy"

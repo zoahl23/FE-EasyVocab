@@ -1,10 +1,10 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
 import CourseSearch from "./CourseSearch";
-import { CloudUploadOutlined, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
-import { callFetchListCourse } from "../../../services/api";
+import { callDeleteCourse, callFetchListCourse } from "../../../services/api";
 import CourseModalCreate from "./CourseModalCreate";
 import CourseViewDetail from "./CourseViewDetail";
 import CourseImport from "./data/CourseImport";
@@ -36,6 +36,19 @@ const CourseTable = () => {
             setTotal(res.data.page.totalElements);
         }
     }
+
+    const handleDeleteCourse = async (id) => {
+        const res = await callDeleteCourse(id);
+        if (res && res.data) {
+            message.success('Xóa khóa học thành công!');
+            fetchCourse();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -79,6 +92,19 @@ const CourseTable = () => {
                                 setOpenViewDetail(true);
                             }}
                         />
+
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa khóa học"}
+                            description={"Bạn có chắc chắn muốn xóa khóa học này ?"}
+                            onConfirm={() => handleDeleteCourse(record.id)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f" />
+                            </span>
+                        </Popconfirm>
                     </>
                 )
             }
