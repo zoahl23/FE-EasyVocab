@@ -1,8 +1,8 @@
-import { Button, Col, Popconfirm, Row, Table, Tag } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table, Tag } from "antd";
 import SubscriptionSearch from "./SubscriptionSearch";
-import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { callFetchListUser } from "../../../services/api";
+import { callDeleteSub, callFetchListUser } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import SubscriptionViewDetail from "./SubscriptionViewDetail";
@@ -30,6 +30,19 @@ const SubscriptionTable = () => {
             setTotal(res.data.page.totalElements);
         }
     }
+
+    const handleDeleteSub = async (userId) => {
+        const res = await callDeleteSub(userId);
+        if (res && res.data) {
+            message.success('Xóa gói đăng ký thành công');
+            fetchUser();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -60,11 +73,22 @@ const SubscriptionTable = () => {
             render: (subPlan) => {
                 let color = '';
                 let text = subPlan;
-                if (subPlan === 'none') {
-                    color = 'geekblue';
-                } else {
-                    color = 'green';
-                    text = 'null';
+                switch (subPlan) {
+                    case '6_months':
+                        color = 'green';
+                        text = '6 tháng'
+                        break;
+                    case '1_year':
+                        color = 'geekblue';
+                        text = '1 năm'
+                        break;
+                    case '3_years':
+                        color = 'volcano';
+                        text = '3 năm'
+                        break;
+                    default:
+                        color = 'default';
+                        text = 'không'
                 }
                 return (
                     <Tag color={color} key={subPlan}>
@@ -99,8 +123,9 @@ const SubscriptionTable = () => {
 
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xóa user"}
-                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            title={"Xác nhận xóa gói đăng ký"}
+                            description={"Bạn có chắc chắn muốn xóa gói đăng ký này ?"}
+                            onConfirm={() => handleDeleteSub(record.userId)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >

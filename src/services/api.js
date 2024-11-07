@@ -63,6 +63,10 @@ export const callBulkCreateUser = (data) => {
     return axios.post('/api/users/list', data)
 }
 
+export const callDeleteSub = (id) => {
+    return axios.delete(`/api/users/sub/${id}`)
+}
+
 // Manager Course
 export const callFetchListCourse = (query) => {
     // page=1 & size=3
