@@ -96,3 +96,8 @@ export const callUpdateCourse = (id, courseName, description, courseTarget) => {
         }
     )
 }
+
+// Manager Topic
+export const callFetchListTopic = (query) => {
+    return axios.get(`/api/topics/page?${query}`);
+}

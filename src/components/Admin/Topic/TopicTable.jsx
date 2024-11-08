@@ -1,64 +1,92 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Popconfirm, Row, Table } from "antd";
 import TopicSearch from "./TopicSearch";
-import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { callFetchListTopic } from "../../../services/api";
 
 const TopicTable = () => {
+    const [listTopic, setListTopic] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+    const [total, setTotal] = useState(0);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        fetchUser();
+    }, [current, pageSize]);
+
+    const fetchUser = async () => {
+        setIsLoading(true);
+        let query = `page=${current - 1}&size=${pageSize}`;
+        const res = await callFetchListTopic(query);
+        //console.log("test", res)
+        if (res && res.data) {
+            setListTopic(res.data.content);
+            setTotal(res.data.page.totalElements);
+        }
+        setIsLoading(false);
+    }
+
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'name',
+            dataIndex: 'id'
+        },
+        {
+            title: 'Tên chủ đề (EN)',
+            dataIndex: 'topicName',
             sorter: true
         },
         {
             title: 'Tên chủ đề (VI)',
-            dataIndex: 'chinese',
+            dataIndex: 'description',
             sorter: true,
         },
         {
-            title: 'Tên chủ đề (EN)',
-            dataIndex: 'math',
-            sorter: true
-        },
-        {
             title: 'Khóa học',
-            dataIndex: 'english',
-            sorter: true
+            dataIndex: 'courseName'
         },
-    ];
+        {
+            title: 'Hành động',
+            width: 130,
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                        />
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            chinese: 98,
-            math: 60,
-            english: 70,
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            chinese: 98,
-            math: 66,
-            english: 89,
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            chinese: 98,
-            math: 90,
-            english: 70,
-        },
-        {
-            key: '4',
-            name: 'Jim Red',
-            chinese: 88,
-            math: 99,
-            english: 89,
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa chủ đề"}
+                            description={"Bạn có chắc chắn muốn xóa chủ đề này ?"}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f" />
+                            </span>
+                        </Popconfirm>
+
+                        <EditTwoTone
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                        />
+                    </>
+                )
+            }
         },
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current)
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize)
+            setCurrent(1);
+        }
+        // console.log('params', pagination, filters, sorter, extra);
     };
 
     const renderHeader = () => {
@@ -70,6 +98,10 @@ const TopicTable = () => {
                         icon={<ExportOutlined />}
                         type="primary"
                     >Xuất dữ liệu</Button>
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type="primary"
+                    >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
@@ -91,8 +123,24 @@ const TopicTable = () => {
                 <Table
                     title={renderHeader}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={listTopic}
                     onChange={onChange}
+                    rowKey="_id"
+                    pagination={
+                        {
+                            current: current,
+                            pageSize: pageSize,
+                            showSizeChanger: true,
+                            total: total,
+                            showTotal: (total, range) => {
+                                return (
+                                    <div>
+                                        {range[0]} - {range[1]} trên {total} hàng
+                                    </div>
+                                );
+                            }
+                        }
+                    }
                 />
             </Col>
         </Row>
