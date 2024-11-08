@@ -3,6 +3,9 @@ import TopicSearch from "./TopicSearch";
 import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { callFetchListTopic } from "../../../services/api";
+import moment from "moment";
+import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
+import TopicViewDetail from "./TopicViewDetail";
 
 const TopicTable = () => {
     const [listTopic, setListTopic] = useState([]);
@@ -11,6 +14,9 @@ const TopicTable = () => {
     const [total, setTotal] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
         fetchUser();
@@ -31,7 +37,15 @@ const TopicTable = () => {
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id'
+            dataIndex: 'id',
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.id}</a>
+                )
+            }
         },
         {
             title: 'Tên chủ đề (EN)',
@@ -48,6 +62,16 @@ const TopicTable = () => {
             dataIndex: 'courseName'
         },
         {
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
+        },
+        {
             title: 'Hành động',
             width: 130,
             render: (text, record, index) => {
@@ -55,6 +79,10 @@ const TopicTable = () => {
                     <>
                         <EyeTwoTone
                             twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
                         />
 
                         <Popconfirm
@@ -115,35 +143,44 @@ const TopicTable = () => {
     }
 
     return (
-        <Row gutter={[20, 20]}>
-            <Col span={24}>
-                <TopicSearch />
-            </Col>
-            <Col span={24}>
-                <Table
-                    title={renderHeader}
-                    columns={columns}
-                    dataSource={listTopic}
-                    onChange={onChange}
-                    rowKey="_id"
-                    pagination={
-                        {
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
-                            showTotal: (total, range) => {
-                                return (
-                                    <div>
-                                        {range[0]} - {range[1]} trên {total} hàng
-                                    </div>
-                                );
+        <>
+            <Row gutter={[20, 20]}>
+                <Col span={24}>
+                    <TopicSearch />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        title={renderHeader}
+                        columns={columns}
+                        dataSource={listTopic}
+                        onChange={onChange}
+                        rowKey="_id"
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} hàng
+                                        </div>
+                                    );
+                                }
                             }
                         }
-                    }
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+            </Row>
+
+            <TopicViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
+            />
+        </>
     );
 }
 export default TopicTable;
