@@ -86,3 +86,13 @@ export const callCreateACourse = (courseName, description, courseTarget) => {
 export const callDeleteCourse = (id) => {
     return axios.delete(`/api/course/${id}`)
 }
+
+export const callUpdateCourse = (id, courseName, description, courseTarget) => {
+    return axios.put(`/api/course/${id}`, { courseName, description, courseTarget },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}

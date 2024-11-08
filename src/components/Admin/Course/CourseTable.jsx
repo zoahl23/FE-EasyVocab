@@ -1,6 +1,6 @@
 import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
 import CourseSearch from "./CourseSearch";
-import { CloudUploadOutlined, DeleteTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
@@ -9,6 +9,7 @@ import CourseModalCreate from "./CourseModalCreate";
 import CourseViewDetail from "./CourseViewDetail";
 import CourseImport from "./data/CourseImport";
 import * as XLSX from 'xlsx';
+import CourseModalUpdate from "./courseModalUpdate";
 
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
@@ -22,6 +23,9 @@ const CourseTable = () => {
     const [dataViewDetail, setDataViewDetail] = useState(null);
 
     const [openModalImport, setOpenModalImport] = useState(false);
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
 
     useEffect(() => {
         fetchCourse();
@@ -82,6 +86,7 @@ const CourseTable = () => {
         },
         {
             title: 'Hành động',
+            width: 130,
             render: (text, record, index) => {
                 return (
                     <>
@@ -105,6 +110,14 @@ const CourseTable = () => {
                                 <DeleteTwoTone twoToneColor="#ff4d4f" />
                             </span>
                         </Popconfirm>
+
+                        <EditTwoTone
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(record);
+                            }}
+                        />
                     </>
                 )
             }
@@ -207,6 +220,14 @@ const CourseTable = () => {
             <CourseImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+            />
+
+            <CourseModalUpdate
+                openModalUpdate={openModalUpdate}
+                setOpenModalUpdate={setOpenModalUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
+                fetchCourse={fetchCourse}
             />
         </>
     );
