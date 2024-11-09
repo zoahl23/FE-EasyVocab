@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row } from "antd";
 
-const CourseSearch = () => {
+const CourseSearch = (props) => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -11,7 +11,31 @@ const CourseSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.courseName) {
+            query += `&courseName=${removeVietnameseTones(values.courseName)}`
+        }
+
+        if (values.courseTarget) {
+            query += `&courseTarget=${removeVietnameseTones(values.courseTarget)}`
+        }
+
+        if (values.courseDescription) {
+            query += `&description=${removeVietnameseTones(values.courseDescription)}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
+    };
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
     };
 
     return (
@@ -25,7 +49,7 @@ const CourseSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`course_name`}
+                        name={`courseName`}
                         label={`Tên khóa học`}
                     >
                         <Input />
@@ -34,7 +58,7 @@ const CourseSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`course_target`}
+                        name={`courseTarget`}
                         label={`Mục tiêu khóa học`}
                     >
                         <Input />
@@ -43,7 +67,7 @@ const CourseSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`course_description`}
+                        name={`courseDescription`}
                         label={`Nội dung khóa học`}
                     >
                         <Input />
@@ -61,6 +85,7 @@ const CourseSearch = () => {
                         style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
                         Xóa

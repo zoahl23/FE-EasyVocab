@@ -19,6 +19,10 @@ const CourseTable = () => {
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [filter, setFilter] = useState("");
+
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
 
@@ -29,16 +33,26 @@ const CourseTable = () => {
 
     useEffect(() => {
         fetchCourse();
-    }, [current, pageSize]);
+    }, [current, pageSize, filter]);
 
     const fetchCourse = async () => {
-        const query = `page=${current - 1}&size=${pageSize}`;
+        setIsLoading(true);
+        let query = `page=${current - 1}&size=${pageSize}`;
+        if (filter) {
+            query += `&${filter}`
+        }
         const res = await callFetchListCourse(query);
         //console.log("test", res)
         if (res && res.data) {
             setListCourse(res.data.content);
             setTotal(res.data.page.totalElements);
         }
+        setIsLoading(false)
+    }
+
+    const handleSearch = (query) => {
+        setCurrent(1);
+        setFilter(query);
     }
 
     const handleDeleteCourse = async (id) => {
@@ -164,7 +178,12 @@ const CourseTable = () => {
                         type="primary"
                         onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
-                    <Button type='ghost'>
+                    <Button
+                        type='ghost'
+                        onClick={() => {
+                            setFilter("");
+                        }}
+                    >
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -176,11 +195,15 @@ const CourseTable = () => {
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <CourseSearch />
+                    <CourseSearch
+                        handleSearch={handleSearch}
+                        setFilter={setFilter}
+                    />
                 </Col>
                 <Col span={24}>
                     <Table
                         title={renderHeader}
+                        loading={isLoading}
                         columns={columns}
                         dataSource={listCourse}
                         onChange={onChange}

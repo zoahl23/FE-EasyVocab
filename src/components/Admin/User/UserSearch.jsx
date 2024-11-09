@@ -15,11 +15,11 @@ const UserSearch = (props) => {
         let query = "";
 
         if (values.fullName) {
-            query += `&fullName=${values.fullName}`
+            query += `&fullName=${removeVietnameseTones(values.fullName)}`
         }
 
         if (values.email) {
-            query += `&email=${values.email}`
+            query += `&email=${removeVietnameseTones(values.email)}`
         }
 
         if (values.role) {
@@ -29,6 +29,13 @@ const UserSearch = (props) => {
         if (query) {
             props.handleSearch(query);
         }
+    };
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
     };
 
     return (
