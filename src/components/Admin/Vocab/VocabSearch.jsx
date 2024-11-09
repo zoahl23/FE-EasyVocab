@@ -47,7 +47,7 @@ const VocabSearch = (props) => {
         }
 
         if (values.topicId) {
-            query += `&id=${removeVietnameseTones(values.topicId)}`
+            query += `&id=${values.topicId}`
         }
 
         if (query) {

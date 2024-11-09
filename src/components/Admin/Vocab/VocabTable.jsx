@@ -15,10 +15,11 @@ const VocabTable = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     useEffect(() => {
         fetchVocab();
-    }, [current, pageSize, filter]);
+    }, [current, pageSize, filter, sortQuery]);
 
     const fetchVocab = async () => {
         setIsLoading(true);
@@ -26,6 +27,10 @@ const VocabTable = () => {
         if (filter) {
             query += `&${filter}`
         }
+        if (sortQuery) {
+            query += `&${sortQuery}`;
+        }
+
         const res = await callFetchListVocab(query);
         //console.log("test", res)
         if (res && res.data) {
@@ -113,7 +118,11 @@ const VocabTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
-        console.log('params', pagination, filters, sorter, extra);
+        // console.log('params', pagination, filters, sorter, extra);
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
+            setSortQuery(q);
+        }
     };
 
     const renderHeader = () => {
@@ -137,6 +146,7 @@ const VocabTable = () => {
                         type='ghost'
                         onClick={() => {
                             setFilter("");
+                            setSortQuery("");
                         }}
                     >
                         <ReloadOutlined />
