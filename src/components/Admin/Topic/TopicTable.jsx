@@ -17,6 +17,7 @@ const TopicTable = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
 
@@ -25,13 +26,16 @@ const TopicTable = () => {
 
     useEffect(() => {
         fetchTopic();
-    }, [current, pageSize, filter]);
+    }, [current, pageSize, filter, sortQuery]);
 
     const fetchTopic = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
         if (filter) {
             query += `&${filter}`
+        }
+        if (sortQuery) {
+            query += `&${sortQuery}`;
         }
         const res = await callFetchListTopic(query);
         // console.log("test", res)
@@ -131,6 +135,10 @@ const TopicTable = () => {
             setCurrent(1);
         }
         // console.log('params', pagination, filters, sorter, extra);
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
+            setSortQuery(q);
+        }
     };
 
     const renderHeader = () => {
@@ -153,6 +161,7 @@ const TopicTable = () => {
                     >Thêm mới</Button>
                     <Button type='ghost' onClick={() => {
                         setFilter("");
+                        setSortQuery("");
                     }}>
                         <ReloadOutlined />
                     </Button>
