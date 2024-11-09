@@ -107,7 +107,7 @@ const TopicTable = () => {
             title: 'Khóa học',
             dataIndex: 'course',
             render: (text, record) => {
-                return record.course ? record.course.courseName : "Chưa có";
+                return record.course ? record.course.courseName : "---";
             }
         },
         {

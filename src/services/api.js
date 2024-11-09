@@ -153,3 +153,13 @@ export const callDeleteTopicImg = (id) => {
 export const callFetchListVocab = (query) => {
     return axios.get(`/api/vocabs/page?${query}`);
 }
+
+export const callCreateAVocab = (word, meaning, topicId) => {
+    return axios.post('/api/vocabs', { word, meaning, topicId },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+}

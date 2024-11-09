@@ -70,7 +70,7 @@ const TopicViewDetail = (props) => {
                     <Descriptions.Item label="Tên chủ đề (EN)" span={2}>{dataViewDetail?.topicName}</Descriptions.Item>
                     <Descriptions.Item label="Tên chủ đề (VI)" span={2}>{dataViewDetail?.description}</Descriptions.Item>
                     <Descriptions.Item label="Khóa học" span={2}>
-                        {dataViewDetail?.course?.courseName || "Chưa có"}
+                        {dataViewDetail?.course?.courseName || ""}
                     </Descriptions.Item>
                     <Descriptions.Item label="Ngày tạo">
                         {moment(dataViewDetail?.createdAt).format(FORMAT_DATE_DISPLAY)}

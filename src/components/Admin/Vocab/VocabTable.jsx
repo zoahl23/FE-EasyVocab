@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListVocab } from "../../../services/api";
+import VocabModalCreate from "./VocabModalCreate";
 
 const VocabTable = () => {
     const [listVocab, setListVocab] = useState([]);
@@ -16,6 +17,8 @@ const VocabTable = () => {
 
     const [filter, setFilter] = useState("");
     const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
+
+    const [openModalCreate, setOpenModalCreate] = useState(false);
 
     useEffect(() => {
         fetchVocab();
@@ -64,9 +67,7 @@ const VocabTable = () => {
             title: 'Chủ đề',
             dataIndex: 'topic',
             render: (text, record, index) => {
-                return (
-                    <>{record.topicName}</>
-                )
+                return record.topic ? record.topic.topicName : "---";
             }
         },
         {
@@ -141,6 +142,7 @@ const VocabTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
                     <Button
                         type='ghost'
@@ -157,38 +159,46 @@ const VocabTable = () => {
     }
 
     return (
-        <Row gutter={[20, 20]}>
-            <Col span={24}>
-                <VocabSearch
-                    handleSearch={handleSearch}
-                    setFilter={setFilter}
-                />
-            </Col>
-            <Col span={24}>
-                <Table
-                    title={renderHeader}
-                    loading={isLoading}
-                    columns={columns}
-                    dataSource={listVocab}
-                    onChange={onChange}
-                    pagination={
-                        {
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
-                            showTotal: (total, range) => {
-                                return (
-                                    <div>
-                                        {range[0]} - {range[1]} trên {total} dòng
-                                    </div>
-                                );
+        <>
+            <Row gutter={[20, 20]}>
+                <Col span={24}>
+                    <VocabSearch
+                        handleSearch={handleSearch}
+                        setFilter={setFilter}
+                    />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        title={renderHeader}
+                        loading={isLoading}
+                        columns={columns}
+                        dataSource={listVocab}
+                        onChange={onChange}
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} dòng
+                                        </div>
+                                    );
+                                }
                             }
                         }
-                    }
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+            </Row>
+
+            <VocabModalCreate
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
+                fetchVocab={fetchVocab}
+            />
+        </>
     );
 }
 
