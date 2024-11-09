@@ -2,7 +2,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Col, Divider, Form, Input, message, Modal, notification, Row, Select, Upload } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
-import { callFetchAllCourse } from "../../../services/api";
+import { callCreateATopic, callFetchAllCourse, callUploadTopicImg } from "../../../services/api";
 
 const TopicModalCreate = (props) => {
     const { openModalCreate, setOpenModalCreate } = props;
@@ -12,7 +12,12 @@ const TopicModalCreate = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const [imageUrl, setImageUrl] = useState("");
+    const [dataImgTopic, setDataImgTopic] = useState();
+
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
+
 
     const [form] = Form.useForm();
 
@@ -29,26 +34,47 @@ const TopicModalCreate = (props) => {
         fetchCourse();
     }, []);
 
-    // const onFinish = async (values) => {
-    //     const { fullName, password, email, phone } = values;
-    //     setIsSubmit(true)
-    //     const res = await callCreateAUser(fullName, password, email, phone);
-    //     if (res && res.data) {
-    //         message.success('Tạo mới user thành công');
-    //         form.resetFields();
-    //         setOpenModalCreate(false);
-    //         await props.fetchBook()
-    //     } else {
-    //         notification.error({
-    //             message: 'Đã có lỗi xảy ra',
-    //             description: res.message
-    //         })
-    //     }
-    //     setIsSubmit(false)
-    // };
+    const onFinish = async (values) => {
+        const { topicName, description, courseId } = values;
 
-    const onFinish = () => {
-        console.log('hello');
+        setIsSubmit(true)
+
+        const res = await callCreateATopic(topicName, description, courseId);
+        // console.log(">>> check res topic", res);
+        if (res && res.data) {
+            if (dataImgTopic) {
+                UploadImg(res.data.id, dataImgTopic);
+            }
+            else {
+                message.success('Tạo mới chủ đề thành công');
+                form.resetFields();
+                setDataImgTopic();
+                setOpenModalCreate(false);
+                await props.fetchTopic();
+            }
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
+        setIsSubmit(false);
+    };
+
+    const UploadImg = async (id, file) => {
+        const res = await callUploadTopicImg(id, file);
+        if (res && res.data) {
+            message.success('Tạo mới chủ đề thành công');
+            form.resetFields();
+            setDataImgTopic();
+            setOpenModalCreate(false);
+            await props.fetchTopic();
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra với ảnh của bạn',
+                description: res.message
+            })
+        }
     }
 
     // đọc và chuyển file thành base 64 để có thể xem trước
@@ -62,11 +88,11 @@ const TopicModalCreate = (props) => {
     const beforeUpload = (file) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            message.error('Chỉ cho phép tải lên các tệp có định dạng JPG hoặc PNG!');
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            message.error('Hình ảnh phải có kích thước nhỏ hơn 2MB!');
         }
         return isJpgOrPng && isLt2M;
     };
@@ -81,17 +107,25 @@ const TopicModalCreate = (props) => {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, (url) => {
                 setLoading(false);
-                setImageUrl(url);
             });
         }
     };
 
-
-    const handleUploadFile = ({ file, onSuccess, onError }) => {
+    const handleUploadFile = ({ file, onSuccess }) => {
         setTimeout(() => {
+            setDataImgTopic(file);
             onSuccess("ok");
         }, 1000);
     };
+
+    const handlePreview = async (file) => {
+        getBase64(file.originFileObj, (url) => {
+            setPreviewImage(url);
+            setPreviewOpen(true);
+            setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+        });
+    };
+
 
     const removeVietnameseTones = (str) => {
         return str
@@ -106,7 +140,10 @@ const TopicModalCreate = (props) => {
                 title="Thêm mới chủ đề"
                 open={openModalCreate}
                 onOk={() => { form.submit() }}
-                onCancel={() => setOpenModalCreate(false)}
+                onCancel={() => {
+                    form.resetFields();
+                    setOpenModalCreate(false);
+                }}
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}
                 confirmLoading={isSubmit}
@@ -145,7 +182,7 @@ const TopicModalCreate = (props) => {
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 label="Chọn khóa học áp dụng"
-                                name="courses"
+                                name="courseId"
                             >
                                 <Select
                                     defaultValue={null} // ko chọn giá trị nào
@@ -175,6 +212,9 @@ const TopicModalCreate = (props) => {
                                     customRequest={handleUploadFile}
                                     beforeUpload={beforeUpload}
                                     onChange={handleChange}
+                                    onRemove={() => setDataImgTopic()}
+                                    onPreview={handlePreview}
+                                    accept="image/jpeg, image/png"
                                 >
                                     <div>
                                         {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -185,6 +225,9 @@ const TopicModalCreate = (props) => {
                         </Col>
                     </Row>
                 </Form>
+            </Modal>
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={() => setPreviewOpen(false)}>
+                <img alt="example" style={{ width: '100%' }} src={previewImage} />
             </Modal>
         </>
     );

@@ -106,25 +106,25 @@ export const callFetchAllCourse = () => {
     return axios.get('/api/course');
 }
 
-// export const callCreateATopic = (topicName, description, image, idCourse) => {
-//     return axios.post('/api/topics', { topicName, description, image, idCourse },
-//         {
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded'
-//             }
-//         }
-//     )
-// }
+export const callCreateATopic = (topicName, description, courseId) => {
+    return axios.post('/api/topics', { topicName, description, courseId },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
 
-// export const callUploadTopicImg = (id, fileImg) => {
-//     const bodyFormData = new FormData();
-//     bodyFormData.append('image', fileImg);
-//     return axios({
-//         method: 'post',
-//         url: `/api/topics/image/${id}`,
-//         data: bodyFormData,
-//         headers: {
-//             "Content-Type": "multipart/form-data"
-//         },
-//     });
-// }
+export const callUploadTopicImg = (id, fileImg) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', fileImg);
+    return axios({
+        method: 'post',
+        url: `/api/topics/image/${id}`,
+        data: bodyFormData,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        },
+    });
+}

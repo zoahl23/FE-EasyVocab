@@ -29,7 +29,7 @@ const TopicTable = () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
         const res = await callFetchListTopic(query);
-        console.log("test", res)
+        // console.log("test", res)
         if (res && res.data) {
             setListTopic(res.data.content);
             setTotal(res.data.page.totalElements);
@@ -62,7 +62,10 @@ const TopicTable = () => {
         },
         {
             title: 'Khóa học',
-            dataIndex: 'courseName'
+            dataIndex: 'course',
+            render: (text, record) => {
+                return record.course ? record.course.courseName : "Chưa có";
+            }
         },
         {
             title: 'Ngày cập nhật',
