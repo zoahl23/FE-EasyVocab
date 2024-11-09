@@ -75,7 +75,15 @@ const CourseTable = () => {
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id'
+            dataIndex: 'id',
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.id}</a>
+                )
+            }
         },
         {
             title: 'Tên khóa học',

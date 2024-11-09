@@ -132,3 +132,7 @@ export const callUploadTopicImg = (id, fileImg) => {
         },
     });
 }
+
+export const callBulkCreateTopic = (data) => {
+    return axios.post('/api/topics/list', data)
+}
