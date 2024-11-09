@@ -171,3 +171,13 @@ export const callBulkCreateVocab = (data) => {
 export const callDeleteVocab = (id) => {
     return axios.delete(`/api/vocabs/${id}`)
 }
+
+export const callUpdateVocab = (id, word, meaning, topicId) => {
+    return axios.put(`/api/vocabs/${id}`, { word, meaning, topicId },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+}

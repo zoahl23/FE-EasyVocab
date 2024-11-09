@@ -9,6 +9,7 @@ import VocabModalCreate from "./VocabModalCreate";
 import VocabViewDetail from "./VocabViewDetail";
 import VocabImport from "./data/VocabImport";
 import * as XLSX from 'xlsx';
+import VocabModalUpdate from "./VocabModalUpdate";
 
 const VocabTable = () => {
     const [listVocab, setListVocab] = useState([]);
@@ -27,6 +28,9 @@ const VocabTable = () => {
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
 
     useEffect(() => {
         fetchVocab();
@@ -138,6 +142,10 @@ const VocabTable = () => {
 
                         <EditTwoTone
                             twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(record);
+                            }}
                         />
                     </>
                 )
@@ -254,6 +262,14 @@ const VocabTable = () => {
             <VocabImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+                fetchVocab={fetchVocab}
+            />
+
+            <VocabModalUpdate
+                openModalUpdate={openModalUpdate}
+                setOpenModalUpdate={setOpenModalUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
                 fetchVocab={fetchVocab}
             />
         </>
