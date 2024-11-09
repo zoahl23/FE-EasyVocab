@@ -1,10 +1,10 @@
-import { Button, Col, Popconfirm, Row, Table } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
 import VocabSearch from "./VocabSearch";
 import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
-import { callFetchListVocab } from "../../../services/api";
+import { callDeleteVocab, callFetchListVocab } from "../../../services/api";
 import VocabModalCreate from "./VocabModalCreate";
 import VocabViewDetail from "./VocabViewDetail";
 import VocabImport from "./data/VocabImport";
@@ -55,6 +55,19 @@ const VocabTable = () => {
         setCurrent(1);
         setFilter(query);
     }
+
+    const handleDeleteTopic = async (id) => {
+        const res = await callDeleteVocab(id);
+        if (res && res.data) {
+            message.success('Xóa chủ đề thành công');
+            fetchVocab();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -114,6 +127,7 @@ const VocabTable = () => {
                             placement="leftTop"
                             title={"Xác nhận xóa từ vựng"}
                             description={"Bạn có chắc chắn muốn xóa từ vựng này ?"}
+                            onConfirm={() => handleDeleteTopic(record.id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >

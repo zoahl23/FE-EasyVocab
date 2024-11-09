@@ -167,3 +167,7 @@ export const callCreateAVocab = (word, meaning, topicId) => {
 export const callBulkCreateVocab = (data) => {
     return axios.post('/api/vocabs/list', data)
 }
+
+export const callDeleteVocab = (id) => {
+    return axios.delete(`/api/vocabs/${id}`)
+}
