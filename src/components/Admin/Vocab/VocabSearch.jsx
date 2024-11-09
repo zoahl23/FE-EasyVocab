@@ -2,7 +2,7 @@ import { Button, Cascader, Col, Form, Input, Row, Select } from "antd";
 import { useEffect, useState } from "react";
 import { callFetchAllTopic } from "../../../services/api";
 
-const VocabSearch = () => {
+const VocabSearch = (props) => {
     const [listTopic, setListTopic] = useState([]);
 
     useEffect(() => {
@@ -35,7 +35,24 @@ const VocabSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.word) {
+            query += `&word=${removeVietnameseTones(values.word)}`
+        }
+
+        if (values.meaning) {
+            query += `&meaning=${removeVietnameseTones(values.meaning)}`
+        }
+
+        if (values.topicId) {
+            query += `&id=${removeVietnameseTones(values.topicId)}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
     };
 
     return (
@@ -67,7 +84,7 @@ const VocabSearch = () => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`topicName`}
+                        name={`topicId`}
                         label={`Tên chủ đề`}
                     >
                         <Select
@@ -95,6 +112,7 @@ const VocabSearch = () => {
                         style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
                         Xóa

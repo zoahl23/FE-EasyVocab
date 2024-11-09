@@ -14,13 +14,18 @@ const VocabTable = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [filter, setFilter] = useState("");
+
     useEffect(() => {
         fetchVocab();
-    }, [current, pageSize]);
+    }, [current, pageSize, filter]);
 
     const fetchVocab = async () => {
         setIsLoading(true);
-        const query = `page=${current - 1}&size=${pageSize}`;
+        let query = `page=${current - 1}&size=${pageSize}`;
+        if (filter) {
+            query += `&${filter}`
+        }
         const res = await callFetchListVocab(query);
         //console.log("test", res)
         if (res && res.data) {
@@ -30,6 +35,10 @@ const VocabTable = () => {
         setIsLoading(false);
     }
 
+    const handleSearch = (query) => {
+        setCurrent(1);
+        setFilter(query);
+    }
 
     const columns = [
         {
@@ -124,7 +133,12 @@ const VocabTable = () => {
                         icon={<PlusOutlined />}
                         type="primary"
                     >Thêm mới</Button>
-                    <Button type='ghost'>
+                    <Button
+                        type='ghost'
+                        onClick={() => {
+                            setFilter("");
+                        }}
+                    >
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -135,7 +149,10 @@ const VocabTable = () => {
     return (
         <Row gutter={[20, 20]}>
             <Col span={24}>
-                <VocabSearch />
+                <VocabSearch
+                    handleSearch={handleSearch}
+                    setFilter={setFilter}
+                />
             </Col>
             <Col span={24}>
                 <Table
