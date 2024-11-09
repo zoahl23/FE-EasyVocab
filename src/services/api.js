@@ -148,3 +148,8 @@ export const callDeleteTopic = (id) => {
 export const callDeleteTopicImg = (id) => {
     return axios.delete(`/api/topics/image/${id}`)
 }
+
+// Vocabulary
+export const callFetchListVocab = (query) => {
+    return axios.get(`/api/vocabs/page?${query}`);
+}

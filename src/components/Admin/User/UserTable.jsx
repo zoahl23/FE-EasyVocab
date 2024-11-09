@@ -237,7 +237,6 @@ const UserTable = () => {
                         columns={columns}
                         dataSource={listUser}
                         onChange={onChange}
-                        rowKey="_id"
                         pagination={
                             {
                                 current: current,
@@ -247,7 +246,7 @@ const UserTable = () => {
                                 showTotal: (total, range) => {
                                     return (
                                         <div>
-                                            {range[0]} - {range[1]} trên {total} hàng
+                                            {range[0]} - {range[1]} trên {total} dòng
                                         </div>
                                     );
                                 }

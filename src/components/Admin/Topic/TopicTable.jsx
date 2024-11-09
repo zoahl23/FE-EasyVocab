@@ -227,7 +227,6 @@ const TopicTable = () => {
                         columns={columns}
                         dataSource={listTopic}
                         onChange={onChange}
-                        rowKey="_id"
                         pagination={
                             {
                                 current: current,
@@ -237,7 +236,7 @@ const TopicTable = () => {
                                 showTotal: (total, range) => {
                                     return (
                                         <div>
-                                            {range[0]} - {range[1]} trên {total} hàng
+                                            {range[0]} - {range[1]} trên {total} dòng
                                         </div>
                                     );
                                 }

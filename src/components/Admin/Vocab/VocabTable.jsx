@@ -1,43 +1,109 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Popconfirm, Row, Table } from "antd";
 import VocabSearch from "./VocabSearch";
-import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
+import { callFetchListVocab } from "../../../services/api";
 
 const VocabTable = () => {
+    const [listVocab, setListVocab] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+    const [total, setTotal] = useState(0);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        fetchVocab();
+    }, [current, pageSize]);
+
+    const fetchVocab = async () => {
+        setIsLoading(true);
+        const query = `page=${current - 1}&size=${pageSize}`;
+        const res = await callFetchListVocab(query);
+        //console.log("test", res)
+        if (res && res.data) {
+            setListVocab(res.data.content);
+            setTotal(res.data.page.totalElements);
+        }
+        setIsLoading(false);
+    }
+
+
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'name',
+            dataIndex: 'id',
         },
         {
             title: 'Từ vựng',
-            dataIndex: 'chinese',
+            dataIndex: 'word',
             sorter: true,
         },
         {
             title: 'Nghĩa tiếng việt',
-            dataIndex: 'math',
+            dataIndex: 'meaning',
             sorter: true
         },
         {
             title: 'Chủ đề',
-            dataIndex: 'english',
+            dataIndex: 'topic',
+            render: (text, record, index) => {
+                return (
+                    <>{record.topicName}</>
+                )
+            }
         },
         {
-            title: 'Khóa học',
-            dataIndex: 'english',
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
         },
         {
             title: 'Hành động',
+            width: 130,
             render: (text, record, index) => {
                 return (
                     <>
-                        <Button>Delete</Button>
-                    </>)
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                        />
+
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa từ vựng"}
+                            description={"Bạn có chắc chắn muốn xóa từ vựng này ?"}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f" />
+                            </span>
+                        </Popconfirm>
+
+                        <EditTwoTone
+                            twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                        />
+                    </>
+                )
             }
         }
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current)
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize)
+            setCurrent(1);
+        }
         console.log('params', pagination, filters, sorter, extra);
     };
 
@@ -50,6 +116,10 @@ const VocabTable = () => {
                         icon={<ExportOutlined />}
                         type="primary"
                     >Xuất dữ liệu</Button>
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type="primary"
+                    >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
@@ -70,9 +140,25 @@ const VocabTable = () => {
             <Col span={24}>
                 <Table
                     title={renderHeader}
+                    loading={isLoading}
                     columns={columns}
-                    //dataSource={data}
+                    dataSource={listVocab}
                     onChange={onChange}
+                    pagination={
+                        {
+                            current: current,
+                            pageSize: pageSize,
+                            showSizeChanger: true,
+                            total: total,
+                            showTotal: (total, range) => {
+                                return (
+                                    <div>
+                                        {range[0]} - {range[1]} trên {total} dòng
+                                    </div>
+                                );
+                            }
+                        }
+                    }
                 />
             </Col>
         </Row>
