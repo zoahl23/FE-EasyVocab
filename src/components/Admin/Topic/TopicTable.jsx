@@ -6,6 +6,7 @@ import { callFetchListTopic } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import TopicViewDetail from "./TopicViewDetail";
+import TopicModalCreate from "./TopicModalCreate";
 
 const TopicTable = () => {
     const [listTopic, setListTopic] = useState([]);
@@ -15,18 +16,20 @@ const TopicTable = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
-        fetchUser();
+        fetchTopic();
     }, [current, pageSize]);
 
-    const fetchUser = async () => {
+    const fetchTopic = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
         const res = await callFetchListTopic(query);
-        //console.log("test", res)
+        console.log("test", res)
         if (res && res.data) {
             setListTopic(res.data.content);
             setTotal(res.data.page.totalElements);
@@ -133,6 +136,7 @@ const TopicTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
                     <Button type='ghost'>
                         <ReloadOutlined />
@@ -179,6 +183,12 @@ const TopicTable = () => {
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
+            />
+
+            <TopicModalCreate
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
+                fetchTopic={fetchTopic}
             />
         </>
     );

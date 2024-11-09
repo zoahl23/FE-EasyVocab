@@ -19,7 +19,7 @@ const TopicViewDetail = (props) => {
 
     useEffect(() => {
         fetchImage();
-    }, dataViewDetail);
+    }, [dataViewDetail]);
 
     const fetchImage = () => {
         let imgTopic = {
