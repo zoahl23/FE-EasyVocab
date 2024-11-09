@@ -140,3 +140,7 @@ export const callBulkCreateTopic = (data) => {
 export const callDeleteTopic = (id) => {
     return axios.delete(`/api/topics/${id}`)
 }
+
+export const callDeleteTopicImg = (id) => {
+    return axios.delete(`/api/topics/image/${id}`)
+}

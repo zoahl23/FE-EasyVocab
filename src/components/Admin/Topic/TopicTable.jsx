@@ -2,7 +2,7 @@ import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd
 import TopicSearch from "./TopicSearch";
 import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { callDeleteTopic, callFetchListTopic } from "../../../services/api";
+import { callDeleteTopic, callDeleteTopicImg, callFetchListTopic } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import TopicViewDetail from "./TopicViewDetail";
@@ -53,6 +53,18 @@ const TopicTable = () => {
     const handleSearch = (query) => {
         setCurrent(1);
         setFilter(query);
+    }
+
+    const handleDeleteImage = async (id) => {
+        const res = await callDeleteTopicImg(id);
+        if (res && res.data) {
+            handleDeleteTopic(id);
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra khi xóa ảnh',
+                description: res.message
+            });
+        }
     }
 
     const handleDeleteTopic = async (id) => {
@@ -126,7 +138,7 @@ const TopicTable = () => {
                             placement="leftTop"
                             title={"Xác nhận xóa chủ đề"}
                             description={"Bạn có chắc chắn muốn xóa chủ đề này ?"}
-                            onConfirm={() => handleDeleteTopic(record.id)}
+                            onConfirm={() => handleDeleteImage(record.id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
