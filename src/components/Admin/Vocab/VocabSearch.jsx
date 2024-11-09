@@ -1,6 +1,30 @@
-import { Button, Cascader, Col, Form, Input, Row } from "antd";
+import { Button, Cascader, Col, Form, Input, Row, Select } from "antd";
+import { useEffect, useState } from "react";
+import { callFetchAllTopic } from "../../../services/api";
 
 const VocabSearch = () => {
+    const [listTopic, setListTopic] = useState([]);
+
+    useEffect(() => {
+        const fetchCourse = async () => {
+            const res = await callFetchAllTopic();
+            if (res && res.data) {
+                const topics = res.data.map(item => {
+                    return { label: item.topicName, value: item.id }
+                })
+                setListTopic(topics);
+            }
+        }
+        fetchCourse();
+    }, []);
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
+    };
+
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -46,34 +70,16 @@ const VocabSearch = () => {
                         name={`topicName`}
                         label={`Tên chủ đề`}
                     >
-                        <Cascader
+                        <Select
+                            defaultValue={null}
                             showSearch
-                            options={[
-                                {
-                                    value: 'toeic',
-                                    label: 'TOEIC',
-                                    children: [
-                                        {
-                                            value: 'fruits',
-                                            label: 'Fruits',
-                                        },
-                                    ],
-                                },
-                                {
-                                    value: 'ielts',
-                                    label: 'IELTS',
-                                    children: [
-                                        {
-                                            value: 'fruits',
-                                            label: 'Animals',
-                                        },
-                                        {
-                                            value: 'toys',
-                                            label: 'Toys',
-                                        },
-                                    ],
-                                },
-                            ]}
+                            allowClear
+                            options={listTopic}
+                            filterOption={(input, option) =>
+                                removeVietnameseTones(option?.label ?? '')
+                                    .toLowerCase()
+                                    .includes(removeVietnameseTones(input.toLowerCase()))
+                            }
                         />
                     </Form.Item>
                 </Col>
