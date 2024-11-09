@@ -149,6 +149,16 @@ export const callDeleteTopicImg = (id) => {
     return axios.delete(`/api/topics/image/${id}`)
 }
 
+export const callUpdateTopic = (id, topicName, description, courseId) => {
+    return axios.put(`/api/topics/${id}`, { topicName, description, courseId },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
+
 // Vocabulary
 export const callFetchListVocab = (query) => {
     return axios.get(`/api/vocabs/page?${query}`);

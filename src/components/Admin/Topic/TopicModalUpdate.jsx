@@ -2,10 +2,10 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Col, Divider, Form, Input, message, Modal, notification, Row, Select, Upload } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
-import { callCreateATopic, callFetchAllCourse, callUploadTopicImg } from "../../../services/api";
+import { callDeleteTopicImg, callFetchAllCourse, callUpdateTopic, callUploadTopicImg } from "../../../services/api";
 
-const TopicModalCreate = (props) => {
-    const { openModalCreate, setOpenModalCreate } = props;
+const TopicModalUpdate = (props) => {
+    const { openModalUpdate, setOpenModalUpdate, dataUpdate, setDataUpdate } = props;
     const [isSubmit, setIsSubmit] = useState(false);
 
     const [listCourse, setListCourse] = useState([]);
@@ -18,8 +18,9 @@ const TopicModalCreate = (props) => {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
 
-
     const [form] = Form.useForm();
+
+    const [initForm, setInitForm] = useState(null);
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -34,22 +35,51 @@ const TopicModalCreate = (props) => {
         fetchCourse();
     }, []);
 
+    useEffect(() => {
+        if (dataUpdate) {
+            form.setFieldsValue({
+                ...dataUpdate,
+                courseId: dataUpdate.course?.id,
+            });
+
+            if (dataUpdate.image) {
+                setInitForm({
+                    fileList: [
+                        {
+                            uid: '-1',
+                            name: 'image.png',
+                            status: 'done',
+                            url: dataUpdate.image,
+                        },
+                    ],
+                },
+                );
+            } else {
+                setInitForm(null);
+            }
+        }
+        return () => {
+            form.resetFields();
+        }
+    }, [dataUpdate])
+
+
     const onFinish = async (values) => {
-        const { topicName, description, courseId } = values;
+        const { id, topicName, description, courseId } = values;
 
         setIsSubmit(true)
 
-        const res = await callCreateATopic(topicName, description, courseId);
+        const res = await callUpdateTopic(id, topicName, description, courseId);
         // console.log(">>> check res topic", res);
         if (res && res.data) {
             if (dataImgTopic) {
-                UploadImg(res.data.id, dataImgTopic);
+                handleDeleteImage(res.data.id, dataImgTopic);
             }
             else {
-                message.success('Tạo mới chủ đề thành công');
+                message.success('Cập nhật chủ đề thành công');
                 form.resetFields();
                 setDataImgTopic();
-                setOpenModalCreate(false);
+                setOpenModalUpdate(false);
                 await props.fetchTopic();
             }
         } else {
@@ -61,13 +91,25 @@ const TopicModalCreate = (props) => {
         setIsSubmit(false);
     };
 
+    const handleDeleteImage = async (id, file) => {
+        const res = await callDeleteTopicImg(id);
+        if (res && res.data) {
+            UploadImg(id, file);
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra khi xóa ảnh cũ',
+                description: res.message
+            });
+        }
+    }
+
     const UploadImg = async (id, file) => {
         const res = await callUploadTopicImg(id, file);
         if (res && res.data) {
-            message.success('Tạo mới chủ đề thành công');
+            message.success('Cập nhật chủ đề thành công');
             form.resetFields();
             setDataImgTopic();
-            setOpenModalCreate(false);
+            setOpenModalUpdate(false);
             await props.fetchTopic();
         } else {
             notification.error({
@@ -119,6 +161,12 @@ const TopicModalCreate = (props) => {
     };
 
     const handlePreview = async (file) => {
+        if (file.url && !file.originFileObj) {
+            setPreviewImage(file.url);
+            setPreviewOpen(true);
+            setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+            return;
+        }
         getBase64(file.originFileObj, (url) => {
             setPreviewImage(url);
             setPreviewOpen(true);
@@ -137,14 +185,16 @@ const TopicModalCreate = (props) => {
     return (
         <>
             <Modal
-                title="Thêm mới chủ đề"
-                open={openModalCreate}
+                title="Cập nhật chủ đề"
+                open={openModalUpdate}
                 onOk={() => { form.submit() }}
                 onCancel={() => {
                     form.resetFields();
-                    setOpenModalCreate(false);
+                    setInitForm(null);
+                    setDataUpdate(null);
+                    setOpenModalUpdate(false);
                 }}
-                okText={"Tạo mới"}
+                okText={"Cập nhật"}
                 cancelText={"Hủy"}
                 confirmLoading={isSubmit}
                 width={"50vw"}
@@ -158,6 +208,16 @@ const TopicModalCreate = (props) => {
                     autoComplete="off"
                 >
                     <Row gutter={15}>
+                        <Col hidden>
+                            <Form.Item
+                                hidden
+                                labelCol={{ span: 24 }}
+                                label="Id"
+                                name="id"
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
                         <Col span={12}>
                             <Form.Item
                                 labelCol={{ span: 24 }}
@@ -185,7 +245,6 @@ const TopicModalCreate = (props) => {
                                 name="courseId"
                             >
                                 <Select
-                                    defaultValue={null} // ko chọn giá trị nào
                                     showSearch // search
                                     allowClear // clear
                                     options={listCourse}
@@ -215,6 +274,7 @@ const TopicModalCreate = (props) => {
                                     onRemove={() => setDataImgTopic()}
                                     onPreview={handlePreview}
                                     accept="image/jpeg, image/png"
+                                    defaultFileList={initForm?.fileList ?? []}
                                 >
                                     <div>
                                         {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -233,4 +293,4 @@ const TopicModalCreate = (props) => {
     );
 }
 
-export default TopicModalCreate;
+export default TopicModalUpdate;

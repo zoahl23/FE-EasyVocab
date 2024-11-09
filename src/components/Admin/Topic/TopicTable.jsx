@@ -9,6 +9,7 @@ import TopicViewDetail from "./TopicViewDetail";
 import TopicModalCreate from "./TopicModalCreate";
 import TopicImport from "./data/TopicImport";
 import * as XLSX from 'xlsx';
+import TopicModalUpdate from "./TopicModalUpdate";
 
 const TopicTable = () => {
     const [listTopic, setListTopic] = useState([]);
@@ -27,6 +28,9 @@ const TopicTable = () => {
     const [dataViewDetail, setDataViewDetail] = useState(null);
 
     const [openModalImport, setOpenModalImport] = useState(false);
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
 
     useEffect(() => {
         fetchTopic();
@@ -149,6 +153,10 @@ const TopicTable = () => {
 
                         <EditTwoTone
                             twoToneColor="#f57800" style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(record);
+                            }}
                         />
                     </>
                 )
@@ -262,6 +270,14 @@ const TopicTable = () => {
             <TopicImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+                fetchTopic={fetchTopic}
+            />
+
+            <TopicModalUpdate
+                openModalUpdate={openModalUpdate}
+                setOpenModalUpdate={setOpenModalUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
                 fetchTopic={fetchTopic}
             />
         </>
