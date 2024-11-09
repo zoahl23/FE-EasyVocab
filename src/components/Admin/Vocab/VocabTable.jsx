@@ -6,6 +6,7 @@ import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListVocab } from "../../../services/api";
 import VocabModalCreate from "./VocabModalCreate";
+import VocabViewDetail from "./VocabViewDetail";
 
 const VocabTable = () => {
     const [listVocab, setListVocab] = useState([]);
@@ -19,6 +20,9 @@ const VocabTable = () => {
     const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
+
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     useEffect(() => {
         fetchVocab();
@@ -88,6 +92,10 @@ const VocabTable = () => {
                     <>
                         <EyeTwoTone
                             twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
                         />
 
                         <Popconfirm
@@ -192,6 +200,13 @@ const VocabTable = () => {
                     />
                 </Col>
             </Row>
+
+            <VocabViewDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataViewDetail={dataViewDetail}
+                setDataViewDetail={setDataViewDetail}
+            />
 
             <VocabModalCreate
                 openModalCreate={openModalCreate}

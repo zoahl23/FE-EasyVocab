@@ -23,8 +23,8 @@ const CourseViewDetail = (props) => {
                     bordered
                     column={2}
                 >
-                    <Descriptions.Item label="Id">{dataViewDetail?.id}</Descriptions.Item>
-                    <Descriptions.Item label="Tên khóa học">{dataViewDetail?.courseName}</Descriptions.Item>
+                    <Descriptions.Item label="Id" span={2}>{dataViewDetail?.id}</Descriptions.Item>
+                    <Descriptions.Item label="Tên khóa học" span={2}>{dataViewDetail?.courseName}</Descriptions.Item>
                     <Descriptions.Item label="Mục tiêu" span={2}>{dataViewDetail?.courseTarget}</Descriptions.Item>
                     <Descriptions.Item label="Nội dung" span={2}>{dataViewDetail?.description}</Descriptions.Item>
                     <Descriptions.Item label="Ngày tạo">
