@@ -8,6 +8,7 @@ import { callFetchListVocab } from "../../../services/api";
 import VocabModalCreate from "./VocabModalCreate";
 import VocabViewDetail from "./VocabViewDetail";
 import VocabImport from "./data/VocabImport";
+import * as XLSX from 'xlsx';
 
 const VocabTable = () => {
     const [listVocab, setListVocab] = useState([]);
@@ -145,6 +146,15 @@ const VocabTable = () => {
         }
     };
 
+    const handleExportData = () => {
+        if (listVocab.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listVocab);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportVocabulary.csv");
+        }
+    }
+
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -153,6 +163,7 @@ const VocabTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
+                        onClick={() => handleExportData()}
                     >Xuất dữ liệu</Button>
                     <Button
                         icon={<CloudUploadOutlined />}
