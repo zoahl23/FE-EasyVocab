@@ -163,3 +163,7 @@ export const callCreateAVocab = (word, meaning, topicId) => {
         }
     )
 }
+
+export const callBulkCreateVocab = (data) => {
+    return axios.post('/api/vocabs/list', data)
+}

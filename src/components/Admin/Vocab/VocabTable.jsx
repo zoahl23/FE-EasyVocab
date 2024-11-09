@@ -7,6 +7,7 @@ import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import { callFetchListVocab } from "../../../services/api";
 import VocabModalCreate from "./VocabModalCreate";
 import VocabViewDetail from "./VocabViewDetail";
+import VocabImport from "./data/VocabImport";
 
 const VocabTable = () => {
     const [listVocab, setListVocab] = useState([]);
@@ -20,6 +21,8 @@ const VocabTable = () => {
     const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
+
+    const [openModalImport, setOpenModalImport] = useState(false);
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
@@ -56,6 +59,14 @@ const VocabTable = () => {
         {
             title: 'ID',
             dataIndex: 'id',
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.id}</a>
+                )
+            }
         },
         {
             title: 'Từ vựng',
@@ -146,6 +157,7 @@ const VocabTable = () => {
                     <Button
                         icon={<CloudUploadOutlined />}
                         type="primary"
+                        onClick={() => setOpenModalImport(true)}
                     >Nhập dữ liệu</Button>
                     <Button
                         icon={<PlusOutlined />}
@@ -211,6 +223,12 @@ const VocabTable = () => {
             <VocabModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
+                fetchVocab={fetchVocab}
+            />
+
+            <VocabImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
                 fetchVocab={fetchVocab}
             />
         </>

@@ -4,10 +4,10 @@ import { message, Upload } from 'antd';
 import { useState } from "react";
 import * as XLSX from 'xlsx';
 import templateFile from './template.xlsx?url';
-import { callBulkCreateTopic } from "../../../../services/api";
+import { callBulkCreateVocab } from "../../../../services/api";
 
 const { Dragger } = Upload;
-const TopicImport = (props) => {
+const VocabImport = (props) => {
     const { setOpenModalImport, openModalImport } = props;
     const [dataExcel, setDataExcel] = useState([]);
     const [fileList, setFileList] = useState([]);
@@ -44,7 +44,7 @@ const TopicImport = (props) => {
                         const sheet = workbook.Sheets[workbook.SheetNames[0]];
                         // const json = XLSX.utils.sheet_to_json(sheet);
                         const json = XLSX.utils.sheet_to_json(sheet, {
-                            header: ["topicName", "description", "courseId"],
+                            header: ["word", "meaning", "topicId"],
                             range: 1 //skip header row
                         });
                         if (json && json.length > 0) setDataExcel(json)
@@ -65,7 +65,7 @@ const TopicImport = (props) => {
         const data = dataExcel.map(item => {
             return item;
         })
-        const res = await callBulkCreateTopic(data);
+        const res = await callBulkCreateVocab(data);
         setLoading(false);
         if (res.statusCode === 201) {
             notification.success({
@@ -74,7 +74,7 @@ const TopicImport = (props) => {
             })
             setDataExcel([]);
             setOpenModalImport(false);
-            props.fetchTopic();
+            props.fetchVocab();
         } else {
             notification.error({
                 description: `${res.data.error.join(", ")} không hợp lệ hoặc đã tồn tại`,
@@ -85,7 +85,7 @@ const TopicImport = (props) => {
 
     return (
         <>
-            <Modal title="Nhập dữ liệu chủ đề"
+            <Modal title="Nhập dữ liệu từ vựng"
                 width={"50vw"}
                 open={openModalImport}
                 onOk={() => handleSubmit()}
@@ -118,9 +118,9 @@ const TopicImport = (props) => {
                         dataSource={dataExcel}
                         title={() => <span>Dữ liệu tải lên: </span>}
                         columns={[
-                            { dataIndex: 'topicName', title: 'Tên chủ đề (EN)' },
-                            { dataIndex: 'description', title: 'Tên chủ đề (VI)' },
-                            { dataIndex: 'courseId', title: 'Mã khóa học' },
+                            { dataIndex: 'word', title: 'Từ vựng' },
+                            { dataIndex: 'meaning', title: 'Nghĩa của từ' },
+                            { dataIndex: 'topicId', title: 'Mã chủ đề' },
                         ]}
                     />
                 </div>
@@ -129,4 +129,4 @@ const TopicImport = (props) => {
     )
 }
 
-export default TopicImport;
+export default VocabImport;
