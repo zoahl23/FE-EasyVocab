@@ -16,6 +16,8 @@ const TopicTable = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [filter, setFilter] = useState("");
+
     const [openModalCreate, setOpenModalCreate] = useState(false);
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
@@ -23,11 +25,14 @@ const TopicTable = () => {
 
     useEffect(() => {
         fetchTopic();
-    }, [current, pageSize]);
+    }, [current, pageSize, filter]);
 
     const fetchTopic = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
+        if (filter) {
+            query += `&${filter}`
+        }
         const res = await callFetchListTopic(query);
         // console.log("test", res)
         if (res && res.data) {
@@ -35,6 +40,11 @@ const TopicTable = () => {
             setTotal(res.data.page.totalElements);
         }
         setIsLoading(false);
+    }
+
+    const handleSearch = (query) => {
+        setCurrent(1);
+        setFilter(query);
     }
 
     const columns = [
@@ -141,7 +151,9 @@ const TopicTable = () => {
                         type="primary"
                         onClick={() => setOpenModalCreate(true)}
                     >Thêm mới</Button>
-                    <Button type='ghost'>
+                    <Button type='ghost' onClick={() => {
+                        setFilter("");
+                    }}>
                         <ReloadOutlined />
                     </Button>
                 </span>
@@ -153,11 +165,15 @@ const TopicTable = () => {
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <TopicSearch />
+                    <TopicSearch
+                        handleSearch={handleSearch}
+                        setFilter={setFilter}
+                    />
                 </Col>
                 <Col span={24}>
                     <Table
                         title={renderHeader}
+                        loading={isLoading}
                         columns={columns}
                         dataSource={listTopic}
                         onChange={onChange}
