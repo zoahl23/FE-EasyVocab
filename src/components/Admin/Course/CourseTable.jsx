@@ -252,6 +252,7 @@ const CourseTable = () => {
             <CourseImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+                fetchCourse={fetchCourse}
             />
 
             <CourseModalUpdate

@@ -97,6 +97,10 @@ export const callUpdateCourse = (id, courseName, description, courseTarget) => {
     )
 }
 
+export const callBulkCreateCourse = (data) => {
+    return axios.post('/api/course/list', data)
+}
+
 // Manager Topic
 export const callFetchListTopic = (query) => {
     return axios.get(`/api/topics/page?${query}`);
