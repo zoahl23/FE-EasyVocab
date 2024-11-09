@@ -189,7 +189,7 @@ const SubscriptionTable = () => {
             const worksheet = XLSX.utils.json_to_sheet(listUser);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-            XLSX.writeFile(workbook, "ExportUser.csv");
+            XLSX.writeFile(workbook, "ExportSubscriptionPlan.csv");
         }
     }
 

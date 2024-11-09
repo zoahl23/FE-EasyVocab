@@ -8,6 +8,7 @@ import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import TopicViewDetail from "./TopicViewDetail";
 import TopicModalCreate from "./TopicModalCreate";
 import TopicImport from "./data/TopicImport";
+import * as XLSX from 'xlsx';
 
 const TopicTable = () => {
     const [listTopic, setListTopic] = useState([]);
@@ -144,6 +145,15 @@ const TopicTable = () => {
         }
     };
 
+    const handleExportData = () => {
+        if (listTopic.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listTopic);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportTopic.csv");
+        }
+    }
+
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -152,6 +162,7 @@ const TopicTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
+                        onClick={() => handleExportData()}
                     >Xuất dữ liệu</Button>
                     <Button
                         icon={<CloudUploadOutlined />}
