@@ -1,8 +1,8 @@
-import { Button, Col, Popconfirm, Row, Table } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
 import TopicSearch from "./TopicSearch";
 import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { callFetchListTopic } from "../../../services/api";
+import { callDeleteTopic, callFetchListTopic } from "../../../services/api";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import TopicViewDetail from "./TopicViewDetail";
@@ -54,6 +54,19 @@ const TopicTable = () => {
         setCurrent(1);
         setFilter(query);
     }
+
+    const handleDeleteTopic = async (id) => {
+        const res = await callDeleteTopic(id);
+        if (res && res.data) {
+            message.success('Xóa chủ đề thành công');
+            fetchTopic();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -113,6 +126,7 @@ const TopicTable = () => {
                             placement="leftTop"
                             title={"Xác nhận xóa chủ đề"}
                             description={"Bạn có chắc chắn muốn xóa chủ đề này ?"}
+                            onConfirm={() => handleDeleteTopic(record.id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
