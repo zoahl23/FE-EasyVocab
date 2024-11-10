@@ -26,6 +26,7 @@ import ManageSubscriptionPage from "./pages/admin/subscription";
 import ManageTopicPage from "./pages/admin/topic";
 import ManageVocabPage from "./pages/admin/vocab";
 import ManageCoursePage from "./pages/admin/course";
+import FeedbackPage from "./pages/admin/feedback";
 
 const Layout = () => {
     return (
@@ -125,6 +126,13 @@ export default function App() {
                     element:
                         <ProtectedRoute>
                             <ManageVocabPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "feedback",
+                    element:
+                        <ProtectedRoute>
+                            <FeedbackPage />
                         </ProtectedRoute>
                 },
             ],

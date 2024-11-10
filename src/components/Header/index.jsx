@@ -73,14 +73,8 @@ const Header = () => {
     return (
         <div className='header-container'>
             <div className="page-header__logo">
-                <Link to='/' style={{ marginLeft: '10%' }}>
-                    <img
-                        src='/public/nameWeb.png'
-                        alt="logo"
-                        width="190px"
-                        height="35px"
-                        style={{ marginTop: 5 }}
-                    />
+                <Link to='/' style={{ textDecoration: 'none' }}>
+                    <div className="logo-text">EasyVocab</div>
                 </Link>
             </div>
             <div className="page-header__navbar">
