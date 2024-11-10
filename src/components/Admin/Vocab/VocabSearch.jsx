@@ -1,6 +1,30 @@
-import { Button, Cascader, Col, Form, Input, Row } from "antd";
+import { Button, Cascader, Col, Form, Input, Row, Select } from "antd";
+import { useEffect, useState } from "react";
+import { callFetchAllTopic } from "../../../services/api";
 
-const VocabSearch = () => {
+const VocabSearch = (props) => {
+    const [listTopic, setListTopic] = useState([]);
+
+    useEffect(() => {
+        const fetchCourse = async () => {
+            const res = await callFetchAllTopic();
+            if (res && res.data) {
+                const topics = res.data.map(item => {
+                    return { label: item.topicName, value: item.id }
+                })
+                setListTopic(topics);
+            }
+        }
+        fetchCourse();
+    }, []);
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
+    };
+
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -11,7 +35,24 @@ const VocabSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.word) {
+            query += `&word=${removeVietnameseTones(values.word)}`
+        }
+
+        if (values.meaning) {
+            query += `&meaning=${removeVietnameseTones(values.meaning)}`
+        }
+
+        if (values.topicId) {
+            query += `&id=${values.topicId}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
     };
 
     return (
@@ -22,81 +63,64 @@ const VocabSearch = () => {
             style={formStyle}
         >
             <Row gutter={24}>
-                <Col span={7}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`word`}
-                        label={`Word`}
+                        label={`Từ vựng`}
                     >
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col span={7}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`meaning`}
-                        label={`Meaning`}
+                        label={`Nghĩa tiếng việt`}
                     >
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`topicName`}
-                        label={`Topic Name`}
+                        name={`topicId`}
+                        label={`Tên chủ đề`}
                     >
-                        <Cascader
-                            options={[
-                                {
-                                    value: 'toeic',
-                                    label: 'TOEIC',
-                                    children: [
-                                        {
-                                            value: 'fruits',
-                                            label: 'Fruits',
-                                        },
-                                    ],
-                                },
-                                {
-                                    value: 'ielts',
-                                    label: 'IELTS',
-                                    children: [
-                                        {
-                                            value: 'fruits',
-                                            label: 'Fruits',
-                                        },
-                                        {
-                                            value: 'toys',
-                                            label: 'Toys',
-                                        },
-                                    ],
-                                },
-                            ]}
+                        <Select
+                            defaultValue={null}
+                            showSearch
+                            allowClear
+                            options={listTopic}
+                            filterOption={(input, option) =>
+                                removeVietnameseTones(option?.label ?? '')
+                                    .toLowerCase()
+                                    .includes(removeVietnameseTones(input.toLowerCase()))
+                            }
                         />
                     </Form.Item>
                 </Col>
+            </Row>
+            <Row>
                 <Col
-                    span={4}
-                    style={{ textAlign: 'right', margin: '40px 0 0 0' }}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        style={{ backgroundColor: '#5B9BD5', borderColor: '#5B9BD5' }}
-                    >
-                        Search
+                    span={24}
+                    style={{ textAlign: 'right' }}>
+                    <Button type="primary" htmlType="submit">
+                        Tìm kiếm
                     </Button>
                     <Button
-                        style={{ margin: '0 0 0 8px', backgroundColor: '#D3D3D3', borderColor: '#D3D3D3' }}
+                        style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
-                        Clear
+                        Xóa
                     </Button>
                 </Col>
             </Row>
         </Form >
     );
 }
+
 export default VocabSearch;

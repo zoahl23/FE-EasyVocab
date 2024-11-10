@@ -22,9 +22,11 @@ import Learn from "./components/Learn";
 import Notebook from "./components/Notebook";
 import Event from "./components/Event";
 import ManageUserPage from "./pages/admin/user";
+import ManageSubscriptionPage from "./pages/admin/subscription";
 import ManageTopicPage from "./pages/admin/topic";
 import ManageVocabPage from "./pages/admin/vocab";
 import ManageCoursePage from "./pages/admin/course";
+import FeedbackPage from "./pages/admin/feedback";
 
 const Layout = () => {
     return (
@@ -37,6 +39,7 @@ const Layout = () => {
 }
 
 export default function App() {
+
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.account.isLoading)
 
@@ -47,9 +50,10 @@ export default function App() {
         ) return;
 
         const res = await callFetchAccount();
+        // console.log("fetch", res)
         if (res && res.data) {
             dispatch(doGetAccountAction(res.data))
-            //console.log("check:::", res);
+            // console.log("fetch", res.data.user)
         }
     }
 
@@ -75,6 +79,61 @@ export default function App() {
                 {
                     path: "/events",
                     element: <Event />
+                },
+            ],
+        },
+        {
+            path: "/admin",
+            element: <LayoutAdmin />,
+            errorElement: <ErrorPage />,
+            children: [
+                {
+                    index: true, element:
+                        <ProtectedRoute>
+                            <AdminPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "user",
+                    element:
+                        <ProtectedRoute>
+                            <ManageUserPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "subscription",
+                    element:
+                        <ProtectedRoute>
+                            <ManageSubscriptionPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "course",
+                    element:
+                        <ProtectedRoute>
+                            <ManageCoursePage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "topic",
+                    element:
+                        <ProtectedRoute>
+                            <ManageTopicPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "vocab",
+                    element:
+                        <ProtectedRoute>
+                            <ManageVocabPage />
+                        </ProtectedRoute>
+                },
+                {
+                    path: "feedback",
+                    element:
+                        <ProtectedRoute>
+                            <FeedbackPage />
+                        </ProtectedRoute>
                 },
             ],
         },
@@ -148,7 +207,6 @@ export default function App() {
                 :
                 <Loading />
             }
-
         </>
     )
 }

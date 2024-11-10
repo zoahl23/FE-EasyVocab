@@ -7,13 +7,12 @@ const RoleBaseRoute = (props) => {
     const user = useSelector(state => state.account.user);
     const userRole = user.role;
 
-    if (isAdminRoute && userRole === 'ADMIN') {
+    if (isAdminRoute && userRole === 'ROLE_ADMIN') {
         return (<>{props.children}</>)
     } else {
         return (<NotPermitted />)
     }
 }
-
 
 const ProtectedRoute = (props) => {
     const isAuthenticated = useSelector(state => state.account.isAuthenticated)
@@ -21,13 +20,11 @@ const ProtectedRoute = (props) => {
     return (
         <>
             {isAuthenticated === true ?
-
                 <>
                     <RoleBaseRoute>
                         {props.children}
                     </RoleBaseRoute>
                 </>
-
                 :
                 <Navigate to='/login' replace />
             }

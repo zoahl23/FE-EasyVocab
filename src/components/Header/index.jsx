@@ -9,6 +9,7 @@ import { doLogoutAction } from '../../redux/account/accountSlice';
 import { callLogout } from '../../services/api';
 import { useState } from 'react';
 
+
 const Header = () => {
     const [selectedItem, setSelectedItem] = useState(0);
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
@@ -25,7 +26,6 @@ const Header = () => {
         }
     }
 
-
     let items = [
         {
             label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
@@ -38,15 +38,14 @@ const Header = () => {
             >Đăng xuất</label>,
             key: 'logout',
         },
-
     ];
-    if (user?.role === 'ADMIN') {
+
+    if (user?.role === 'ROLE_ADMIN') {
         items.unshift({
-            label: <Link to='/admin'>Trang quản trị</Link>,
+            label: <a href='/admin'>Trang quản trị</a>,
             key: 'admin',
         })
     }
-
 
     const navbarItems = [
         {
@@ -71,18 +70,11 @@ const Header = () => {
         },
     ];
 
-
     return (
         <div className='header-container'>
             <div className="page-header__logo">
-                <Link to="/" style={{ marginLeft: '10%' }}>
-                    <img
-                        src='/public/nameWeb.png'
-                        alt="logo"
-                        width="190px"
-                        height="35px"
-                        style={{ marginTop: 5 }}
-                    />
+                <Link to='/' style={{ textDecoration: 'none' }}>
+                    <div className="logo-text">EasyVocab</div>
                 </Link>
             </div>
             <div className="page-header__navbar">
@@ -131,4 +123,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default Header;

@@ -1,14 +1,10 @@
 :root {
   --generalColumnWidth: 56vw;
-
   --header-height: 60px;
-
   --color-background: #fff;
   --color-background-hover: #E9E9E9;
   --color-background-click: #F2F2F2;
-
   --box-shadow-header: 3px 5px 5px hsla(0, 0%, 84%, .58);
-
   --color-text: #000;
   --color-user: #000;
 }
@@ -26,6 +22,24 @@
 
   .page-header__logo {
     width: calc((100% - var(--generalColumnWidth)) / 2);
+    min-width: 190px;
+    display: flex;
+    justify-content: center; /* ngang */
+    align-items: center;    /* dọc */
+    height: 100%;
+
+    .logo-text {
+        width: 190px;
+        height: 35px;
+        font-family: 'Arial', sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #3a41e2;
+        letter-spacing: 1px;
+        text-align: center;
+        user-select: none;
+        cursor: pointer;
+    }
   }
 
   .page-header__navbar {
@@ -83,7 +97,7 @@
       height: 22px;
     }
 
-    span {
+    span{
       margin-right: 10%;
       color: var(--color-user);
       font-size: 14px;
@@ -98,15 +112,13 @@
       .user-say-hi {
         display: block;
       }
+
       .user-mobile {
         display: none;
       }
     }
   }
 }
-
-
-
 
 @media (max-width: 1080px) {
 

@@ -21,7 +21,7 @@ const LoginPage = () => {
         setIsSubmit(false);
         // console.log('Success:', res);
         if (res.data) {
-            localStorage.setItem('access_token', res.data.access_token);
+            localStorage.setItem('access_token', res.data.token);
             dispatch(doLoginAction(res.data.user))
             message.success("Đăng nhập thành công!");
             navigate('/');
@@ -30,7 +30,7 @@ const LoginPage = () => {
             notification.error({
                 message: "Có lỗi xảy ra",
                 description: res.message,
-                duration: 5
+                duration: 5 // 5 seconds
             })
         }
     };
@@ -77,7 +77,7 @@ const LoginPage = () => {
                                     Đăng nhập
                                 </Button>
                             </Form.Item>
-                            <Divider>Or</Divider>
+                            <Divider>Hoặc</Divider>
                             <p className="text text-normal">Chưa có tài khoản ?
                                 <span>
                                     <Link to='/register' > Đăng Ký </Link>

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Input, Row, Select } from "antd";
 
 const UserSearch = (props) => {
     const [form] = Form.useForm();
@@ -8,22 +8,34 @@ const UserSearch = (props) => {
         background: '#fff',
         borderRadius: '8px',
         padding: 24,
-
     };
 
     const onFinish = (values) => {
+        //console.log("Received values of form: ", values);
         let query = "";
 
         if (values.fullName) {
-            query += `&fullName=/${values.fullName}/i`
+            query += `&fullName=${removeVietnameseTones(values.fullName)}`
         }
+
         if (values.email) {
-            query += `&email=/${values.email}/i`
+            query += `&email=${removeVietnameseTones(values.email)}`
+        }
+
+        if (values.role) {
+            query += `&role=${values.role}`
         }
 
         if (query) {
             props.handleSearch(query);
         }
+    };
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
     };
 
     return (
@@ -34,16 +46,16 @@ const UserSearch = (props) => {
             style={formStyle}
         >
             <Row gutter={24}>
-                <Col span={10}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`fullName`}
-                        label={`Name`}
+                        label={`Tên hiển thị`}
                     >
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col span={10}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`email`}
@@ -52,23 +64,34 @@ const UserSearch = (props) => {
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col
-                    span={4}
-                    style={{ textAlign: 'right', margin: '40px 0 0 0' }}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
+                <Col span={8}>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        name={`role`}
+                        label={`Phân loại`}
                     >
-                        Search
+                        <Select>
+                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
+                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row>
+                <Col
+                    span={24}
+                    style={{ textAlign: 'right' }}>
+                    <Button type="primary" htmlType="submit">
+                        Tìm kiếm
                     </Button>
                     <Button
-                        style={{ margin: '0 0 0 8px', backgroundColor: '#D3D3D3', borderColor: '#D3D3D3' }}
+                        style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
                             props.setFilter("");
                         }}
                     >
-                        Clear
+                        Xóa
                     </Button>
                 </Col>
             </Row>

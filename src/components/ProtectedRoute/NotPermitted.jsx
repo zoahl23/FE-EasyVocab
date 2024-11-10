@@ -2,7 +2,9 @@ import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const NotPermitted = () => {
+
     const navigate = useNavigate();
+
     return (
         <Result
             status="403"

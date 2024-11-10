@@ -2,16 +2,11 @@ import axios from 'axios';
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
+    //withCredentials: true, // gửi kèm cookie
 });
 
-instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-
-// const handleRefreshToken = async () => {
-//     const res = await instance.get('/api/v1/auth/refresh');
-//     if (res && res.data) return res.data.access_token;
-//     else return null;
-// }
+// gửi kèm token với mọi request
+instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
@@ -32,26 +27,17 @@ instance.interceptors.response.use(function (response) {
 }, function (error) { // async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    // if (error.config && error.response
-    //     && +error.response.status === 401
-    //     && !error.config.headers[NO_RETRY_HEADER]
-    // ) {
-    //     const access_token = await handleRefreshToken();
-    //     error.config.headers[NO_RETRY_HEADER] = 'true'
-    //     if (access_token) {
-    //         error.config.headers['Authorization'] = `Bearer ${access_token}`;
-    //         localStorage.setItem('access_token', access_token);
-    //         return instance.request(error.config);
-    //     }
-    // }
+    if (error.config && error.response
+        && +error.response.status === 401) {
+        // Xóa token khỏi localStorage
+        localStorage.removeItem('access_token');
 
-    // if (error.config && error.response
-    //     && +error.response.status === 400
-    //     && error.config.url === '/api/v1/auth/refresh'
-    // ) {
-    //     if (window.location.pathname !== '/')
-    //         window.location.href = '/login';
-    // }
+        const allowedPaths = ['/', '/learn', '/notebook', '/events'];
+        // Kiểm tra nếu người dùng không ở trang chủ, thì chuyển hướng về trang login
+        if (!allowedPaths.includes(window.location.pathname)) {
+            window.location.href = '/login';
+        }
+    }
 
     return error?.response?.data ?? Promise.reject(error);
 });

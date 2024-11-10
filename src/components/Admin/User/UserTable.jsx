@@ -1,15 +1,15 @@
-import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table, Tag } from "antd";
 import UserSearch from "./UserSearch";
 import { useEffect, useState } from "react";
 import { callDeleteUser, callFetchListUser } from "../../../services/api";
-import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined, DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import UserModalCreate from "./UserModalCreate";
 import UserViewDetail from "./UserViewDetail";
+import UserModalUpdate from './UserModalUpdate';
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import UserImport from "./data/UserImport";
 import * as XLSX from 'xlsx';
-import UserModalUpdate from './UserModalUpdate';
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -18,6 +18,7 @@ const UserTable = () => {
     const [total, setTotal] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
+
     const [filter, setFilter] = useState("");
     const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
@@ -36,18 +37,19 @@ const UserTable = () => {
 
     const fetchUser = async () => {
         setIsLoading(true);
-        let query = `current=${current}&pageSize=${pageSize}`;
+        let query = `page=${current - 1}&size=${pageSize}`;
         if (filter) {
-            query += `&${filter}`;
+            query += `&${filter}`
         }
         if (sortQuery) {
             query += `&${sortQuery}`;
         }
 
         const res = await callFetchListUser(query);
+        //console.log("test", res)
         if (res && res.data) {
-            setListUser(res.data.result);
-            setTotal(res.data.meta.total)
+            setListUser(res.data.content);
+            setTotal(res.data.page.totalElements);
         }
         setIsLoading(false)
     }
@@ -57,16 +59,29 @@ const UserTable = () => {
         setFilter(query);
     }
 
+    const handleDeleteUser = async (userId) => {
+        const res = await callDeleteUser(userId);
+        if (res && res.data) {
+            message.success('Xóa người dùng thành công');
+            fetchUser();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
+
     const columns = [
         {
             title: 'ID',
-            dataIndex: '_id',
+            dataIndex: 'userId',
             render: (text, record, index) => {
                 return (
                     <a href='#' onClick={() => {
                         setDataViewDetail(record);
                         setOpenViewDetail(true);
-                    }}>{record._id}</a>
+                    }}>{record.userId}</a>
                 )
             }
         },
@@ -81,6 +96,24 @@ const UserTable = () => {
             sorter: true
         },
         {
+            title: 'Phân loại',
+            dataIndex: 'role',
+            render: (role) => {
+                let color = '';
+                let displayText = role.replace("ROLE_", "");
+                if (role === 'ROLE_ADMIN') {
+                    color = 'geekblue';
+                } else {
+                    color = 'green';
+                }
+                return (
+                    <Tag color={color} key={role}>
+                        {displayText}
+                    </Tag>
+                );
+            },
+        },
+        {
             title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             sorter: true,
@@ -89,19 +122,26 @@ const UserTable = () => {
                     <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
                 )
             }
-
         },
         {
-            title: 'Action',
-            width: 120,
+            title: 'Hành động',
+            width: 130,
             render: (text, record, index) => {
                 return (
                     <>
+                        <EyeTwoTone
+                            twoToneColor="#1890ff"
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
+                        />
+
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xóa user"}
-                            description={"Bạn có chắc chắn muốn xóa user này ?"}
-                            onConfirm={() => handleDeleteUser(record._id)}
+                            title={"Xác nhận xóa người dùng"}
+                            description={"Bạn có chắc chắn muốn xóa người dùng này ?"}
+                            onConfirm={() => handleDeleteUser(record.userId)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
@@ -131,48 +171,12 @@ const UserTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
-        //console.log('params', pagination, filters, sorter, extra);
+        // console.log('params', pagination, filters, sorter, extra);
         if (sorter && sorter.field) {
             const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
             setSortQuery(q);
         }
     };
-
-    const renderHeader = () => {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Table List Users</span>
-                <span style={{ display: 'flex', gap: 15 }}>
-                    <Button
-                        icon={<ExportOutlined />}
-                        type="primary"
-                        style={{ backgroundColor: '#007BFF', borderColor: '#007BFF' }}
-                        onClick={() => handleExportData()}
-                    >Export</Button>
-
-                    <Button
-                        icon={<CloudUploadOutlined />}
-                        type="primary"
-                        style={{ backgroundColor: '#28A745', borderColor: '#28A745' }}
-                        onClick={() => setOpenModalImport(true)}
-                    >Import</Button>
-
-                    <Button
-                        icon={<PlusOutlined />}
-                        type="primary"
-                        style={{ backgroundColor: '#FFA500', borderColor: '#FFA500' }}
-                        onClick={() => setOpenModalCreate(true)}
-                    >Thêm mới</Button>
-                    <Button type='ghost' onClick={() => {
-                        setFilter("");
-                        setSortQuery("");
-                    }}>
-                        <ReloadOutlined />
-                    </Button>
-                </span>
-            </div>
-        )
-    }
 
     const handleExportData = () => {
         if (listUser.length > 0) {
@@ -183,18 +187,39 @@ const UserTable = () => {
         }
     }
 
-    const handleDeleteUser = async (userId) => {
-        const res = await callDeleteUser(userId);
-        if (res && res.data) {
-            message.success('Xóa user thành công');
-            fetchUser();
-        } else {
-            notification.error({
-                message: 'Có lỗi xảy ra',
-                description: res.message
-            });
-        }
-    };
+    const renderHeader = () => {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Danh sách người dùng</span>
+                <span style={{ display: 'flex', gap: 15 }}>
+                    <Button
+                        icon={<ExportOutlined />}
+                        type="primary"
+                        onClick={() => handleExportData()}
+                    >Xuất dữ liệu</Button>
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type="primary"
+                        onClick={() => setOpenModalImport(true)}
+                    >Nhập dữ liệu</Button>
+                    <Button
+                        icon={<PlusOutlined />}
+                        type="primary"
+                        onClick={() => setOpenModalCreate(true)}
+                    >Thêm mới</Button>
+                    <Button
+                        type='ghost'
+                        onClick={() => {
+                            setFilter("");
+                            setSortQuery("");
+                        }}
+                    >
+                        <ReloadOutlined />
+                    </Button>
+                </span>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -212,7 +237,6 @@ const UserTable = () => {
                         columns={columns}
                         dataSource={listUser}
                         onChange={onChange}
-                        rowKey="_id"
                         pagination={
                             {
                                 current: current,
@@ -222,7 +246,7 @@ const UserTable = () => {
                                 showTotal: (total, range) => {
                                     return (
                                         <div>
-                                            {range[0]} - {range[1]} trên {total} rows
+                                            {range[0]} - {range[1]} trên {total} dòng
                                         </div>
                                     );
                                 }
@@ -258,7 +282,6 @@ const UserTable = () => {
                 setDataUpdate={setDataUpdate}
                 fetchUser={fetchUser}
             />
-
         </>
     );
 }

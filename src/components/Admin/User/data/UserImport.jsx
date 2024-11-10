@@ -3,13 +3,14 @@ import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { useState } from "react";
 import * as XLSX from 'xlsx';
-import { callBulkCreateUser } from "../../../../services/api";
 import templateFile from './template.xlsx?url';
+import { callBulkCreateUser } from "../../../../services/api";
 
 const { Dragger } = Upload;
 const UserImport = (props) => {
     const { setOpenModalImport, openModalImport } = props;
-    const [dataExcel, setDataExcel] = useState([])
+    const [dataExcel, setDataExcel] = useState([]);
+    const [fileList, setFileList] = useState([]);
 
     const dummyRequest = ({ file, onSuccess }) => {
         setTimeout(() => {
@@ -22,10 +23,12 @@ const UserImport = (props) => {
         multiple: false,
         maxCount: 1,
         accept: ".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-
         customRequest: dummyRequest,
+        fileList: fileList,
         onChange(info) {
             const { status } = info.file;
+            setFileList(info.fileList);
+
             if (status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
@@ -40,15 +43,15 @@ const UserImport = (props) => {
                         const sheet = workbook.Sheets[workbook.SheetNames[0]];
                         // const json = XLSX.utils.sheet_to_json(sheet);
                         const json = XLSX.utils.sheet_to_json(sheet, {
-                            header: ["fullName", "email", "phone"],
+                            header: ["fullName", "email"],
                             range: 1 //skip header row
                         });
                         if (json && json.length > 0) setDataExcel(json)
                     }
                 }
-                message.success(`${info.file.name} file uploaded successfully.`);
+                message.success(`${info.file.name} đã tải lên thành công.`);
             } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(`${info.file.name} tải lên thất bại`);
             }
         },
         onDrop(e) {
@@ -62,17 +65,17 @@ const UserImport = (props) => {
             return item;
         })
         const res = await callBulkCreateUser(data);
-        if (res.data) {
+        if (res.statusCode === 201) {
             notification.success({
-                description: `Success: ${res.data.countSuccess}, Error: ${res.data.countError}`,
-                message: "Upload thành công",
+                description: `Thành công: ${res.data.countSuccess}, Thất bại: ${res.data.countError}`,
+                message: "Nhập dữ liệu thành công",
             })
             setDataExcel([]);
             setOpenModalImport(false);
             props.fetchUser();
         } else {
             notification.error({
-                description: res.message,
+                description: `${res.data.error.join(", ")} không hợp lệ hoặc đã tồn tại`,
                 message: "Đã có lỗi xảy ra",
             })
         }
@@ -80,42 +83,40 @@ const UserImport = (props) => {
 
     return (
         <>
-            <Modal title="Import data user"
+            <Modal title="Nhập dữ liệu người dùng"
                 width={"50vw"}
                 open={openModalImport}
                 onOk={() => handleSubmit()}
                 onCancel={() => {
                     setOpenModalImport(false);
                     setDataExcel([]);
+                    setFileList([]);
                 }}
-                okText="Import data"
+                okText="Nhập dữ liệu"
+                cancelText="Hủy"
                 okButtonProps={{
                     disabled: dataExcel.length < 1
                 }}
                 //do not close when click outside
                 maskClosable={false}
             >
-                <Dragger
-                    {...propsUpload}
-                    showUploadList={dataExcel.length > 0}
-                >
+                <Dragger {...propsUpload} showUploadList={dataExcel.length > 0} >
                     <p className="ant-upload-drag-icon">
                         <InboxOutlined />
                     </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-text">Nhấp hoặc kéo tệp vào đây để tải lên</p>
                     <p className="ant-upload-hint">
-                        Support for a single upload. Only accept .csv, .xls, .xlsx . or
-                        &nbsp;  <a onClick={e => e.stopPropagation()} href={templateFile} download>Download Sample File</a>
+                        Hệ thống chỉ hỗ trợ tải lên một tệp duy nhất với định dạng .csv, .xls, .xlsx.
+                        &nbsp;  <a onClick={e => e.stopPropagation()} href={templateFile} download>Tải xuống tệp mẫu</a>
                     </p>
                 </Dragger>
                 <div style={{ paddingTop: 20 }}>
                     <Table
                         dataSource={dataExcel}
-                        title={() => <span>Dữ liệu upload:</span>}
+                        title={() => <span>Dữ liệu tải lên: </span>}
                         columns={[
                             { dataIndex: 'fullName', title: 'Tên hiển thị' },
-                            { dataIndex: 'email', title: 'Email' },
-                            { dataIndex: 'phone', title: 'Số điện thoại' },
+                            { dataIndex: 'email', title: 'Email' }
                         ]}
                     />
                 </div>

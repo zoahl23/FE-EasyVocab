@@ -1,16 +1,13 @@
 :root {
     --footer-height: 60px;
-
     --color-background: #fff;
     --color-background-hover: #f2f2f2;
-
     --box-shadow-footer: 3px -5px 5px hsla(0, 0%, 94%, .58);
 }
 
 .footer-container {
     display: none;
 }
-
 
 @media (max-width: 1080px) {
 
@@ -52,4 +49,3 @@
         }
     }
 }
-

@@ -14,7 +14,7 @@ const RegisterPage = () => {
         setIsSubmit(true);
         const res = await callRegister(username, email, password);
         setIsSubmit(false);
-        console.log("succes", res);
+        // console.log(">>>> check res: ", res);
         if (res.data) {
             message.success("Đăng ký thành công!");
             navigate("/login");
@@ -23,7 +23,7 @@ const RegisterPage = () => {
             notification.error({
                 message: "Có lỗi xảy ra",
                 description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,//JSON.stringify(res.message)
-                duration: 5 // 5 seconds h
+                duration: 5 // 5 seconds
             })
         }
     }
@@ -44,7 +44,7 @@ const RegisterPage = () => {
                         >
                             <Form.Item
                                 labelCol={{ span: 24 }}
-                                label="Username"
+                                label="Tên người dùng"
                                 name="username"
                                 rules={[{ required: true, message: 'Tên không được để trống!' }]}
                             >
@@ -62,7 +62,7 @@ const RegisterPage = () => {
 
                             <Form.Item
                                 labelCol={{ span: 24 }}
-                                label="Password"
+                                label="Mật khẩu"
                                 name="password"
                                 rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
                             >
@@ -79,7 +79,7 @@ const RegisterPage = () => {
                                 </Button>
                             </Form.Item>
 
-                            <Divider>Or</Divider>
+                            <Divider>Hoặc</Divider>
                             <p className="text text-normal">Bạn đã có tài khoản?
                                 <span><Link to='/login'> Đăng nhập</Link></span>
                             </p>

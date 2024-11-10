@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row } from "antd";
 
-const CourseSearch = () => {
+const CourseSearch = (props) => {
     const [form] = Form.useForm();
 
     const formStyle = {
@@ -11,7 +11,31 @@ const CourseSearch = () => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
+        let query = "";
+
+        if (values.courseName) {
+            query += `&courseName=${removeVietnameseTones(values.courseName)}`
+        }
+
+        if (values.courseTarget) {
+            query += `&courseTarget=${removeVietnameseTones(values.courseTarget)}`
+        }
+
+        if (values.courseDescription) {
+            query += `&description=${removeVietnameseTones(values.courseDescription)}`
+        }
+
+        if (query) {
+            props.handleSearch(query);
+        }
+    };
+
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
     };
 
     return (
@@ -22,36 +46,54 @@ const CourseSearch = () => {
             style={formStyle}
         >
             <Row gutter={24}>
-                <Col span={20}>
+                <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
                         name={`courseName`}
-                        label={`Course Name`}
+                        label={`Tên khóa học`}
                     >
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col
-                    span={4}
-                    style={{ textAlign: 'right', margin: '40px 0 0 0' }}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        style={{ backgroundColor: '#5B9BD5', borderColor: '#5B9BD5' }}
+                <Col span={8}>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        name={`courseTarget`}
+                        label={`Mục tiêu khóa học`}
                     >
-                        Search
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        name={`courseDescription`}
+                        label={`Nội dung khóa học`}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row>
+                <Col
+                    span={24}
+                    style={{ textAlign: 'right' }}>
+                    <Button type="primary" htmlType="submit">
+                        Tìm kiếm
                     </Button>
                     <Button
-                        style={{ margin: '0 0 0 8px', backgroundColor: '#D3D3D3', borderColor: '#D3D3D3' }}
+                        style={{ margin: '0 0 0 8px' }}
                         onClick={() => {
                             form.resetFields();
+                            props.setFilter("");
                         }}
                     >
-                        Clear
+                        Xóa
                     </Button>
                 </Col>
             </Row>
         </Form >
     );
 }
+
 export default CourseSearch;

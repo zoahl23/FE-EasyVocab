@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Divider, Form, Input, message, Modal, notification } from 'antd';
+import { Divider, Form, Input, message, Modal, notification, Select } from 'antd';
 import { callUpdateUser } from '../../../services/api';
 
 const UserModalUpdate = (props) => {
@@ -8,13 +8,14 @@ const UserModalUpdate = (props) => {
 
     const [form] = Form.useForm();
 
-
     const onFinish = async (values) => {
-        const { fullName, _id, phone } = values;
+        const { userId, fullName, role, subscriptionPlan } = values;
+        //console.log("value: ", values);
         setIsSubmit(true)
-        const res = await callUpdateUser(_id, fullName, phone);
+        const res = await callUpdateUser(userId, fullName, role, subscriptionPlan);
+        //console.log(">>>check: ", res);
         if (res && res.data) {
-            message.success('Cập nhật user thành công');
+            message.success('Cập nhật người dùng thành công');
             setOpenModalUpdate(false);
             await props.fetchUser()
         } else {
@@ -46,7 +47,6 @@ const UserModalUpdate = (props) => {
                 maskClosable={false}
             >
                 <Divider />
-
                 <Form
                     form={form}
                     name="basic"
@@ -59,12 +59,10 @@ const UserModalUpdate = (props) => {
                         hidden
                         labelCol={{ span: 24 }}
                         label="Id"
-                        name="_id"
-                        rules={[{ required: true, message: 'Vui lòng nhập Id!' }]}
+                        name="userId"
                     >
                         <Input />
                     </Form.Item>
-
                     <Form.Item
                         labelCol={{ span: 24 }}
                         label="Tên hiển thị"
@@ -73,7 +71,6 @@ const UserModalUpdate = (props) => {
                     >
                         <Input />
                     </Form.Item>
-
                     <Form.Item
                         labelCol={{ span: 24 }}
                         label="Email"
@@ -83,12 +80,23 @@ const UserModalUpdate = (props) => {
                         <Input disabled />
                     </Form.Item>
                     <Form.Item
+                        hidden
                         labelCol={{ span: 24 }}
-                        label="Số điện thoại"
-                        name="phone"
-                        rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+                        label="subscriptionPlan"
+                        name="subscriptionPlan"
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item
+                        labelCol={{ span: 24 }}
+                        label="Phân loại"
+                        name="role"
+                        rules={[{ required: true, message: 'Vui lòng chọn quyền!' }]}
+                    >
+                        <Select>
+                            <Select.Option value="ROLE_ADMIN">ADMIN</Select.Option>
+                            <Select.Option value="ROLE_USER">USER</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>
