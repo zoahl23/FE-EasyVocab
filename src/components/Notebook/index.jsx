@@ -1,8 +1,9 @@
+import MainContent from '../MainContent';
 import './style.scss';
 
 const Notebook = () => {
     return (
-        <div>Notebook</div>
+        <MainContent>notebook</MainContent>
     );
 }
 

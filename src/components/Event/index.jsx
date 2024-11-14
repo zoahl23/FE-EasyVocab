@@ -1,8 +1,9 @@
+import MainContent from '../MainContent';
 import './style.scss';
 
 const Event = () => {
     return (
-        <div>Event</div>
+        <MainContent>event</MainContent>
     );
 }
 
