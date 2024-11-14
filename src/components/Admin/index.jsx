@@ -76,13 +76,10 @@ const LayoutAdmin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleLogout = async () => {
-        const res = await callLogout();
-        if (res && res.data) {
-            dispatch(doLogoutAction());
-            message.success('Đăng xuất thành công');
-            navigate('/')
-        }
+    const handleLogout = () => {
+        dispatch(doLogoutAction());
+        message.success('Đăng xuất thành công');
+        navigate('/')
     }
 
     const itemsDropdown = [

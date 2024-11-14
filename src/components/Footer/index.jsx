@@ -6,7 +6,7 @@ const Footer = () => {
     const navbarItems = [
         {
             title: 'Ôn tập',
-            link: '/',
+            link: '/review',
             icon: <FcComboChart />
         },
         {

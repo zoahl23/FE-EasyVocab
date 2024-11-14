@@ -29,11 +29,9 @@ instance.interceptors.response.use(function (response) {
     // Do something with response error
     if (error.config && error.response
         && +error.response.status === 401) {
-        // Xóa token khỏi localStorage
-        localStorage.removeItem('access_token');
 
-        const allowedPaths = ['/', '/learn', '/notebook', '/events'];
-        // Kiểm tra nếu người dùng không ở trang chủ, thì chuyển hướng về trang login
+        const allowedPaths = ['/review', '/learn', '/notebook', '/events'];
+
         if (!allowedPaths.includes(window.location.pathname)) {
             window.location.href = '/login';
         }

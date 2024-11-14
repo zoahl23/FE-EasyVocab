@@ -1,5 +1,6 @@
 import {
     createBrowserRouter,
+    Navigate,
     RouterProvider,
 } from "react-router-dom";
 import LoginPage from './pages/login';
@@ -67,7 +68,11 @@ export default function App() {
             element: <Layout />,
             errorElement: <ErrorPage />,
             children: [
-                { index: true, element: <Home /> },
+                { index: true, element: <Navigate to="/review" replace /> },
+                {
+                    path: "/review",
+                    element: <Home />
+                },
                 {
                     path: "/learn",
                     element: <Learn />
@@ -84,7 +89,10 @@ export default function App() {
         },
         {
             path: "/admin",
-            element: <LayoutAdmin />,
+            element:
+                <ProtectedRoute>
+                    <LayoutAdmin />
+                </ProtectedRoute>,
             errorElement: <ErrorPage />,
             children: [
                 {
@@ -137,48 +145,6 @@ export default function App() {
                 },
             ],
         },
-        {
-            path: "/admin",
-            element: <LayoutAdmin />,
-            errorElement: <ErrorPage />,
-            children: [
-                {
-                    index: true,
-                    element:
-                        <ProtectedRoute>
-                            <AdminPage />
-                        </ProtectedRoute>
-                },
-                {
-                    path: "user",
-                    element:
-                        <ProtectedRoute>
-                            <ManageUserPage />
-                        </ProtectedRoute>
-                },
-                {
-                    path: "course",
-                    element:
-                        <ProtectedRoute>
-                            <ManageCoursePage />
-                        </ProtectedRoute>
-                },
-                {
-                    path: "topic",
-                    element:
-                        <ProtectedRoute>
-                            <ManageTopicPage />
-                        </ProtectedRoute>
-                },
-                {
-                    path: "vocab",
-                    element:
-                        <ProtectedRoute>
-                            <ManageVocabPage />
-                        </ProtectedRoute>
-                },
-            ],
-        },
 
         {
             path: "/login",
@@ -198,7 +164,7 @@ export default function App() {
             {isLoading === false
                 || window.location.pathname === '/login'
                 || window.location.pathname === '/register'
-                || window.location.pathname === '/'
+                || window.location.pathname === '/review'
                 || window.location.pathname === '/learn'
                 || window.location.pathname === '/notebook'
                 || window.location.pathname === '/events'

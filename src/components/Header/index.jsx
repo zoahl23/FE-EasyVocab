@@ -17,14 +17,16 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
-    const handleLogout = async () => {
-        const res = await callLogout();
-        if (res && res.data) {
-            dispatch(doLogoutAction());
-            message.success('Đăng xuất thành công');
-            navigate('/')
-        }
+    const handleLogout = () => {
+        console.log("2");
+        dispatch(doLogoutAction());
+        console.log("3");
+        message.success('Đăng xuất thành công');
+        console.log("4");
+        // window.location.reload();
+        navigate("/");
     }
+
 
     let items = [
         {
@@ -50,7 +52,7 @@ const Header = () => {
     const navbarItems = [
         {
             title: 'Ôn tập',
-            link: '/',
+            link: '/review',
             icon: <FcComboChart />
         },
         {
@@ -73,7 +75,7 @@ const Header = () => {
     return (
         <div className='header-container'>
             <div className="page-header__logo">
-                <Link to='/' style={{ textDecoration: 'none' }}>
+                <Link to='/review' style={{ textDecoration: 'none' }}>
                     <div className="logo-text">EasyVocab</div>
                 </Link>
             </div>
