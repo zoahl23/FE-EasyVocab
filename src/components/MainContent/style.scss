@@ -1,34 +1,27 @@
 
 
 .homepage-container {
+    display: flex;
     margin: 0 auto;
-    .ant-row {
-        .ant-col {
-            height: calc(100vh - 60px);
 
-            &:nth-child(1), &:nth-child(3){
-                background-color: #ECECEC;
-            }
+    .sidebar {
+        flex: 2; // chiếm 2 cột
+        background-color: #ECECEC;
+    }
 
-            &:nth-child(2) {
-                box-shadow: -5px 0 10px hsla(0, 0%, 84%, .58), 5px 0 10px hsla(0, 0%, 84%, .58);
-                z-index: 5;
-            }
-        }
+    .main-content {
+        flex: 5; // chiếm 5 cột
+        box-shadow: -5px 0 10px hsla(0, 0%, 84%, .58), 5px 0 10px hsla(0, 0%, 84%, .58);
+        z-index: 5;
+        height: calc(100vh - 60px);
     }
 
     @media (max-width: 1080px) {
-        .ant-row {
-            .ant-col {
-                &:nth-child(1),
-                &:nth-child(3) {
-                    display: none;
-                }
-                &:nth-child(2) {
-                    width: 100%;
-                    flex: 0 0 100%;
-                }
-            }
+        .sidebar {
+            display: none;
+        }
+        .main-content {
+            flex: 1; // chiếm hết
         }
     }
 }

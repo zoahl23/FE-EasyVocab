@@ -6,7 +6,6 @@ import { FcAdvertising, FcComboChart, FcGraduationCap, FcReadingEbook, FcRules, 
 import '../../styles/reset.scss';
 import imgGuest from '../../assets/imgGuest.png';
 import { doLogoutAction } from '../../redux/account/accountSlice';
-import { callLogout } from '../../services/api';
 import { useState } from 'react';
 
 
@@ -18,26 +17,22 @@ const Header = () => {
     const dispatch = useDispatch()
 
     const handleLogout = () => {
-        console.log("2");
         dispatch(doLogoutAction());
-        console.log("3");
         message.success('Đăng xuất thành công');
-        console.log("4");
-        // window.location.reload();
         navigate("/");
     }
 
 
     let items = [
         {
-            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
+            label: <div style={{ cursor: 'pointer' }}>Quản lý tài khoản</div>,
             key: 'account',
         },
         {
-            label: <label
+            label: <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleLogout()}
-            >Đăng xuất</label>,
+            >Đăng xuất</div>,
             key: 'logout',
         },
     ];

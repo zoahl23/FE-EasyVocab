@@ -15,7 +15,6 @@ import { Button, Dropdown, Image, Layout, Menu, message, Space } from 'antd';
 import './style.scss';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { callLogout } from '../../services/api';
 import { doLogoutAction } from '../../redux/account/accountSlice';
 import logoWeb from '../../../public/logoWeb.png';
 
@@ -84,7 +83,7 @@ const LayoutAdmin = () => {
 
     const itemsDropdown = [
         {
-            label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
+            label: <div style={{ cursor: 'pointer' }}>Quản lý tài khoản</div>,
             key: 'account',
         },
         {
@@ -92,10 +91,10 @@ const LayoutAdmin = () => {
             key: 'home',
         },
         {
-            label: <label
+            label: <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleLogout()}
-            >Đăng xuất</label>,
+            >Đăng xuất</div>,
             key: 'logout',
         },
     ];
