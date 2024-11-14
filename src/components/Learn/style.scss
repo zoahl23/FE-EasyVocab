@@ -1,0 +1,87 @@
+$rc-background-color: #3F51B5;
+$cc-background-color: #F5F5F5;
+$rc-color: #fff;
+$cc-color: #333;
+
+$rc-height: 60px;
+$card-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+$card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+.course-list {
+    width: 550px;
+    margin: 0 auto;
+    padding: 32px 0px;
+
+    .rounded-card {
+        height: $rc-height;
+        background-color: $rc-background-color;
+        color: $rc-color;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        line-height: $rc-height;
+        border-radius: 20px;
+        box-shadow: $card-box-shadow;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .course-card {
+        border-radius: 20px;
+        background-color: $cc-background-color;
+        box-shadow: $card-box-shadow;
+        padding: 0 16px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        user-select: none;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: $card-hover;
+        }
+
+        .course-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: $cc-color;
+            margin-bottom: 30px;
+        }
+
+        .course-description {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: $cc-color;
+            margin-top: 5px;
+
+            .course-icon {
+                font-size: 50px;
+                width: 50px;
+                margin-right: 10px;
+                flex-shrink: 0; // giữ nguyên kích thước
+            }
+        }
+    }
+
+    @media (max-width: 1080px) {
+        padding: 32px 32px;
+    }
+
+    @media (max-width: 600px) {
+        width: 100%;
+        padding: 16px;
+
+        .rounded-card, .course-card {
+            font-size: 16px; /* Giảm kích thước font */
+            padding: 12px;
+            .course-title {
+                font-size: 20px; /* Giảm kích thước font của tiêu đề */
+            }
+            .course-description {
+                font-size: 14px; /* Giảm kích thước font của mô tả */
+            }
+        }
+    }
+}
+
+

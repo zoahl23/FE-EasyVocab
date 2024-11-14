@@ -19,7 +19,7 @@
   justify-content: space-between;
   background-color: var(--color-background);
   box-shadow: var(--box-shadow-header);
-  position: relative;
+  position: fixed;
   z-index: 10;
 
   .page-header__logo {
