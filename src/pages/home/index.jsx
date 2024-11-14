@@ -1,5 +1,5 @@
 import './style.scss';
-import MainContent from '../MainContent';
+import MainContent from '../../components/MainContent';
 
 const Home = () => {
     return (

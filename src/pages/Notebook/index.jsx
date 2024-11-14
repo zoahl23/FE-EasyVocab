@@ -1,4 +1,4 @@
-import MainContent from '../MainContent';
+import MainContent from '../../components/MainContent';
 import './style.scss';
 
 const Notebook = () => {

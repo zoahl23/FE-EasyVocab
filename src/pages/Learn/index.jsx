@@ -1,5 +1,5 @@
 import './style.scss';
-import MainContent from '../MainContent';
+import MainContent from '../../components/MainContent';
 import { Card, Col, Row } from 'antd';
 import { FcApproval, FcGraduationCap } from 'react-icons/fc';
 
