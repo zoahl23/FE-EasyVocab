@@ -2,11 +2,13 @@
   --generalColumnWidth: 56vw;
   --header-height: 60px;
   --color-background: #fff;
-  --color-background-hover: #E9E9E9;
-  --color-background-click: #F2F2F2;
+  --color-navbar-item-hover: #e0e0e0;
+  --color-navbar-item-click: #ececec;
   --box-shadow-header: 3px 5px 5px hsla(0, 0%, 84%, .58);
   --color-text: #000;
   --color-user: #000;
+  --logo-width: 190px;
+  --logo-font-size: 30px;
 }
 
 .header-container {
@@ -22,14 +24,14 @@
 
   .page-header__logo {
     width: calc((100% - var(--generalColumnWidth)) / 2);
-    min-width: 190px;
+    min-width: var(--logo-width);
     display: flex;
     justify-content: center; /* ngang */
     align-items: center;    /* dọc */
     height: 100%;
 
     .logo-text {
-        width: 190px;
+        width: var(--logo-width);
         height: 35px;
         font-family: 'Arial', sans-serif;
         font-size: 30px;
@@ -75,11 +77,11 @@
       }
 
       &:hover {
-        background-color: var(--color-background-hover);
+        background-color: var(--color-navbar-item-hover);
       }
 
       &.selected {
-        background-color: var(--color-background-click);
+        background-color: var(--color-navbar-item-click);
       }
     }
   }
@@ -88,17 +90,17 @@
     width: calc((100% - var(--generalColumnWidth)) / 2);
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     user-select: none;
     font-size: 16px;
     cursor: pointer;
 
-    .guest{
+    .guest, span{
       margin-right: 10%;
       height: 22px;
     }
 
     span{
-      margin-right: 10%;
       color: var(--color-user);
       font-size: 14px;
       font-weight: 500;

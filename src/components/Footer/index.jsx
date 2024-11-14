@@ -1,7 +1,11 @@
 import { FcAdvertising, FcComboChart, FcGraduationCap, FcRules } from 'react-icons/fc';
 import './style.scss';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+
+    const navigate = useNavigate();
 
     const navbarItems = [
         {
@@ -26,16 +30,32 @@ const Footer = () => {
         },
     ];
 
+    const [selectedItem, setSelectedItem] = useState(
+        navbarItems.findIndex(item => item.link === window.location.pathname)
+    );
+
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        const currentIndex = navbarItems.findIndex(item => item.link === currentPath);
+        setSelectedItem(currentIndex);
+    }, [window.location.pathname]);
+
     return (
         <div className='footer-container'>
             {navbarItems.map((item, index) => (
-                <div className="navbar-item" key={index}>
-                    <a href={item.link} style={{ textDecoration: 'none' }}>
-                        <div className="navbar-item__icon">
-                            {item.icon}
-                        </div>
-                        <div className="navbar-item__title">{item.title}</div>
-                    </a>
+                <div className={`navbar-item ${selectedItem === index ? 'selected' : ''}`}
+                    key={index}
+                    onClick={
+                        () => {
+                            setSelectedItem(index);
+                            navigate(item.link);
+                        }
+                    }
+                >
+                    <div className="navbar-item__icon">
+                        {item.icon}
+                    </div>
+                    <div className="navbar-item__title">{item.title}</div>
                 </div>
             ))}
         </div>

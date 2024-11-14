@@ -6,11 +6,10 @@ import { FcAdvertising, FcComboChart, FcGraduationCap, FcReadingEbook, FcRules, 
 import '../../styles/reset.scss';
 import imgGuest from '../../assets/imgGuest.png';
 import { doLogoutAction } from '../../redux/account/accountSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const Header = () => {
-    const [selectedItem, setSelectedItem] = useState(0);
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
     const user = useSelector((state) => state.account.user);
     const navigate = useNavigate();
@@ -66,6 +65,16 @@ const Header = () => {
             icon: <FcAdvertising />
         },
     ];
+
+    const [selectedItem, setSelectedItem] = useState(
+        navbarItems.findIndex(item => item.link === window.location.pathname)
+    );
+
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        const currentIndex = navbarItems.findIndex(item => item.link === currentPath);
+        setSelectedItem(currentIndex);
+    }, [window.location.pathname]);
 
     return (
         <div className='header-container'>

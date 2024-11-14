@@ -1,25 +1,19 @@
 :root {
     --footer-height: 60px;
-    --color-background: #fff;
-    --color-background-hover: #f2f2f2;
     --box-shadow-footer: 3px -5px 5px hsla(0, 0%, 94%, .58);
 }
 
 .footer-container {
     display: none;
-}
 
-@media (max-width: 1080px) {
-
-    .footer-container {
-        display: block;
+    @media (max-width: 1080px) {
+        display: flex;
         width: 100%;
         height: var(--footer-height);
         background-color: var(--color-background);
         box-shadow: var(--box-shadow-footer);
         position: fixed;
         bottom: 0;
-        display: flex;
         justify-content: center;
         z-index: 10;
 
@@ -29,6 +23,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background-color 0.3s;
+            cursor: pointer;
 
             &__icon{
                 height: 30px;
@@ -46,6 +42,14 @@
                 text-align: center;
                 user-select: none;
                 color: var(--color-text);
+            }
+
+            &:hover {
+                background-color: var(--color-navbar-item-hover);
+            }
+
+            &.selected {
+                background-color: var(--color-navbar-item-click);
             }
         }
     }
