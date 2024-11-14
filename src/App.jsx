@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './pages/login';
 import ErrorPage from './pages/error';
-import Home from './components/Home';
+import Home from './components/home';
 import { Outlet } from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';

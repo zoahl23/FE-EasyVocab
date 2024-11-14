@@ -11,12 +11,13 @@ import {
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, message, Space } from 'antd';
+import { Button, Dropdown, Image, Layout, Menu, message, Space } from 'antd';
 import './style.scss';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { callLogout } from '../../services/api';
 import { doLogoutAction } from '../../redux/account/accountSlice';
+import logoWeb from '../../../public/logoWeb.png';
 
 
 const { Header, Sider, Content } = Layout;
@@ -117,7 +118,18 @@ const LayoutAdmin = () => {
                 onCollapse={(value) => setCollapsed(value)}
                 width={230}
             >
-                <div className="logo-text">EasyVocab</div>
+                <div className="logo-text">
+                    {collapsed ? (
+                        <Image
+                            width={30}
+                            src={logoWeb}
+                            alt="Logo"
+                            preview={false}
+                        />
+                    ) : (
+                        "EasyVocab"
+                    )}
+                </div>
                 <Menu
                     mode="inline"
                     selectedKeys={[selectedKey]}
