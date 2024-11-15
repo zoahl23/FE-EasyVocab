@@ -2,8 +2,12 @@ import { useParams } from "react-router-dom";
 import MainContent from '../../components/MainContent';
 import './style.scss';
 import { Col, Row } from "antd";
+import { useState } from "react";
+import LearningModal from "../../components/LearningModal";
 
 const Topic = () => {
+    const [isLearningMode, setIsLearningMode] = useState(false);
+
     const { id } = useParams(); // course id
 
     console.log(">>> check book id: ", id)
@@ -27,28 +31,37 @@ const Topic = () => {
     ];
 
     return (
-        <MainContent>
-            <Row gutter={[32, 32]} className="topic-list">
-                <Col span={24} style={{ padding: 0 }}>
-                    <div className="rounded-card">
-                        1000 TỪ CƠ BẢN
-                    </div>
-                </Col>
-                {topicList.map((topic, index) => (
-                    <Col span={24} key={index} style={{ padding: 0 }}>
-                        <div className="topic-card">
-                            <div className="topic-card__image">
-                                <img src={topic.coverImage} />
-                            </div>
-                            <div className="topic-card__content">
-                                <h3 className="topic-card__title">{topic.title}</h3>
-                                <p className="topic-card__description">{topic.description}</p>
-                            </div>
+        <>
+            <MainContent>
+                <Row gutter={[32, 32]} className="topic-list">
+                    <Col span={24} style={{ padding: 0 }}>
+                        <div className="rounded-card">
+                            1000 TỪ CƠ BẢN
                         </div>
                     </Col>
-                ))}
-            </Row>
-        </MainContent>
+                    {topicList.map((topic, index) => (
+                        <Col span={24} key={index} style={{ padding: 0 }}>
+                            <div
+                                className="topic-card"
+                                onClick={() => {
+                                    setIsLearningMode(true)
+                                }}
+                            >
+                                <div className="topic-card__image">
+                                    <img src={topic.coverImage} />
+                                </div>
+                                <div className="topic-card__content">
+                                    <h3 className="topic-card__title">{topic.title}</h3>
+                                    <p className="topic-card__description">{topic.description}</p>
+                                </div>
+                            </div>
+                        </Col>
+                    ))}
+                </Row>
+            </MainContent>
+
+            <LearningModal isVisible={isLearningMode} onClose={() => setIsLearningMode(false)} />
+        </>
     )
 }
 

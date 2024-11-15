@@ -56,7 +56,7 @@ const Learn = () => {
             <Row gutter={[32, 32]} className="course-list">
                 <Col span={24} style={{ padding: 0 }}>
                     <div className="rounded-card">
-                        1000 TỪ CƠ BẢN
+                        DANH SÁCH KHÓA HỌC
                     </div>
                 </Col>
                 {courseList.map((course, index) => (

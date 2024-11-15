@@ -11,10 +11,10 @@
         flex: 5; // chiếm 5 cột
         box-shadow: -5px 0 10px hsla(0, 0%, 84%, .58), 5px 0 10px hsla(0, 0%, 84%, .58);
         z-index: 5;
-        min-height: calc(100vh - 60px);
+        min-height: calc(100vh - 120px);
         display: flex;
         justify-content: center;
-        margin-top: 60px;
+        padding-top: 60px;
         padding-bottom: 60px;
     }
 
