@@ -28,6 +28,7 @@ import ManageTopicPage from "./pages/admin/topic";
 import ManageVocabPage from "./pages/admin/vocab";
 import ManageCoursePage from "./pages/admin/course";
 import FeedbackPage from "./pages/admin/feedback";
+import Topic from "./pages/topic";
 
 const Layout = () => {
     return (
@@ -76,6 +77,10 @@ export default function App() {
                 {
                     path: "/learn",
                     element: <Learn />
+                },
+                {
+                    path: "/learn/:id",
+                    element: <Topic />
                 },
                 {
                     path: "/notebook",
@@ -165,7 +170,7 @@ export default function App() {
                 || window.location.pathname === '/login'
                 || window.location.pathname === '/register'
                 || window.location.pathname === '/review'
-                || window.location.pathname === '/learn'
+                || window.location.pathname.startsWith('/learn')
                 || window.location.pathname === '/notebook'
                 || window.location.pathname === '/events'
                 ?

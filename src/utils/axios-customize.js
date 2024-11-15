@@ -32,7 +32,7 @@ instance.interceptors.response.use(function (response) {
 
         const allowedPaths = ['/review', '/learn', '/notebook', '/events'];
 
-        if (!allowedPaths.includes(window.location.pathname)) {
+        if (!allowedPaths.includes(window.location.pathname) && !window.location.pathname.startsWith('/learn')) {
             window.location.href = '/login';
         }
     }

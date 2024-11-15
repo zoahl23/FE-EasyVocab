@@ -67,12 +67,12 @@ const Header = () => {
     ];
 
     const [selectedItem, setSelectedItem] = useState(
-        navbarItems.findIndex(item => item.link === window.location.pathname)
+        navbarItems.findIndex(item => window.location.pathname.startsWith(item.link))
     );
 
     useEffect(() => {
         const currentPath = window.location.pathname;
-        const currentIndex = navbarItems.findIndex(item => item.link === currentPath);
+        const currentIndex = navbarItems.findIndex(item => currentPath.startsWith(item.link));
         setSelectedItem(currentIndex);
     }, [window.location.pathname]);
 
