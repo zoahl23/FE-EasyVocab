@@ -1,9 +1,12 @@
+import EmptyVocab from '../../components/EmptyVocab';
 import MainContent from '../../components/MainContent';
 import './style.scss';
 
 const Notebook = () => {
     return (
-        <MainContent>notebook</MainContent>
+        <MainContent>
+            <EmptyVocab />
+        </MainContent>
     );
 }
 
