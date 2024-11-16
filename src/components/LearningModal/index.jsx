@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import MainContent from '../MainContent';
 import "./style.scss";
-import { Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { callListVocab } from '../../services/api';
 import FlipCard from '../FlipCard';
+import CustomNotification from '../Notification';
 
 const LearningModal = (props) => {
     const { isVisible, onClose, topicId } = props;
@@ -11,6 +12,22 @@ const LearningModal = (props) => {
     const [isConfirmVisible, setIsConfirmVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [listVocab, setListVocab] = useState([]);
+
+    // === Notification
+    const [isOpen, setIsOpen] = useState(false);
+    const [isCorrect, setIsCorrect] = useState(false); // Biến để xác định đúng hay sai
+
+    // Hàm toggle để hiển thị/ẩn thông báo
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+    };
+
+    // Hàm để xác định đúng hay sai và thay đổi màu thông báo
+    const handleAnswer = (isAnswerCorrect) => {
+        setIsCorrect(isAnswerCorrect);  // Cập nhật giá trị isCorrect
+        setIsOpen(true); // Mở thông báo
+    };
+    // === Notification
 
     useEffect(() => {
         handListVocab();
@@ -51,12 +68,28 @@ const LearningModal = (props) => {
                     <MainContent>
                         <div className="content">
                             <button className="closeButton" onClick={() => { setIsConfirmVisible(true) }}>×</button>
-                            <FlipCard
+                            {/* <FlipCard
                                 word="mother"
                                 mean="mẹ (n)"
                                 exam="a female parent: "
                                 pron="/ˈmʌð.ɚ/"
                                 audio="https://dictionary.cambridge.org/us/media/english/us_pron/m/mot/mothe/mother.mp3"
+                            /> */}
+                            <Button onClick={() => handleAnswer(true)} className="toggle-btn">
+                                Đáp án đúng
+                            </Button>
+                            <Button onClick={() => handleAnswer(false)} className="toggle-btn">
+                                Đáp án sai
+                            </Button>
+                            <CustomNotification
+                                isOpen={isOpen}
+                                togglePopup={togglePopup}
+                                word="mother"
+                                mean="mẹ (n)"
+                                exam="a female parent: "
+                                pron="/ˈmʌð.ɚ/"
+                                audio="https://dictionary.cambridge.org/us/media/english/us_pron/m/mot/mothe/mother.mp3"
+                                isCorrect={isCorrect}
                             />
                         </div>
                     </MainContent>

@@ -1,0 +1,131 @@
+.notification-wrapper {
+    position: relative;
+    margin-top: 20px;
+
+    .notification {
+        position: fixed; // gắn cố định, cuộn trang cũng ko mất
+        bottom: -100%;  // ở ngoài màn hình
+        left: 50%; // căn giữa
+        transform: translateX(-50%); // căn giữa
+        width: 100%;
+        max-width: 500px;
+        color: white;
+        padding: 30px 10% 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.5s forwards;  // trượt từ dưới lên trong vòng 0.5s, forwards là giữ nguyên trạng thái đến khi kết thúc
+        z-index: 9999;
+
+        .notification-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .text-content {
+                width: 100%;
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: row;
+                text-align: left;
+
+                .audio-btn {
+                    width: 55px;
+                    height: 55px;
+                    border-radius: 50%;
+                    border: none;
+                    margin-right: 20px;
+                    background-color: white;
+                    font-size: 20px;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+                    user-select: none;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #f2f2f2;
+                    }
+                }
+
+                .word {
+                    font-size: 24px;
+                }
+
+                .pron {
+                    font-size: 17px;
+                    margin: 14px 0 10px;
+                }
+
+                .mean {
+                    margin-bottom: 14px;
+                }
+
+                .exam {
+                    padding-bottom: 10px;
+                }
+            }
+
+            .continue-button {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                padding: 10px 0 25px;
+
+                button {
+                    width: 220px;
+                    height: 56px;
+                    background-color: white;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    border: none;
+                    border-radius: 20px;
+                    font-size: 17px;
+                    user-select: none;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #f2f2f2;
+                    }
+                }
+            }
+
+            .icon {
+                position: absolute;
+                top: -20px;
+                right: 50px;
+                width: 50px;
+                height: 50px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                font-size: 20px;
+                line-height: 50px;
+                border-radius: 50%;
+                border: none;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.toggle-btn {
+    background-color: #f5a623;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+
+@keyframes slideUp {
+    0% {
+        bottom: -100%;
+    }
+    100% {
+        bottom: 20px;  // Adjust to how far you want the notification to be from the bottom
+    }
+}
+
+
+
+
+
+
+
