@@ -197,3 +197,7 @@ export const callUpdateVocab = (id, word, meaning, topicId) => {
 export const callListCourse = (query) => {
     return axios.get(`/api/course/user?${query}`);
 }
+
+export const callListTopic = (query) => {
+    return axios.get(`/api/topics/user?${query}`);
+}
