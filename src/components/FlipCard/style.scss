@@ -1,0 +1,94 @@
+.card-container {
+    perspective: 1000px; // tạo không gian 3D
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+
+    .card {
+        width: 350px;
+        height: 400px;
+        transform-style: preserve-3d; // giữ nguyên vị trí khi lật
+        transition: transform 0.6s; // chuyển động mượt khi lật
+        border-radius: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+
+        .card-front,
+        .card-back {
+            position: absolute; // chồng lên nhau, đảm bảo hiển thị đúng khi lật
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; // ẩn mặt sau của thẻ
+            border-radius: 20px;
+            background-color: #F2F2F2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .sound-btn {
+                position: absolute;
+                top:-20px;
+
+                &__normal, &__slow{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    font-size: 20px;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+                    cursor: pointer;
+                }
+
+                &__normal {
+                    margin-right: 10px;
+                }
+
+                &__slow {
+                    margin-left: 10px;
+                }
+
+                &__normal:hover, &__slow:hover {
+                    background-color: #e9e9e9;
+                }
+            }
+        }
+
+        .card-front {
+
+            b {
+                font-size: 24px;
+            }
+
+            p{
+                font-size: 16px;
+                margin-top: 10px;
+            }
+        }
+
+        .card-back {
+            b {
+                font-size: 24px;
+            }
+
+            .pron {
+                font-size: 16px;
+                height: 42px;
+                line-height: 42px;
+            }
+
+            .mean{
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            transform: rotateY(180deg);
+        }
+    }
+
+    .card.flipped {
+        transform: rotateY(-180deg); // kích hoạt hiệu ứng xoay
+    }
+
+}

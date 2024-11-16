@@ -2,10 +2,28 @@ import { useEffect, useState } from 'react';
 import MainContent from '../MainContent';
 import "./style.scss";
 import { Modal } from 'antd';
+import { callListVocab } from '../../services/api';
+import FlipCard from '../FlipCard';
 
-const LearningModal = ({ isVisible, onClose }) => {
+const LearningModal = (props) => {
+    const { isVisible, onClose, topicId } = props;
 
     const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [listVocab, setListVocab] = useState([]);
+
+    useEffect(() => {
+        handListVocab();
+    }, [topicId]);
+
+    const handListVocab = async () => {
+        setIsLoading(true);
+        const res = await callListVocab(`id=${topicId}`);
+        if (res && res.data) {
+            setListVocab(res.data);
+        }
+        setIsLoading(false);
+    }
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {
@@ -33,13 +51,19 @@ const LearningModal = ({ isVisible, onClose }) => {
                     <MainContent>
                         <div className="content">
                             <button className="closeButton" onClick={() => { setIsConfirmVisible(true) }}>×</button>
-                            <h2>Đây là giao diện học từ vựng!sdadsdddddddddddddddđ</h2>
-                            <p>Nội dung học từ sẽ xuất hiện tại đây.</p>
+                            <FlipCard
+                                word="mother"
+                                mean="mẹ (n)"
+                                exam="a female parent: "
+                                pron="/ˈmʌð.ɚ/"
+                                audio="https://dictionary.cambridge.org/us/media/english/us_pron/m/mot/mothe/mother.mp3"
+                            />
                         </div>
                     </MainContent>
 
                 </div>
             </div>
+
             <Modal
                 title="Bạn có chắc muốn thoát"
                 open={isConfirmVisible}

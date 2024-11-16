@@ -12,6 +12,7 @@ const Topic = () => {
     const [listTopic, setListTopic] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [courseName, setCourseName] = useState();
+    const [topicId, setTopicId] = useState();
     const navigate = useNavigate();
 
     const { id } = useParams(); // course id
@@ -50,7 +51,8 @@ const Topic = () => {
                             <div
                                 className="topic-card"
                                 onClick={() => {
-                                    setIsLearningMode(true)
+                                    setIsLearningMode(true);
+                                    setTopicId(topic.id);
                                 }}
                             >
                                 <div className="topic-card__image">
@@ -66,7 +68,11 @@ const Topic = () => {
                 </Row>
             </MainContent>
 
-            <LearningModal isVisible={isLearningMode} onClose={() => setIsLearningMode(false)} />
+            <LearningModal
+                isVisible={isLearningMode}
+                onClose={() => setIsLearningMode(false)}
+                topicId={topicId}
+            />
         </>
     )
 }

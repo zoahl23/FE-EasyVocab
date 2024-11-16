@@ -201,3 +201,7 @@ export const callListCourse = (query) => {
 export const callListTopic = (query) => {
     return axios.get(`/api/topics/user?${query}`);
 }
+
+export const callListVocab = (query) => {
+    return axios.get(`/api/vocabs/user?${query}`);
+}
