@@ -1,0 +1,105 @@
+.bar-chart {
+  width      : 400px;
+  margin     : 13vh 5vw;
+  text-align : center;
+  font-family: Arial, sans-serif;
+
+  .bars {
+    position       : relative;
+    display        : flex;
+    justify-content: space-around;
+    align-items    : flex-end;
+    margin         : 30px 0;
+    padding-bottom : 10px;
+    height         : 250px;
+
+    .thanh-bars {
+      position        : absolute;
+      top             : calc(100% - 52px);
+      left            : 50%;
+      transform       : translateX(-50%);
+      height          : 8px;
+      width           : calc(100% + 30px);
+      border-radius   : 8px;
+      background-color: #BDBDBD;
+    }
+
+    .bar-container {
+      display       : flex;
+      flex-direction: column;
+      align-items   : center;
+
+      .bar {
+        width          : 70px;
+        display        : flex;
+        justify-content: center;
+        align-items    : flex-end;
+        position       : relative;
+        transition     : all 0.3s ease;
+        border-radius  : 20px 20px 0 0;
+        height         : 0; // bắt đầu hiệu ứng chiều cao 0
+        animation      : growBar 1.5s ease-out forwards;
+
+        .count {
+          position   : absolute;
+          bottom     : calc(100% + 5px);
+          font-size  : 14px;
+          color      : #333;
+          white-space: nowrap;
+          opacity    : 0;
+          animation  : fadeIn 0.4s ease-out forwards;
+        }
+      }
+
+      .level {
+        margin-top : 18px;
+        font-weight: bold;
+        font-size  : 20px;
+      }
+    }
+  }
+
+  .review-button {
+    background   : linear-gradient(45deg, #4286ec, #3F51B5);
+    color        : #fff;
+    border       : none;
+    border-radius: 100px;
+    padding      : 0 25px;
+    margin       : 0 auto;
+    min-width    : 200px;
+    height       : 56px;
+    font-size    : 17px;
+    cursor       : pointer;
+    user-select  : none;
+    box-shadow   : 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition   : background-color 0.3s ease;
+
+    &:hover {
+      transform : scale(1.05);
+      /* Tăng kích thước nhẹ */
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+/* Hiệu ứng tăng chiều cao */
+@keyframes growBar {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: var(--height);
+  }
+}
+
+/* Hiệu ứng hiện chữ */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
