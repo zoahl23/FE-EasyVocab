@@ -1,18 +1,33 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import audioCorrect from '../../../public/correct_answer.mp3';
+import audioIncorrect from '../../../public/incorrect_answer.mp3';
 import './style.scss';
 
 const CustomNotification = (props) => {
     const { isOpen, togglePopup, word, pron, mean, exam, audio, isCorrect } = props;
     const soundEng = useRef(null);
+    const correctSound = useRef(null);
+    const incorrectSound = useRef(null);
 
     const notificationBackground = isCorrect ? '#23AC38' : '#EB5757';
+
+    useEffect(() => {
+        if (isOpen) {
+            if (isCorrect && correctSound.current) {
+                correctSound.current.play();
+            } else if (!isCorrect && incorrectSound.current) {
+                incorrectSound.current.play();
+            }
+        }
+    }, [isCorrect, isOpen]);
 
     return (
         <div className="notification-wrapper">
             {isOpen && (
                 <div className="notification" style={{ backgroundColor: notificationBackground }}>
-                    <audio src={audio} autoPlay />
                     <audio ref={soundEng} src={audio} />
+                    <audio ref={correctSound} src={audioCorrect} />
+                    <audio ref={incorrectSound} src={audioIncorrect} />
                     <div className="notification-content">
                         <div className="text-content">
                             <button

@@ -17,11 +17,12 @@
         .card-front,
         .card-back {
             position: absolute; // chồng lên nhau, đảm bảo hiển thị đúng khi lật
-            width: 100%;
-            height: 100%;
+            width: 330px;
+            height: 380px;
             backface-visibility: hidden; // ẩn mặt sau của thẻ
             border-radius: 20px;
             background-color: #F2F2F2;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,7 +30,7 @@
 
             .sound-btn {
                 position: absolute;
-                top:-20px;
+                top:-40px;
 
                 &__normal, &__slow{
                     width: 50px;

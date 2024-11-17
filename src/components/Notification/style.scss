@@ -7,11 +7,11 @@
         bottom: -100%;  // ở ngoài màn hình
         left: 50%; // căn giữa
         transform: translateX(-50%); // căn giữa
-        width: 100%;
+        width: 80%;
         max-width: 500px;
         color: white;
         padding: 30px 10% 0;
-        border-radius: 10px;
+        border-radius: 10px 10px 0 0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         animation: slideUp 0.5s forwards;  // trượt từ dưới lên trong vòng 0.5s, forwards là giữ nguyên trạng thái đến khi kết thúc
         z-index: 9999;
@@ -39,6 +39,7 @@
                     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
                     user-select: none;
                     cursor: pointer;
+                    flex-shrink: 0;
 
                     &:hover {
                         background-color: #f2f2f2;
@@ -103,23 +104,12 @@
     }
 }
 
-.toggle-btn {
-    background-color: #f5a623;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    margin: 0 auto;
-    display: block;
-}
-
-
 @keyframes slideUp {
     0% {
         bottom: -100%;
     }
     100% {
-        bottom: 20px;  // Adjust to how far you want the notification to be from the bottom
+        bottom: 0px;
     }
 }
 

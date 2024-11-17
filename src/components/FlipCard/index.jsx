@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import './style.scss';
+import soundFlashCard from '../../../public/Flip_flashcard.mp3';
 
 const FlipCard = (props) => {
     const { word, mean, exam, pron, audio } = props;
@@ -69,8 +70,8 @@ const FlipCard = (props) => {
                         <p className="mean">{mean}</p>
                     </div>
                 </div>
-                <audio ref={soundWind} src={'https://learn.mochidemy.com/audios/Flip_flashcard.mp3'} />
-                <audio ref={soundEng} src={audio} />
+                <audio ref={soundWind} src={soundFlashCard} />
+                <audio ref={soundEng} src={audio} autoPlay />
             </div>
         </>
     );
