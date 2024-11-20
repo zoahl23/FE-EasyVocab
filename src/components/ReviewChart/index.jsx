@@ -1,15 +1,6 @@
 import './style.scss';
 
-const ReviewChart = (props) => {
-    const { lv1, lv2, lv3, lv4, lv5 } = props;
-
-    const data = [
-        { level: "1", count: 227, color: "#EC5858" },
-        { level: "2", count: 87, color: "#FCCC0A" },
-        { level: "3", count: 83, color: "#56CCF0" },
-        { level: "4", count: 112, color: "#307FEC" },
-        { level: "5", count: 84, color: "#20367F" },
-    ];
+const ReviewChart = ({ data }) => {
 
     // lấy giá trị lớn nhất để chuẩn hóa chiều cao
     const maxCount = Math.max(...data.map((item) => item.count));

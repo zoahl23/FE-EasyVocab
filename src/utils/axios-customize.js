@@ -6,11 +6,15 @@ const instance = axios.create({
 });
 
 // gửi kèm token với mọi request
-instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+// instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 }, function (error) {
     // Do something with request error
@@ -33,6 +37,7 @@ instance.interceptors.response.use(function (response) {
         const allowedPaths = ['/review', '/learn', '/notebook', '/events'];
 
         if (!allowedPaths.includes(window.location.pathname) && !window.location.pathname.startsWith('/learn')) {
+            localStorage.removeItem('access_token');
             window.location.href = '/login';
         }
     }

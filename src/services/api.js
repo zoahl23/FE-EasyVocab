@@ -210,3 +210,8 @@ export const callListVocab = (query) => {
 export const callSaveVocab = (id) => {
     return axios.post('/api/users/selected_vocab', { id });
 }
+
+// get all vocab for lever
+export const callVocabLever = () => {
+    return axios.get('/api/users/review_stats');
+}
