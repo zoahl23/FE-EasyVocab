@@ -205,3 +205,8 @@ export const callListTopic = (query) => {
 export const callListVocab = (query) => {
     return axios.get(`/api/vocabs/user?${query}`);
 }
+
+// save vocab to notebook
+export const callSaveVocab = (id) => {
+    return axios.post('/api/users/selected_vocab', { id });
+}

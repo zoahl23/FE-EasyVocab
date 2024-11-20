@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import MainContent from '../MainContent';
 import "./style.scss";
-import { Input, Modal } from 'antd';
-import { callListVocab } from '../../services/api';
+import { Input, Modal, notification } from 'antd';
+import { callListVocab, callSaveVocab } from '../../services/api';
 import FlipCard from '../FlipCard';
 import CustomNotification from '../Notification';
 import Loading from '../Loading';
@@ -67,10 +67,23 @@ const LearningModal = (props) => {
     const handleSubmission = (selectedWord) => {
         console.log("Từ vựng đã chọn:", selectedWord);
         // Xử lý logic lưu từ vựng vào hệ thống
-        setIsConfirmVisible(false); // Đóng Modal
-        onClose(); // Nếu cần
-        navigate(`/learn/${topicId}`);
+        saveVocab(selectedWord);
     };
+
+    const saveVocab = async (listId) => {
+        const res = await callSaveVocab(listId);
+        if (res && res.data) {
+            setIsConfirmVisible(false); // Đóng Modal
+            onClose();
+            navigate(`/learn/${topicId}`);
+        }
+        else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
+    }
 
     const handleNextStep = () => {
         setAnimationClass("fade-out"); // bắt đầu hiệu ứng fade-out
