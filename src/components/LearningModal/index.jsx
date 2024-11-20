@@ -6,10 +6,14 @@ import { callListVocab } from '../../services/api';
 import FlipCard from '../FlipCard';
 import CustomNotification from '../Notification';
 import Loading from '../Loading';
+import VocabSelector from '../VocabSelector';
+import { useNavigate } from 'react-router-dom';
 
 const LearningModal = (props) => {
     const { isVisible, onClose, topicId } = props;
     const sound = useRef();
+
+    const navigate = useNavigate();
 
     const [isConfirmVisible, setIsConfirmVisible] = useState(false); // modal xác nhận thoát
 
@@ -37,6 +41,37 @@ const LearningModal = (props) => {
 
     const [animationClass, setAnimationClass] = useState(""); // hiệu ứng
 
+    useEffect(() => {
+        if (isVisible) {
+            resetLearningState();
+        }
+    }, [isVisible]);
+
+    const resetLearningState = () => {
+        setStep(0);
+        setVocabInput("");
+        setVocabOTP("");
+        setDisabledInput(false);
+        setDisabledOTP(false);
+        setIteratorQuestion(0);
+        setIteratorError(0);
+        setIsReviewingErrors(false);
+        setIsCompleted(false);
+        setQuestionErrors([]);
+        setIsOpen(false);
+        setIsCorrect(false);
+        setAnimationClass("");
+        handListVocab();
+    };
+
+    const handleSubmission = (selectedWord) => {
+        console.log("Từ vựng đã chọn:", selectedWord);
+        // Xử lý logic lưu từ vựng vào hệ thống
+        setIsConfirmVisible(false); // Đóng Modal
+        onClose(); // Nếu cần
+        navigate(`/learn/${topicId}`);
+    };
+
     const handleNextStep = () => {
         setAnimationClass("fade-out"); // bắt đầu hiệu ứng fade-out
         setTimeout(() => {
@@ -60,7 +95,9 @@ const LearningModal = (props) => {
     };
 
     useEffect(() => {
-        handListVocab();
+        if (topicId) {
+            handListVocab();
+        }
     }, [topicId]);
 
     const handleInputChange = (e) => {
@@ -177,7 +214,7 @@ const LearningModal = (props) => {
                         {isLoading && <Loading />}
                         {step === 4 ? (
                             <>
-                                <h2>Hoàn thành bài học!</h2>
+                                <VocabSelector vocabularies={listVocab} onSubmit={handleSubmission} />
                             </>
                         ) : (
                             <div className="content">

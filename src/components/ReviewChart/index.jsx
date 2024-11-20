@@ -38,7 +38,7 @@ const ReviewChart = (props) => {
                 ))}
                 <div className="thanh-bars"></div>
             </div>
-            <button className="review-button">Ôn tập ngay</button>
+            <button className="btn-next">Ôn tập ngay</button>
         </div>
     );
 };

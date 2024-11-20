@@ -1,0 +1,59 @@
+.vocabulary-selector {
+    width     : 90%;
+    height    : 90%;
+    margin    : 0 auto;
+    background: #fff;
+    padding   : 30px;
+
+    .title {
+        text-align   : center;
+        font-weight  : 700;
+        font-size    : 20px;
+        margin-bottom: 30px;
+    }
+
+    .list-vocab {
+        background-color: #F2F2F2;
+        border-radius   : 30px;
+        margin-bottom   : 30px;
+
+        .vocabulary-item {
+            display      : flex;
+            align-items  : center;
+            padding      : 20px;
+            border-bottom: none;
+            cursor       : pointer;
+
+            .ant-checkbox-wrapper {
+                width: 100%;
+
+                .item-word {
+                    width          : 100%;
+                    display        : flex;
+                    flex-direction : row;
+                    justify-content: space-between;
+                    margin-left    : 10px;
+                    font-size      : 16px;
+                }
+            }
+        }
+    }
+
+    .ant-list {
+        max-height: 330px; // Giới hạn chiều cao
+        overflow-y: auto; // Bật cuộn dọc
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius   : 3px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
+    }
+}
