@@ -33,6 +33,8 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         box-shadow: $card-box-shadow;
         padding: 0 16px;
         transition: transform 0.3s, box-shadow 0.3s;
+        color: $cc-color;
+        border: none;
         user-select: none;
         cursor: pointer;
 
@@ -44,7 +46,7 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         .course-title {
             font-size: 24px;
             font-weight: bold;
-            color: $cc-color;
+            color: inherit;
             margin-bottom: 30px;
             font-family: Quicksand;
         }
@@ -53,7 +55,7 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             font-size: 18px;
-            color: $cc-color;
+            color: inherit;
             margin-top: 5px;
             font-family: Quicksand;
             font-weight: 500;

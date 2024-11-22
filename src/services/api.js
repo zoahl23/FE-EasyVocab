@@ -198,8 +198,16 @@ export const callListCourse = (query) => {
     return axios.get(`/api/course/user?${query}`);
 }
 
+export const callListCourseDone = () => {
+    return axios.get(`/api/users/course_progress`);
+}
+
 export const callListTopic = (query) => {
     return axios.get(`/api/topics/user?${query}`);
+}
+
+export const callListTopicDone = () => {
+    return axios.get(`/api/users/topic_progress`);
 }
 
 export const callListVocab = (query) => {

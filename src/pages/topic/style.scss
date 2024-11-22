@@ -35,6 +35,7 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         box-shadow: $card-box-shadow;
         padding: 16px;
         transition: transform 0.3s, box-shadow 0.3s;
+        color: $cc-color;
         user-select: none;
         cursor: pointer;
 
@@ -61,18 +62,17 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         &__content {
             display: flex;
             flex-direction: column;
+            color: inherit; // kế thừa từ cha
 
             .topic-card__title {
                 font-size: 24px;
                 font-weight: bold;
-                color: $cc-color;
                 margin: 0;
                 font-family: Quicksand;
             }
 
             .topic-card__description {
                 font-size: 16px;
-                color: $cc-color;
                 margin-top: 5px;
                 font-family: Quicksand;
                 font-weight: 500;
