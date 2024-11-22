@@ -25,19 +25,22 @@ const VocabSelector = ({ vocabularies, onSubmit }) => {
                     dataSource={vocabularies}
                     renderItem={(item) => (
                         <List.Item className="vocabulary-item">
-                            <Checkbox
-                                checked={selectedWords.includes(item.id)}
-                                onChange={() => handleSelect(item.id)}
-                            >
-                                <div className="item-word">
-                                    <div>
-                                        <strong>{item.word}</strong>
-                                    </div>
-                                    <div style={{ fontStyle: "italic", color: "gray" }}>
-                                        {item.meaning}
-                                    </div>
+                            <div className="item-word">
+                                <div className="word">
+                                    <Checkbox
+                                        checked={selectedWords.includes(item.id)}
+                                        onChange={() => handleSelect(item.id)}
+                                    >
+                                    </Checkbox>
+                                    <p>
+                                        <span>{item.word}</span>
+                                        <div className="pron">{item.pronunciation}</div>
+                                    </p>
                                 </div>
-                            </Checkbox>
+                                <div className="mean">
+                                    <span>{item.meaning}</span>
+                                </div>
+                            </div>
                         </List.Item>
                     )}
                 />
