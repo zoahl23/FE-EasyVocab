@@ -223,3 +223,8 @@ export const callSaveVocab = (id) => {
 export const callVocabLever = () => {
     return axios.get('/api/users/review_stats');
 }
+
+// get all vocab for notebook
+export const callVocabNotebook = (query) => {
+    return axios.get(`/api/users/wordbook?${query}`);
+}

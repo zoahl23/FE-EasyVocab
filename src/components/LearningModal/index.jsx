@@ -352,6 +352,7 @@ const LearningModal = (props) => {
                 centered
                 width={400}
                 maskClosable={false}
+                className="custom-confirm-modal"
             >
                 <p>Làm nốt bài đi. Thoát bây giờ là toàn bộ kết quả học không được lưu lại đó 😭</p>
             </Modal>

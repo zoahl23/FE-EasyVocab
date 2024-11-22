@@ -102,6 +102,7 @@ const CustomNotification = (props) => {
                 onCancel={handleCancel}
                 centered
                 maskClosable={false}
+                className="custom-confirm-modal"
             >
                 <div className="main-problem">
                     <div className="problem">
