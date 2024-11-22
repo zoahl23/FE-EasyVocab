@@ -120,3 +120,75 @@
         }
     }
 }
+
+.ant-modal {
+    width           : 300px;
+    border-radius   : 16px;
+    overflow        : hidden; // giới hạn nội dung bên trong
+    background-color: #f9f9f9;
+    box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .ant-modal-body {
+        font-size  : 18px;
+        color      : #333;
+        line-height: 1.5;
+        text-align : center;
+    }
+
+    .ant-modal-footer {
+        display        : flex;
+        justify-content: center;
+        margin: 20px 0;
+
+        .ant-btn {
+            width           : 200px;
+            height          : 45px;
+            background-color: #fff;
+            box-shadow      : 0 4px 0 0 #e0e0e0;
+            border          : 1px solid #e0e0e0;
+            border-radius   : 100px;
+            font-size       : 18px;
+            font-weight     : 700;
+            font-family     : Quicksand;
+            line-height     : 38px;
+            letter-spacing  : .257px;
+            text-align      : center;
+            user-select     : none;
+            cursor          : pointer;
+            padding         : 0 25px;
+            transition      : all .2s;
+            margin          : 0 auto;
+
+            &:hover {
+                border: 1px solid #e0e0e0;
+                color : #333;
+            }
+        }
+
+        .ant-btn-primary {
+            height        : 45px;
+            width         : 200px;
+            padding       : 0 25px;
+            border-radius : 100px;
+            border        : none;
+            background    : linear-gradient(45deg, #4286ec, #3F51B5);
+            box-shadow    : 0 4px 0 0 #3344a4;
+            color         : #fff;
+            cursor        : pointer;
+            user-select   : none;
+            font-size     : 18px;
+            font-weight   : 700;
+            font-family   : Quicksand;
+            line-height   : 38px;
+            letter-spacing: .257px;
+            text-align    : center;
+            margin-top    : 0 auto;
+
+            &:hover {
+                background: linear-gradient(45deg, #4286ec, #3F51B5);
+                border: none;
+                color : #fff;
+            }
+        }
+    }
+}

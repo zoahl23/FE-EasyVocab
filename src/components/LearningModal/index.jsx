@@ -204,7 +204,8 @@ const LearningModal = (props) => {
         const handleBeforeUnload = (e) => {
             if (isVisible) {
                 e.preventDefault();
-                e.returnValue = '';
+                setIsConfirmVisible(true); // Hiển thị modal xác nhận
+                return ""; // Trình duyệt hiển thị hộp thoại mặc định
             }
         };
 
@@ -337,22 +338,22 @@ const LearningModal = (props) => {
             </div>
 
             <Modal
-                title="Bạn có chắc muốn thoát"
                 open={isConfirmVisible}
                 onOk={() => {
                     setIsConfirmVisible(false);
-                    onClose();
                 }}
                 onCancel={() => {
                     setIsConfirmVisible(false);
+                    onClose();
                 }}
-                okText="Xác nhận"
-                cancelText="Hủy"
+                cancelText="Thoát"
+                okText="Tiếp tục học"
                 closeIcon={false}
-                width={300}
                 centered
+                width={400}
+                maskClosable={false}
             >
-                <p>Thoát bây giờ là toàn bộ kết quả học không được lưu lại đó. 😭😭😭</p>
+                <p>Làm nốt bài đi. Thoát bây giờ là toàn bộ kết quả học không được lưu lại đó 😭</p>
             </Modal>
         </>
     );
