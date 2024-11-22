@@ -1,7 +1,9 @@
+import FeedbackTable from "../../../components/Admin/Feedback/FeedbackTable"
+
 const FeedbackPage = () => {
     return (
         <>
-            Admin Feedback
+            <FeedbackTable />
         </>
     )
 }
