@@ -24,6 +24,7 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         box-shadow: $card-box-shadow;
         user-select: none;
         cursor: pointer;
+        font-family: Quicksand;
     }
 
     .topic-card {
@@ -66,12 +67,15 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
                 font-weight: bold;
                 color: $cc-color;
                 margin: 0;
+                font-family: Quicksand;
             }
 
             .topic-card__description {
                 font-size: 16px;
                 color: $cc-color;
                 margin-top: 5px;
+                font-family: Quicksand;
+                font-weight: 500;
             }
         }
     }

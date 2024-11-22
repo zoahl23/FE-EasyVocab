@@ -74,6 +74,7 @@
         text-align: center;
         user-select: none;
         color: var(--color-text);
+        font-weight: 600;
       }
 
       &:hover {
@@ -103,7 +104,7 @@
     span{
       color: var(--color-user);
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 700;
 
       .iconSet {
         display: flex;
