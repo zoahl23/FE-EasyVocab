@@ -6,6 +6,7 @@ import CustomNotification from '../Notification';
 import Loading from '../Loading';
 import './style.scss';
 import { HiSpeakerWave } from 'react-icons/hi2';
+import ResultSummary from '../ResultSumary';
 
 const ReviewModal = (props) => {
     const { isVisible, onClose } = props;
@@ -21,6 +22,8 @@ const ReviewModal = (props) => {
     const [currentQuestion, setCurrentQuestion] = useState(null); // câu hiện tại
 
     const [incorrectQuestions, setIncorrectQuestions] = useState([]); // câu sai
+    const [correctQuestions, setCorrectQuestions] = useState([]); // ds câu đúng
+    const [allIncorrectQuestions, setAllIncorrectQuestions] = useState([]); // ds câu sai
 
     const [isCompleted, setIsCompleted] = useState(false); // hoàn thành bài học
 
@@ -47,6 +50,8 @@ const ReviewModal = (props) => {
         setCurrentQuestionIndex(0);
         setCurrentQuestion(null);
         setIncorrectQuestions([]);
+        setCorrectQuestions([]);
+        setAllIncorrectQuestions([]);
         setIsCompleted(false);
         setIsOpen(false);
         setIsCorrect(false);
@@ -58,7 +63,11 @@ const ReviewModal = (props) => {
     };
 
     useEffect(() => {
-        if (currentQuestionIndex === listVocab.length && incorrectQuestions.length === 0) {
+        if (listVocab.length > 0 &&
+            currentQuestionIndex === listVocab.length &&
+            incorrectQuestions.length === 0
+        ) {
+            console.log(111);
             setIsCompleted(true);
         }
     }, [currentQuestionIndex, listVocab, incorrectQuestions]);
@@ -78,6 +87,7 @@ const ReviewModal = (props) => {
                 // console.log("Kết thúc câu hỏi chính, bắt đầu ôn lại câu sai.");
                 setListVocab(incorrectQuestions);
                 setCurrentQuestionIndex(0);
+                setAllIncorrectQuestions(incorrectQuestions);
                 setIncorrectQuestions([]);
             } else {
                 // console.log("Đã hoàn thành tất cả các câu hỏi!");
@@ -97,6 +107,7 @@ const ReviewModal = (props) => {
         if (vocabInput) {
             if (vocabInput.toLowerCase().trim() === correct.word.toLowerCase()) {
                 setIsCorrect(true);
+                setCorrectQuestions((prev) => [...prev, currentQuestion]);
             }
             else {
                 setIncorrectQuestions((prev) => [...prev, currentQuestion]);
@@ -105,6 +116,7 @@ const ReviewModal = (props) => {
         else if (selectedAnswer) {
             if (selectedAnswer.id === correct.id) {
                 setIsCorrect(true);
+                setCorrectQuestions((prev) => [...prev, currentQuestion]);
             } else {
                 setIncorrectQuestions((prev) => [...prev, currentQuestion]);
             }
@@ -362,6 +374,24 @@ const ReviewModal = (props) => {
         setIsLoading(false);
     }
 
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (isVisible) {
+                e.preventDefault();
+                setIsConfirmVisible(true); // Hiển thị modal xác nhận
+                return ""; // Trình duyệt hiển thị hộp thoại mặc định
+            }
+        };
+
+        // thêm sự kiện khi cố gắng thoát khỏi trang
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // xóa sự kiện khi không cần thiết
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [isVisible]);
+
     if (!isVisible) return null;
 
     return (
@@ -372,10 +402,12 @@ const ReviewModal = (props) => {
                         {isLoading ? (
                             <Loading />
                         ) : isCompleted ? (
-                            <div className="completed-message">
-                                <h2>Chúc mừng! Bạn đã hoàn thành bài ôn tập.</h2>
-                                <button onClick={onClose}>Kết thúc</button>
-                            </div>
+                            <ResultSummary
+                                correctAnswers={correctQuestions}
+                                incorrectAnswers={allIncorrectQuestions}
+                                totalQuestions={correctQuestions.length}
+                                onContinue={onClose} // nhấn "Tiếp tục" sẽ đóng modal
+                            />
                         ) : (
                             <div className="content">
                                 <button className="closeButton" onClick={() => { setIsConfirmVisible(true) }}>×</button>

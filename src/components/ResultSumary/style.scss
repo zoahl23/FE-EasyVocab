@@ -1,0 +1,115 @@
+.result-summary {
+    width      : 70%;
+    text-align : center;
+    font-family: 'Quicksand', sans-serif;
+
+    h2 {
+        color        : #3F51B5;
+        font-size    : 24px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size  : 20px;
+        font-weight: 600;
+        color      : #3F51B5;
+        margin     : 20px 0;
+    }
+
+    .result-details {
+        background-color: #F2F2F2;
+        border-radius   : 30px;
+        margin-bottom   : 10px;
+        max-height      : 220px;
+        /* Giới hạn chiều cao */
+        overflow-y      : auto;
+        /* Bật cuộn dọc */
+        padding         : 15px;
+        /* Khoảng cách bên trong */
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius   : 3px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
+
+        .result-item {
+            display      : flex;
+            margin       : 10px 0;
+            padding      : 10px;
+            border-radius: 8px;
+            font-size    : 16px;
+
+            &.correct {
+                background-color: #d4edda;
+                color           : #155724;
+            }
+
+            &.incorrect {
+                background-color: #f8d7da;
+                color           : #721c24;
+            }
+
+            .item-1 {
+                display    : flex;
+                flex-basis : 40%;
+                align-items: center;
+
+                .icon {
+                    font-size   : 20px;
+                    margin-right: 10px;
+                }
+
+                .word {
+                    font-weight: bold;
+                    flex       : 1;
+                    text-align : left;
+                }
+            }
+
+            .item-2 {
+                display    : flex;
+                flex-grow  : 1;
+                flex-basis : 60%;
+                align-items: center;
+
+                .meaning {
+                    font-style: italic;
+                    color     : #666;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1080px) {
+    .result-summary {
+        h2 {
+            font-size: 22px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .result-details {
+            .result-item {
+                font-size: 12px;
+
+                .item-1{
+                    gap : 2px;
+                    .icon{
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
