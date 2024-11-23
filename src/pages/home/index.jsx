@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { callVocabLever } from '../../services/api';
 import Loading from '../../components/Loading';
 import { useSelector } from 'react-redux';
+import ReviewModal from '../../components/ReviewModal';
 
 const Home = () => {
 
@@ -20,6 +21,7 @@ const Home = () => {
     const [data, setData] = useState(defaultData);
     const [loading, setLoading] = useState(false);
     const [isEmpty, setIsEmpty] = useState(true);
+    const [isLearningMode, setIsLearningMode] = useState(false);
 
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
 
@@ -52,15 +54,26 @@ const Home = () => {
     };
 
     return (
-        <MainContent>
-            {loading ? (
-                <Loading />
-            ) : isEmpty ? (
-                <EmptyVocab />
-            ) : (
-                <ReviewChart key={isAuthenticated ? "auth-" + Date.now() : "unauth"} data={data} />
-            )}
-        </MainContent>
+        <>
+            <MainContent>
+                {loading ? (
+                    <Loading />
+                ) : isEmpty ? (
+                    <EmptyVocab />
+                ) : (
+                    <ReviewChart
+                        key={isAuthenticated ? "auth-" + Date.now() : "unauth"}
+                        data={data}
+                        setIsLearningMode={setIsLearningMode}
+                    />
+                )}
+            </MainContent>
+
+            <ReviewModal
+                isVisible={isLearningMode}
+                onClose={() => setIsLearningMode(false)}
+            />
+        </>
     )
 }
 

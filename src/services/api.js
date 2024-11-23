@@ -45,8 +45,8 @@ export const callCreateAUser = (fullName, password, email, role, subscriptionPla
     )
 }
 
-export const callUpdateUser = (id, fullName, role, subscriptionPlan) => {
-    return axios.put(`/api/users/${id}`, { fullName, role, subscriptionPlan },
+export const callUpdateUser = (id, fullName, role, subscriptionPlan, password) => {
+    return axios.put(`/api/users/${id}`, { fullName, role, subscriptionPlan, password },
         {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -210,8 +210,14 @@ export const callListTopicDone = () => {
     return axios.get(`/api/users/topic_progress`);
 }
 
+// get list vocab learning
 export const callListVocab = (query) => {
     return axios.get(`/api/vocabs/user?${query}`);
+}
+
+// get list vocab review
+export const callListReview = () => {
+    return axios.get(`/api/users/review_vocab`);
 }
 
 // save vocab to notebook

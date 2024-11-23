@@ -12,7 +12,7 @@ const SubModalUpdate = (props) => {
         const { userId, fullName, role, subscriptionPlan } = values;
         //console.log("value: ", values);
         setIsSubmit(true)
-        const res = await callUpdateUser(userId, fullName, role, subscriptionPlan);
+        const res = await callUpdateUser(userId, fullName, role, subscriptionPlan, "");
         //console.log(">>>check: ", res);
         if (res && res.data) {
             message.success('Cập nhật gói đăng ký thành công');

@@ -1,6 +1,6 @@
 import './style.scss';
 
-const ReviewChart = ({ data }) => {
+const ReviewChart = ({ data, setIsLearningMode }) => {
 
     // lấy giá trị lớn nhất để chuẩn hóa chiều cao
     const maxCount = Math.max(...data.map((item) => item.count));
@@ -29,7 +29,10 @@ const ReviewChart = ({ data }) => {
                 ))}
                 <div className="thanh-bars"></div>
             </div>
-            <button className="btn-next">Ôn tập ngay</button>
+            <button
+                className="btn-next"
+                onClick={() => setIsLearningMode(true)}
+            >Ôn tập ngay</button>
         </div>
     );
 };
