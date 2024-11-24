@@ -1,19 +1,24 @@
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, Input, Button, message, notification } from 'antd';
+import { callChangePassword } from '../../services/api';
 
 const ChangePassModal = ({ isVisible, onClose }) => {
     const [form] = Form.useForm();
 
-    const handleChangePassword = async () => {
-        try {
-            const values = await form.validateFields();
-            console.log('Password change request:', values);
+    const handleChangePassword = async (values) => {
+        const { oldPass, newPass } = values;
 
-            // Call API đổi mật khẩu tại đây
+        const res = await callChangePassword(oldPass, newPass);
+
+        if (res && res.data) {
             message.success('Đổi mật khẩu thành công');
             form.resetFields();
             onClose();
-        } catch (error) {
-            console.log('Validation failed:', error);
+        }
+        else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
         }
     };
 
@@ -26,28 +31,27 @@ const ChangePassModal = ({ isVisible, onClose }) => {
         <Modal
             title="Đổi mật khẩu"
             open={isVisible}
+            onOk={() => { form.submit() }}
             onCancel={handleCloseModal}
             maskClosable={false}
-            footer={[
-                <Button key="cancel" onClick={handleCloseModal}>
-                    Hủy
-                </Button>,
-                <Button key="submit" type="primary" onClick={handleChangePassword}>
-                    Đổi mật khẩu
-                </Button>,
-            ]}
+            okText={"Đổi mật khẩu"}
+            cancelText={"Hủy"}
             centered
         >
-            <Form form={form} layout="vertical">
+            <Form
+                form={form}
+                layout="vertical"
+                onFinish={handleChangePassword}
+            >
                 <Form.Item
-                    name="currentPassword"
+                    name="oldPass"
                     label="Mật khẩu hiện tại"
                     rules={[{ required: true, message: 'Vui lòng nhập mật khẩu hiện tại!' }]}
                 >
                     <Input.Password />
                 </Form.Item>
                 <Form.Item
-                    name="newPassword"
+                    name="newPass"
                     label="Mật khẩu mới"
                     rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới!' }]}
                 >
@@ -56,12 +60,12 @@ const ChangePassModal = ({ isVisible, onClose }) => {
                 <Form.Item
                     name="confirmPassword"
                     label="Xác nhận mật khẩu mới"
-                    dependencies={['newPassword']}
+                    dependencies={['newPass']}
                     rules={[
                         { required: true, message: 'Vui lòng xác nhận mật khẩu mới!' },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
-                                if (!value || getFieldValue('newPassword') === value) {
+                                if (!value || getFieldValue('newPass') === value) {
                                     return Promise.resolve();
                                 }
                                 return Promise.reject(new Error('Mật khẩu không khớp!'));

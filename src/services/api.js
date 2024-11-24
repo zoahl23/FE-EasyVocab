@@ -266,3 +266,14 @@ export const callBulkCompleteReview = (data) => {
 export const callPayment = (amount) => {
     return axios.get(`/api/payment/pay?amount=${amount}`);
 }
+
+// change password
+export const callChangePassword = (oldPassword, newPassword) => {
+    return axios.post('/api/users/change_password', { oldPassword, newPassword },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    );
+}
