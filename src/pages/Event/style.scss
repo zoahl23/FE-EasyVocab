@@ -1,0 +1,40 @@
+.new-event {
+    padding-top: 15px;
+    width      : 100%;
+
+    .title {
+        display        : flex;
+        gap            : 10px;
+        justify-content: flex-start;
+        align-items    : center;
+        color          : #000;
+        font-family    : Quicksand, serif;
+        font-size      : 20px;
+        font-weight    : 700;
+        letter-spacing : .36px;
+        text-transform : uppercase;
+        margin-bottom  : 20px;
+        padding        : 0 15px;
+    }
+
+    .content {
+        display: flex;
+        flex-wrap: wrap; // cho phép xuống dòng
+        justify-content: center;
+        padding: 10px 55px;
+        margin : 0 auto;
+        gap    : 30px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .new-event .content {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .new-event .content {
+        gap: 10px;
+    }
+}
