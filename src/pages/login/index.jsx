@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { callLogin } from '../../services/api';
 import { useDispatch } from 'react-redux';
 import { doLoginAction } from '../../redux/account/accountSlice';
+import ForgotPass from '../../components/ForgotPass';
 
 const LoginPage = () => {
 
     const navigate = useNavigate();
     const [isSubmit, setIsSubmit] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -73,9 +75,15 @@ const LoginPage = () => {
                             <Form.Item
                             // wrapperCol={{ offset: 6, span: 16 }}
                             >
-                                <Button type="primary" htmlType="submit" loading={isSubmit}>
-                                    Đăng nhập
-                                </Button>
+                                <div className='reset-pass'>
+                                    <Button type="primary" htmlType="submit" loading={isSubmit}>
+                                        Đăng nhập
+                                    </Button>
+                                    <p
+                                        style={{ marginLeft: 10, cursor: 'pointer' }}
+                                        onClick={() => setIsVisible(true)}
+                                    >Quên mật khẩu?</p>
+                                </div>
                             </Form.Item>
                             <Divider>Hoặc</Divider>
                             <p className="text text-normal">Chưa có tài khoản ?
@@ -87,6 +95,10 @@ const LoginPage = () => {
                     </section>
                 </div>
             </main>
+            <ForgotPass
+                isVisible={isVisible}
+                onClose={() => setIsVisible(false)}
+            />
         </div>
     )
 }

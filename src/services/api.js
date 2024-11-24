@@ -277,3 +277,25 @@ export const callChangePassword = (oldPassword, newPassword) => {
         }
     );
 }
+
+// Gửi OTP
+export const callSendOtp = (email) => {
+    return axios.post('/api/users/reset', { email },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    );
+};
+
+// Đổi mật khẩu
+export const callResetPassword = (email, password) => {
+    return axios.post('/api/users/new_password', { email, password },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    );
+};
