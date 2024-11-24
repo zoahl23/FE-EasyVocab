@@ -192,6 +192,27 @@ export const callUpdateVocab = (id, word, meaning, topicId) => {
     )
 }
 
+// Dashboard
+export const callTotalUser = () => {
+    return axios.get(`/api/statistical/active_count`);
+}
+
+export const callTotalCourse = () => {
+    return axios.get(`/api/statistical/count_course`);
+}
+
+export const callTotalTopic = () => {
+    return axios.get(`/api/statistical/count_topic`);
+}
+
+export const callTotalVocab = () => {
+    return axios.get(`/api/statistical/count_vocab`);
+}
+
+export const callDataPieChart = () => {
+    return axios.get(`/api/statistical/segments`);
+}
+
 // Client
 
 export const callListCourse = (query) => {
