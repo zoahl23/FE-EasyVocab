@@ -22,13 +22,20 @@ const Dashboard = () => {
     ];
 
     const dataLine = [
-        { date: '2024-01-01', activeUsers: 200 },
-        { date: '2024-01-02', activeUsers: 180 },
-        { date: '2024-01-03', activeUsers: 250 },
-        { date: '2024-01-04', activeUsers: 300 },
-        { date: '2024-01-05', activeUsers: 280 },
-        { date: '2024-01-06', activeUsers: 320 },
-        { date: '2024-01-07', activeUsers: 350 },
+        { date: '2024-01-01', value: 200, type: 'Premium' },
+        { date: '2024-01-01', value: 50, type: 'Free' },
+        { date: '2024-01-02', value: 180, type: 'Premium' },
+        { date: '2024-01-02', value: 60, type: 'Free' },
+        { date: '2024-01-03', value: 250, type: 'Premium' },
+        { date: '2024-01-03', value: 70, type: 'Free' },
+        { date: '2024-01-04', value: 300, type: 'Premium' },
+        { date: '2024-01-04', value: 90, type: 'Free' },
+        { date: '2024-01-05', value: 280, type: 'Premium' },
+        { date: '2024-01-05', value: 80, type: 'Free' },
+        { date: '2024-01-06', value: 320, type: 'Premium' },
+        { date: '2024-01-06', value: 100, type: 'Free' },
+        { date: '2024-01-07', value: 350, type: 'Premium' },
+        { date: '2024-01-07', value: 120, type: 'Free' },
     ];
 
     const dataPie = [
@@ -69,7 +76,7 @@ const Dashboard = () => {
                 </Col>
                 <Col span={12}>
                     <Card title="Số lượng người dùng hoạt động hàng ngày">
-                        <LineChart data={dataLine} xField="date" yField="activeUsers" />
+                        <LineChart data={dataLine} xField="date" yField="value" seriesField="type" />
                     </Card>
                 </Col>
             </Row>
