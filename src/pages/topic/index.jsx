@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import MainContent from '../../components/MainContent';
 import './style.scss';
-import { Col, Row } from "antd";
+import { Col, Modal, Row } from "antd";
 import { useEffect, useState } from "react";
 import LearningModal from "../../components/LearningModal";
 import { callListTopic, callListTopicDone } from "../../services/api";
 import Loading from "../../components/Loading";
+import { useSelector } from "react-redux";
 
 const Topic = () => {
     const [isLearningMode, setIsLearningMode] = useState(false);
@@ -15,12 +16,14 @@ const Topic = () => {
     const [courseName, setCourseName] = useState();
     const [topicId, setTopicId] = useState();
     const navigate = useNavigate();
+    const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+    const isAuthenticated = useSelector(state => state.account.isAuthenticated);
 
     const { id } = useParams(); // course id
 
     useEffect(() => {
         handListTopic();
-    }, []);
+    }, [isLearningMode, topicId]);
 
     const handListTopic = async () => {
         setIsLoading(true);
@@ -74,8 +77,13 @@ const Topic = () => {
                             <div
                                 className="topic-card"
                                 onClick={() => {
-                                    setIsLearningMode(true);
-                                    setTopicId(topic.id);
+                                    if (isAuthenticated) {
+                                        setIsLearningMode(true);
+                                        setTopicId(topic.id);
+                                    } else {
+                                        setIsConfirmVisible(true);
+                                        console.log(111)
+                                    }
                                 }}
                                 style={getTopicStyle(topic.id)}
                             >
@@ -97,6 +105,21 @@ const Topic = () => {
                 onClose={() => setIsLearningMode(false)}
                 topicId={topicId}
             />
+
+            <Modal
+                open={isConfirmVisible}
+                onOk={() => {
+                    setIsConfirmVisible(false);
+                    navigate('/login');
+                }}
+                onCancel={() => setIsConfirmVisible(false)}
+                cancelText="Hủy"
+                okText="Đăng nhập"
+                closeIcon={false}
+                centered
+                width={450}
+                className="custom-confirm-modal"
+            ><p>Đăng nhập để lưu kết quả học tập của bạn!</p></Modal>
         </>
     )
 }

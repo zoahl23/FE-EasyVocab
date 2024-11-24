@@ -31,7 +31,7 @@ const Home = () => {
         if (isAuthenticated) {
             fetchData();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, isLearningMode]);
 
     const fetchData = async () => {
         setLoading(true);
