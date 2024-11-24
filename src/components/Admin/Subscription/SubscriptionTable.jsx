@@ -18,7 +18,7 @@ const SubscriptionTable = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [filter, setFilter] = useState("");
-    const [sortQuery, setSortQuery] = useState("sort=-subscriptionEndDate");
+    const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
@@ -27,6 +27,7 @@ const SubscriptionTable = () => {
     const [dataUpdate, setDataUpdate] = useState(null);
 
     useEffect(() => {
+        setListUser([]);
         fetchUser();
     }, [current, pageSize, filter, sortQuery]);
 
