@@ -7,13 +7,15 @@ import '../../styles/reset.scss';
 import imgGuest from '../../assets/imgGuest.png';
 import { doLogoutAction } from '../../redux/account/accountSlice';
 import { useEffect, useState } from 'react';
+import AccountModal from '../AccountModal/AccountModal';
 
 
 const Header = () => {
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
     const user = useSelector((state) => state.account.user);
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleLogout = () => {
         dispatch(doLogoutAction());
@@ -24,7 +26,10 @@ const Header = () => {
 
     let items = [
         {
-            label: <div style={{ cursor: 'pointer' }}>Quản lý tài khoản</div>,
+            label: <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setIsModalVisible(true)}
+            >Quản lý tài khoản</div>,
             key: 'account',
         },
         {
@@ -125,6 +130,13 @@ const Header = () => {
                     </Dropdown>
                 )}
             </div>
+
+            {/* Modal quản lý tài khoản */}
+            <AccountModal
+                isVisible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                userData={user}
+            />
         </div>
     )
 }

@@ -17,6 +17,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogoutAction } from '../../redux/account/accountSlice';
 import logoWeb from '../../../public/logoWeb.png';
+import AccountModal from '../AccountModal/AccountModal';
 
 
 const { Header, Sider, Content } = Layout;
@@ -74,6 +75,7 @@ const LayoutAdmin = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleLogout = () => {
         dispatch(doLogoutAction());
@@ -83,7 +85,10 @@ const LayoutAdmin = () => {
 
     const itemsDropdown = [
         {
-            label: <div style={{ cursor: 'pointer' }}>Quản lý tài khoản</div>,
+            label: <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setIsModalVisible(true)}
+            >Quản lý tài khoản</div>,
             key: 'account',
         },
         {
@@ -157,6 +162,13 @@ const LayoutAdmin = () => {
                     <Outlet />
                 </Content>
             </Layout>
+
+            {/* Modal quản lý tài khoản */}
+            <AccountModal
+                isVisible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                userData={user}
+            />
         </Layout>
     )
 }
