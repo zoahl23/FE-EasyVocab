@@ -11,7 +11,6 @@ const initialState = {
         "subscriptionPlan": "",
         "subscriptionEndDate": "",
         "createdAt": "",
-        "password": "",
     }
 };
 
@@ -36,7 +35,6 @@ export const accountSlice = createSlice({
                 subscriptionPlan: action.payload.subscriptionPlan,
                 subscriptionEndDate: action.payload.subscriptionEndDate,
                 createdAt: action.payload.createdAt,
-                password: action.payload.password
             };
         },
         doGetAccountAction: (state, action) => {
@@ -55,7 +53,6 @@ export const accountSlice = createSlice({
                 subscriptionPlan: action.payload.subscriptionPlan,
                 subscriptionEndDate: action.payload.subscriptionEndDate,
                 createdAt: action.payload.createdAt,
-                password: action.payload.password
             };
         },
         doLogoutAction: (state) => {
@@ -69,7 +66,6 @@ export const accountSlice = createSlice({
                 subscriptionPlan: "",
                 subscriptionEndDate: "",
                 createdAt: "",
-                password: ""
             }
         },
     },

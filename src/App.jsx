@@ -29,6 +29,7 @@ import ManageVocabPage from "./pages/admin/vocab";
 import ManageCoursePage from "./pages/admin/course";
 import FeedbackPage from "./pages/admin/feedback";
 import Topic from "./pages/topic";
+import PaymentCallback from "./components/AccountModal/PaymentCallback";
 
 const Layout = () => {
     return (
@@ -91,6 +92,11 @@ export default function App() {
                     element: <Event />
                 },
             ],
+        },
+        {
+            path: "/api/payment/callback",
+            element: <PaymentCallback />,
+            errorElement: <ErrorPage />
         },
         {
             path: "/admin",

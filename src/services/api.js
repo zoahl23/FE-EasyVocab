@@ -260,3 +260,9 @@ export const callVocabNotebook = (query) => {
 export const callBulkCompleteReview = (data) => {
     return axios.post('/api/users/complete_review', data);
 }
+
+// payment
+
+export const callPayment = (amount) => {
+    return axios.get(`/api/payment/pay?amount=${amount}`);
+}

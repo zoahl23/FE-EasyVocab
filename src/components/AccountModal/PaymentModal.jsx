@@ -1,19 +1,22 @@
 import { Modal, Button, Radio, message } from 'antd';
 import { useState } from 'react';
+import { callPayment } from '../../services/api';
 
 const PaymentModal = ({ isVisible, onClose }) => {
     const [selectedPlan, setSelectedPlan] = useState(null);
 
-    const handlePayment = () => {
+    const handlePayment = async () => {
+
         if (!selectedPlan) {
             message.warning('Vui lòng chọn một gói dịch vụ!');
             return;
         }
 
-        // Giả lập call API trả về link thanh toán
-        const paymentUrl = `https://payment.example.com/${selectedPlan}`;
-        message.success('Chuyển đến trang thanh toán...');
-        window.location.href = paymentUrl; // Redirect đến link thanh toán
+        const res = await callPayment(selectedPlan);
+        if (res && res.data) {
+            message.success('Chuyển đến trang thanh toán...');
+            window.location.href = res.data
+        }
     };
 
     const handleCloseModal = () => {
@@ -42,9 +45,9 @@ const PaymentModal = ({ isVisible, onClose }) => {
                 value={selectedPlan}
                 style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: 20 }}
             >
-                <Radio value="6_months">Gói 6 tháng - 399,000đ</Radio>
-                <Radio value="1_year">Gói 1 năm - 699,000đ</Radio>
-                <Radio value="3_years">Gói 3 năm - 1,199,000đ</Radio>
+                <Radio value="399000">Gói 6 tháng - 399,000đ</Radio>
+                <Radio value="699000">Gói 1 năm - 699,000đ</Radio>
+                <Radio value="1199000">Gói 3 năm - 1,199,000đ</Radio>
             </Radio.Group>
         </Modal>
     );

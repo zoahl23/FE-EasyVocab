@@ -36,7 +36,10 @@ instance.interceptors.response.use(function (response) {
 
         const allowedPaths = ['/review', '/learn', '/notebook', '/events'];
 
-        if (!allowedPaths.includes(window.location.pathname) && !window.location.pathname.startsWith('/learn')) {
+        if (!allowedPaths.includes(window.location.pathname)
+            && !window.location.pathname.startsWith('/learn')
+            && !window.location.pathname.startsWith('/api')
+        ) {
             localStorage.removeItem('access_token');
             window.location.href = '/login';
         }
