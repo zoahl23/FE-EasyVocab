@@ -234,3 +234,8 @@ export const callVocabLever = () => {
 export const callVocabNotebook = (query) => {
     return axios.get(`/api/users/wordbook?${query}`);
 }
+
+// save vocab to review
+export const callBulkCompleteReview = (data) => {
+    return axios.post('/api/users/complete_review', data,);
+}

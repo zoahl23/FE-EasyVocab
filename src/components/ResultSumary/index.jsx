@@ -1,5 +1,7 @@
 import { Progress } from 'antd';
 import './style.scss';
+import { callBulkCompleteReview } from '../../services/api';
+import { useEffect } from 'react';
 
 const ResultSummary = ({ correctAnswers, incorrectAnswers, totalQuestions, onContinue }) => {
 
@@ -9,6 +11,32 @@ const ResultSummary = ({ correctAnswers, incorrectAnswers, totalQuestions, onCon
             (incorrectItem) => incorrectItem.correct.word === correctItem.correct.word
         )
     );
+
+    // tạo ds để gửi lên API
+    const buildReviewPayload = () => {
+        const incorrectPayload = incorrectAnswers.map(item => ({
+            id: item.correct.id,
+            status: 0, // Sai
+        }));
+
+        const correctPayload = filteredCorrectAnswers.map(item => ({
+            id: item.correct.id,
+            status: 1, // Đúng
+        }));
+
+        return [...incorrectPayload, ...correctPayload];
+    };
+
+    useEffect(() => {
+        handleSaveVocab();
+    }, []);
+
+    const handleSaveVocab = async () => {
+        const res = await callBulkCompleteReview(buildReviewPayload());
+        if (res && res.data) {
+            console.log(res.data);
+        }
+    }
 
     const correctCount = Math.round(correctAnswers.length - incorrectAnswers.length);
     const percentage = Math.round((correctCount / totalQuestions) * 100);
