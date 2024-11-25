@@ -213,6 +213,14 @@ export const callDataPieChart = () => {
     return axios.get(`/api/statistical/segments`);
 }
 
+export const callTotalUserVip = () => {
+    return axios.get(`/api/statistical/vip`);
+}
+
+export const callPaymentTotal = () => {
+    return axios.get(`/api/statistical/revenue`);
+}
+
 // Feedback
 export const callCreateFeedback = (formType, content) => {
     return axios.post('/api/forms', { formType, content },

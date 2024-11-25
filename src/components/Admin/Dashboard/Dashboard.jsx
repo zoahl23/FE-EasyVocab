@@ -4,7 +4,7 @@ import LineChart from './LineChart';
 import PieChart from './PieChart';
 import StatisticCard from './StatisticCard';
 import { useEffect, useState } from 'react';
-import { callDataPieChart, callTotalCourse, callTotalTopic, callTotalUser, callTotalVocab } from '../../../services/api';
+import { callDataPieChart, callPaymentTotal, callTotalCourse, callTotalTopic, callTotalUser, callTotalUserVip, callTotalVocab } from '../../../services/api';
 import Loading from '../../Loading';
 
 const Dashboard = () => {
@@ -13,6 +13,8 @@ const Dashboard = () => {
     const [totalCourse, setTotalCourse] = useState(0);
     const [totalTopic, setTotalTopic] = useState(0);
     const [totalVocab, setTotalVocab] = useState(0);
+    const [totalUserVip, setTotalUserVip] = useState(0);
+    const [payment, setPayment] = useState(0);
     const [dataPie, setDataPie] = useState([]);
 
     const dataCol = [
@@ -71,6 +73,8 @@ const Dashboard = () => {
         const resC = await callTotalCourse();
         const resT = await callTotalTopic();
         const resV = await callTotalVocab();
+        const resUV = await callTotalUserVip();
+        const resPay = await callPaymentTotal();
         const resPie = await callDataPieChart();
 
         if (resU && resU.data) {
@@ -84,6 +88,12 @@ const Dashboard = () => {
         }
         if (resV && resV.data) {
             setTotalVocab(resV.data);
+        }
+        if (resUV && resUV.data) {
+            setTotalUserVip(resUV.data);
+        }
+        if (resPay && resPay.data) {
+            setPayment(resPay.data);
         }
         if (resPie && resPie.data) {
             const dataP = transformData(resPie);
@@ -100,13 +110,13 @@ const Dashboard = () => {
                 <>
                     <Row gutter={[16, 16]}>
                         <Col span={5}>
-                            <StatisticCard title="Tổng doanh thu" value={totalTopic} />
+                            <StatisticCard title="Tổng doanh thu" value={payment} />
                         </Col>
                         <Col span={5}>
                             <StatisticCard title="Tổng số người dùng" value={totalUser} />
                         </Col >
                         <Col span={5}>
-                            <StatisticCard title="Số người dùng VIP" value={totalUser} />
+                            <StatisticCard title="Số người dùng VIP" value={totalUserVip} />
                         </Col >
                         <Col span={5}>
                             <StatisticCard title="Số khóa học" value={totalCourse} />
