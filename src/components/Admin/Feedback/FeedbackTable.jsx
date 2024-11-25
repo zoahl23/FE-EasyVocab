@@ -195,14 +195,14 @@ const FeedbackTable = () => {
         }
     };
 
-    // const handleExportData = () => {
-    //     if (listCourse.length > 0) {
-    //         const worksheet = XLSX.utils.json_to_sheet(listCourse);
-    //         const workbook = XLSX.utils.book_new();
-    //         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //         XLSX.writeFile(workbook, "ExportCourse.csv");
-    //     }
-    // }
+    const handleExportData = () => {
+        if (listFeedback.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listFeedback);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportFeedback.csv");
+        }
+    }
 
     const renderHeader = () => {
         return (
@@ -212,7 +212,7 @@ const FeedbackTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type="primary"
-                    // onClick={() => handleExportData()}
+                        onClick={() => handleExportData()}
                     >Xuất dữ liệu</Button>
                     <Button
                         type='ghost'
