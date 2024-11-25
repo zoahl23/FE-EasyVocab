@@ -4,7 +4,8 @@ import audioIncorrect from '../../../public/incorrect_answer.mp3';
 import './style.scss';
 import { LuFlag } from 'react-icons/lu';
 import { HiMiniSpeakerWave } from 'react-icons/hi2';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, Form, message } from 'antd';
+import { callCreateFeedback } from '../../services/api';
 
 const { TextArea } = Input;
 
@@ -38,13 +39,35 @@ const CustomNotification = (props) => {
     };
 
     const handleOk = () => {
-        setIsModalOpen(false);
+        if (selectedButton === null) {
+            message.error("Vui lòng chọn loại lỗi bạn gặp phải!");
+            return;
+        }
+
+        if (!value.trim()) {
+            message.error("Vui lòng mô tả chi tiết lỗi!");
+            return;
+        }
+
+        handleCreateFeeback(selectedButton, value);
+        // console.log(111, selectedButton);
+        // console.log(112, value);
+        // handleCancel();
     };
 
+    const handleCreateFeeback = async (formType, content) => {
+        const res = await callCreateFeedback(formType, content);
+
+        if (res && res.data) {
+            message.success("Gửi phản hồi thành công!");
+            handleCancel();
+        }
+    }
+
     const handleCancel = () => {
+        setSelectedButton(null);
+        setValue('');
         setIsModalOpen(false);
-        setSelectedButton(null); // Reset nút được chọn
-        setValue(''); // Reset nội dung TextArea
     };
 
     const notificationBackground = isCorrect ? '#23AC38' : '#EB5757';

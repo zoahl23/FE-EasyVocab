@@ -213,6 +213,17 @@ export const callDataPieChart = () => {
     return axios.get(`/api/statistical/segments`);
 }
 
+// Feedback
+export const callCreateFeedback = (formType, content) => {
+    return axios.post('/api/forms', { formType, content },
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    )
+}
+
 // Client
 
 export const callListCourse = (query) => {
