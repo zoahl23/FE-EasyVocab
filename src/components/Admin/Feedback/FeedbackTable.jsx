@@ -1,4 +1,4 @@
-import { Button, Col, message, notification, Popconfirm, Row, Table } from "antd";
+import { Button, Col, message, notification, Popconfirm, Row, Table, Tag } from "antd";
 import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, ReloadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -6,6 +6,7 @@ import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import * as XLSX from 'xlsx';
 import FeedbackSearch from "./FeedbackSearch";
 import { callFetchFeedback } from "../../../services/api";
+import FeedbackViewDetail from "./FeedbackViewDetail";
 
 const FeedbackTable = () => {
     const [listFeedback, setListFeedback] = useState([]);
@@ -18,13 +19,28 @@ const FeedbackTable = () => {
     const [filter, setFilter] = useState("");
     const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
-    // const [openViewDetail, setOpenViewDetail] = useState(false);
-    // const [dataViewDetail, setDataViewDetail] = useState(null);
-
-    // const [openModalImport, setOpenModalImport] = useState(false);
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
 
     // const [openModalUpdate, setOpenModalUpdate] = useState(false);
     // const [dataUpdate, setDataUpdate] = useState(null);
+
+    const typeMap = {
+        0: { text: "Audio", color: "pink" },
+        1: { text: "Từ tiếng Anh", color: "geekblue" },
+        2: { text: "Nghĩa tiếng Việt", color: "gold" },
+        3: { text: "Phiên âm", color: "purple" },
+        4: { text: "Câu ví dụ tiếng Anh", color: "cyan" },
+        5: { text: "Câu ví dụ tiếng Việt", color: "lime" },
+        6: { text: "Vấn đề khác", color: "volcano" },
+    };
+
+    const statusMap = {
+        0: { text: "Chờ xử lý", color: "warning" },
+        1: { text: "Đang xử lý", color: "processing" },
+        2: { text: "Đã xử lý", color: "success" },
+        3: { text: "Từ chối", color: "error" },
+    };
 
     useEffect(() => {
         fetchCourse();
@@ -70,14 +86,14 @@ const FeedbackTable = () => {
         {
             title: 'ID',
             dataIndex: 'id',
-            // render: (text, record, index) => {
-            //     return (
-            //         <a href='#' onClick={() => {
-            //             setDataViewDetail(record);
-            //             setOpenViewDetail(true);
-            //         }}>{record.id}</a>
-            //     )
-            // }
+            render: (text, record, index) => {
+                return (
+                    <a href='#' onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);
+                    }}>{record.id}</a>
+                )
+            }
         },
         {
             title: 'Email',
@@ -89,10 +105,30 @@ const FeedbackTable = () => {
         {
             title: 'Loại phản hồi',
             dataIndex: 'formType',
+            render: (formType) => {
+                const type = typeMap[formType];
+                return type ? (
+                    <Tag color={type.color}>
+                        {type.text}
+                    </Tag>
+                ) : (
+                    <Tag color="default">Không xác định</Tag>
+                );
+            },
         },
         {
             title: 'Trạng thái phản hồi',
             dataIndex: 'status',
+            render: (status) => {
+                const statusDetail = statusMap[status];
+                return statusDetail ? (
+                    <Tag color={statusDetail.color}>
+                        {statusDetail.text}
+                    </Tag>
+                ) : (
+                    <Tag color="default">Không xác định</Tag>
+                );
+            },
         },
         {
             title: 'Ngày cập nhật',
@@ -112,10 +148,10 @@ const FeedbackTable = () => {
                     <>
                         <EyeTwoTone
                             twoToneColor="#1890ff"
-                        // onClick={() => {
-                        //     setDataViewDetail(record);
-                        //     setOpenViewDetail(true);
-                        // }}
+                            onClick={() => {
+                                setDataViewDetail(record);
+                                setOpenViewDetail(true);
+                            }}
                         />
 
                         <Popconfirm
@@ -227,14 +263,14 @@ const FeedbackTable = () => {
                 </Col>
             </Row>
 
-            {/* <CourseViewDetail
+            <FeedbackViewDetail
                 openViewDetail={openViewDetail}
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
             />
 
-            <CourseImport
+            {/* <CourseImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
                 fetchCourse={fetchCourse}

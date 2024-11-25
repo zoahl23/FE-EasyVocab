@@ -56,7 +56,7 @@ const TopicViewDetail = (props) => {
     return (
         <>
             <Drawer
-                title="Chức năng xem chi tiết"
+                title="Thông tin chi tiết"
                 width={"50vw"}
                 onClose={onClose}
                 open={openViewDetail}
