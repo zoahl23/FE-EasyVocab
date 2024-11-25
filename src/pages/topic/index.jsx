@@ -7,6 +7,7 @@ import LearningModal from "../../components/LearningModal";
 import { callListTopic, callListTopicDone } from "../../services/api";
 import Loading from "../../components/Loading";
 import { useSelector } from "react-redux";
+import AccountModal from "../../components/AccountModal/AccountModal";
 
 const Topic = () => {
     const [isLearningMode, setIsLearningMode] = useState(false);
@@ -16,8 +17,15 @@ const Topic = () => {
     const [courseName, setCourseName] = useState();
     const [topicId, setTopicId] = useState();
     const navigate = useNavigate();
+
     const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+    const [isSubNotNone, setIsSubNotNone] = useState(false);
+
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
+    const subscriptionPlan = useSelector(state => state.account.user.subscriptionPlan);
+    const user = useSelector((state) => state.account.user);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const { id } = useParams(); // course id
 
@@ -78,11 +86,15 @@ const Topic = () => {
                                 className="topic-card"
                                 onClick={() => {
                                     if (isAuthenticated) {
-                                        setIsLearningMode(true);
-                                        setTopicId(topic.id);
+                                        if (subscriptionPlan !== "none") {
+                                            setIsLearningMode(true);
+                                            setTopicId(topic.id);
+                                        }
+                                        else {
+                                            setIsSubNotNone(true);
+                                        }
                                     } else {
                                         setIsConfirmVisible(true);
-                                        console.log(111)
                                     }
                                 }}
                                 style={getTopicStyle(topic.id)}
@@ -120,6 +132,27 @@ const Topic = () => {
                 width={450}
                 className="custom-confirm-modal"
             ><p>Đăng nhập để lưu kết quả học tập của bạn!</p></Modal>
+
+            <Modal
+                open={isSubNotNone}
+                onOk={() => {
+                    setIsSubNotNone(false);
+                    setIsModalVisible(true);
+                }}
+                onCancel={() => setIsSubNotNone(false)}
+                cancelText="Hủy"
+                okText="Nâng cấp ngay"
+                closeIcon={false}
+                centered
+                width={450}
+                className="custom-confirm-modal"
+            ><p>Nâng cấp tài khoản để mở khóa tất cả khóa học!</p></Modal>
+
+            <AccountModal
+                isVisible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                userData={user}
+            />
         </>
     )
 }
