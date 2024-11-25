@@ -46,6 +46,7 @@ const WordActive = () => {
         }
 
         const res = await callVocabNotebook(query);
+        const resCheck = await callVocabNotebook("");
         //console.log("test", res)
         if (res && res.data && res.data.length > 0) {
             setListVocab(res.data);
@@ -53,6 +54,10 @@ const WordActive = () => {
         } else {
             setListVocab([]);
             setIsEmpty(false);
+        }
+
+        if (resCheck?.data?.length === 0) {
+            setIsEmpty(true);
         }
         setIsLoading(false)
     }
