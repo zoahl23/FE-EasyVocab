@@ -5,7 +5,7 @@ import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import * as XLSX from 'xlsx';
 import FeedbackSearch from "./FeedbackSearch";
-import { callFetchFeedback } from "../../../services/api";
+import { callDeleteFeedback, callFetchFeedback } from "../../../services/api";
 import FeedbackViewDetail from "./FeedbackViewDetail";
 
 const FeedbackTable = () => {
@@ -43,10 +43,10 @@ const FeedbackTable = () => {
     };
 
     useEffect(() => {
-        fetchCourse();
+        fetchFeedback();
     }, [current, pageSize, filter, sortQuery]);
 
-    const fetchCourse = async () => {
+    const fetchFeedback = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
         if (filter) {
@@ -69,18 +69,18 @@ const FeedbackTable = () => {
         setFilter(query);
     }
 
-    // const handleDeleteCourse = async (id) => {
-    //     const res = await callDeleteCourse(id);
-    //     if (res && res.data) {
-    //         message.success('Xóa khóa học thành công!');
-    //         fetchCourse();
-    //     } else {
-    //         notification.error({
-    //             message: 'Có lỗi xảy ra',
-    //             description: res.message
-    //         });
-    //     }
-    // };
+    const handleDeleteFeedback = async (id) => {
+        const res = await callDeleteFeedback(id);
+        if (res && res.data) {
+            message.success('Xóa phản hồi thành công!');
+            fetchFeedback();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
 
     const columns = [
         {
@@ -158,7 +158,7 @@ const FeedbackTable = () => {
                             placement="leftTop"
                             title={"Xác nhận xóa phản hồi"}
                             description={"Bạn có chắc chắn muốn xóa phản hồi này ?"}
-                            // onConfirm={() => handleDeleteCourse(record.id)}
+                            onConfirm={() => handleDeleteFeedback(record.id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
@@ -270,19 +270,13 @@ const FeedbackTable = () => {
                 setDataViewDetail={setDataViewDetail}
             />
 
-            {/* <CourseImport
-                openModalImport={openModalImport}
-                setOpenModalImport={setOpenModalImport}
-                fetchCourse={fetchCourse}
-            />
-
-            <CourseModalUpdate
+            {/* <FeedbackModalUpdate
                 openModalUpdate={openModalUpdate}
                 setOpenModalUpdate={setOpenModalUpdate}
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
-                fetchCourse={fetchCourse}
-            />  */}
+                fetchFeedback={fetchFeedback}
+            /> */}
         </>
     );
 }

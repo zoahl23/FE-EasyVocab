@@ -228,6 +228,10 @@ export const callFetchFeedback = (query) => {
     return axios.get(`/api/forms/page?${query}`);
 }
 
+export const callDeleteFeedback = (id) => {
+    return axios.delete(`/api/forms/${id}`)
+}
+
 // Client
 
 export const callListCourse = (query) => {
