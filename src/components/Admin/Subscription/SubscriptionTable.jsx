@@ -208,7 +208,7 @@ const SubscriptionTable = () => {
                         type='ghost'
                         onClick={() => {
                             setFilter("");
-                            setSortQuery("");
+                            setSortQuery("sort=-updatedAt");
                         }}
                     >
                         <ReloadOutlined />

@@ -210,7 +210,7 @@ const TopicTable = () => {
                     >Thêm mới</Button>
                     <Button type='ghost' onClick={() => {
                         setFilter("");
-                        setSortQuery("");
+                        setSortQuery("sort=-updatedAt");
                     }}>
                         <ReloadOutlined />
                     </Button>

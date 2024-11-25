@@ -198,7 +198,7 @@ const CourseTable = () => {
                         type='ghost'
                         onClick={() => {
                             setFilter("");
-                            setSortQuery("");
+                            setSortQuery("sort=-updatedAt");
                         }}
                     >
                         <ReloadOutlined />

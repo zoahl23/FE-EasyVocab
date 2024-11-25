@@ -99,17 +99,20 @@ const Dashboard = () => {
             ) : (
                 <>
                     <Row gutter={[16, 16]}>
-                        <Col span={6}>
-                            <StatisticCard title="Tổng số người dùng" value={totalUser} />
+                        <Col span={5}>
+                            <StatisticCard title="Tổng doanh thu" value={totalTopic} />
+                        </Col>
+                        <Col span={5}>
+                            <StatisticCard title="Tổng số người dùng" value={totalUser} />
                         </Col >
-                        <Col span={6}>
-                            <StatisticCard title="Tổng số khóa học" value={totalCourse} />
+                        <Col span={5}>
+                            <StatisticCard title="Số người dùng VIP" value={totalUser} />
+                        </Col >
+                        <Col span={5}>
+                            <StatisticCard title="Số khóa học" value={totalCourse} />
                         </Col>
-                        <Col span={6}>
-                            <StatisticCard title="Tổng số chủ đề" value={totalTopic} />
-                        </Col>
-                        <Col span={6}>
-                            <StatisticCard title="Tổng số từ vựng" value={totalVocab} />
+                        <Col span={4}>
+                            <StatisticCard title="Số từ vựng" value={totalVocab} />
                         </Col>
                     </Row >
                     <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
