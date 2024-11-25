@@ -14,7 +14,7 @@ import CourseModalUpdate from "./courseModalUpdate";
 const CourseTable = () => {
     const [listCourse, setListCourse] = useState([]);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(2);
+    const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
 
     const [openModalCreate, setOpenModalCreate] = useState(false);

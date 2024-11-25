@@ -232,6 +232,16 @@ export const callDeleteFeedback = (id) => {
     return axios.delete(`/api/forms/${id}`)
 }
 
+export const callUpdateFeedback = (id, word, meaning, topicId) => {
+    return axios.put(`/api/vocabs/${id}`, { word, meaning, topicId },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+}
+
 // Client
 
 export const callListCourse = (query) => {
