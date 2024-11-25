@@ -224,6 +224,10 @@ export const callCreateFeedback = (formType, content) => {
     )
 }
 
+export const callFetchFeedback = (query) => {
+    return axios.get(`/api/forms/page?${query}`);
+}
+
 // Client
 
 export const callListCourse = (query) => {

@@ -5,16 +5,15 @@ import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import * as XLSX from 'xlsx';
 import FeedbackSearch from "./FeedbackSearch";
+import { callFetchFeedback } from "../../../services/api";
 
 const FeedbackTable = () => {
-    // const [listCourse, setListCourse] = useState([]);
-    // const [current, setCurrent] = useState(1);
-    // const [pageSize, setPageSize] = useState(2);
-    // const [total, setTotal] = useState(0);
+    const [listFeedback, setListFeedback] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+    const [total, setTotal] = useState(0);
 
-    // const [openModalCreate, setOpenModalCreate] = useState(false);
-
-    // const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // const [filter, setFilter] = useState("");
     // const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
@@ -27,27 +26,27 @@ const FeedbackTable = () => {
     // const [openModalUpdate, setOpenModalUpdate] = useState(false);
     // const [dataUpdate, setDataUpdate] = useState(null);
 
-    // useEffect(() => {
-    //     fetchCourse();
-    // }, [current, pageSize, filter, sortQuery]);
+    useEffect(() => {
+        fetchCourse();
+    }, [current, pageSize]);//, filter, sortQuery
 
-    // const fetchCourse = async () => {
-    //     setIsLoading(true);
-    //     let query = `page=${current - 1}&size=${pageSize}`;
-    //     if (filter) {
-    //         query += `&${filter}`
-    //     }
-    //     if (sortQuery) {
-    //         query += `&${sortQuery}`;
-    //     }
-    //     const res = await callFetchListCourse(query);
-    //     //console.log("test", res)
-    //     if (res && res.data) {
-    //         setListCourse(res.data.content);
-    //         setTotal(res.data.page.totalElements);
-    //     }
-    //     setIsLoading(false)
-    // }
+    const fetchCourse = async () => {
+        setIsLoading(true);
+        let query = `page=${current - 1}&size=${pageSize}`;
+        // if (filter) {
+        //     query += `&${filter}`
+        // }
+        // if (sortQuery) {
+        //     query += `&${sortQuery}`;
+        // }
+        const res = await callFetchFeedback(query);
+        //console.log("test", res)
+        if (res && res.data) {
+            setListFeedback(res.data.content);
+            setTotal(res.data.page.totalElements);
+        }
+        setIsLoading(false)
+    }
 
     // const handleSearch = (query) => {
     //     setCurrent(1);
@@ -82,26 +81,29 @@ const FeedbackTable = () => {
         },
         {
             title: 'Email',
-            dataIndex: 'courseName',
+            dataIndex: 'user',
             sorter: true,
+            render: (text, record) => {
+                return record.user ? record.user.email : "---";
+            }
         },
         {
             title: 'Loại phản hồi',
-            dataIndex: 'courseTarget',
+            dataIndex: 'formType',
         },
         {
             title: 'Trạng thái phản hồi',
-            dataIndex: 'description',
+            dataIndex: 'status',
         },
         {
             title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             sorter: true,
-            // render: (text, record, index) => {
-            //     return (
-            //         <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
-            //     )
-            // }
+            render: (text, record, index) => {
+                return (
+                    <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>
+                )
+            }
         },
         {
             title: 'Hành động',
@@ -144,13 +146,13 @@ const FeedbackTable = () => {
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
-        // if (pagination && pagination.current !== current) {
-        //     setCurrent(pagination.current)
-        // }
-        // if (pagination && pagination.pageSize !== pageSize) {
-        //     setPageSize(pagination.pageSize)
-        //     setCurrent(1);
-        // }
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current)
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize)
+            setCurrent(1);
+        }
         console.log('params', pagination, filters, sorter, extra);
         // if (sorter && sorter.field) {
         //     const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
@@ -203,36 +205,30 @@ const FeedbackTable = () => {
                 <Col span={24}>
                     <Table
                         title={renderHeader}
-                        // loading={isLoading}
+                        loading={isLoading}
                         columns={columns}
-                        // dataSource={listCourse}
+                        dataSource={listFeedback}
                         onChange={onChange}
-                    // pagination={
-                    //     {
-                    //         current: current,
-                    //         pageSize: pageSize,
-                    //         showSizeChanger: true,
-                    //         total: total,
-                    //         showTotal: (total, range) => {
-                    //             return (
-                    //                 <div>
-                    //                     {range[0]} - {range[1]} trên {total} dòng
-                    //                 </div>
-                    //             );
-                    //         }
-                    //     }
-                    // }
+                        pagination={
+                            {
+                                current: current,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                total: total,
+                                showTotal: (total, range) => {
+                                    return (
+                                        <div>
+                                            {range[0]} - {range[1]} trên {total} dòng
+                                        </div>
+                                    );
+                                }
+                            }
+                        }
                     />
                 </Col>
             </Row>
 
-            {/* <CourseModalCreate
-                openModalCreate={openModalCreate}
-                setOpenModalCreate={setOpenModalCreate}
-                fetchCourse={fetchCourse}
-            />
-
-            <CourseViewDetail
+            {/* <CourseViewDetail
                 openViewDetail={openViewDetail}
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
@@ -251,7 +247,7 @@ const FeedbackTable = () => {
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
                 fetchCourse={fetchCourse}
-            /> */}
+            />  */}
         </>
     );
 }
