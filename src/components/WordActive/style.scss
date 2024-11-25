@@ -113,9 +113,10 @@
             }
 
             .mean {
+                width: 55%;
                 display        : flex;
                 align-items    : center;
-                justify-content: flex-start;
+                justify-content: space-between;
                 font-size      : 16px;
                 text-align     : left;
                 font-weight    : 500;

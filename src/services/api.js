@@ -299,3 +299,8 @@ export const callResetPassword = (email, password) => {
         }
     );
 };
+
+// Delete notebook
+export const callDeleteNotebook = (id) => {
+    return axios.delete(`/api/users/wordbook/${id}`);
+}

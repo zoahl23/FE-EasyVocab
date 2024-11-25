@@ -1,11 +1,12 @@
-import { Button, Input, Select, List } from "antd";
+import { Button, Input, Select, List, message, notification, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
 import "./style.scss";
 import { FiSearch } from "react-icons/fi";
-import { callVocabNotebook } from "../../services/api";
+import { callDeleteNotebook, callVocabNotebook } from "../../services/api";
 import Loading from "../Loading";
 import { useSelector } from "react-redux";
 import EmptyVocab from "../EmptyVocab";
+import { DeleteTwoTone } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -73,6 +74,19 @@ const WordActive = () => {
             .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
     };
 
+    const handleDeleteNotebook = async (id) => {
+        const res = await callDeleteNotebook(id);
+        if (res && res.data) {
+            message.success('Xóa từ vựng thành công');
+            fetchVocab();
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            });
+        }
+    };
+
     return (
         isLoading ? (
             <Loading />
@@ -122,6 +136,18 @@ const WordActive = () => {
                                             </div>
                                             <div className="mean">
                                                 <span>{item.vocabulary.meaning}</span>
+                                                <Popconfirm
+                                                    placement="leftTop"
+                                                    title={"Xác nhận xóa từ vựng"}
+                                                    description={"Bạn có chắc chắn muốn xóa từ vựng này ?"}
+                                                    onConfirm={() => handleDeleteNotebook(item.id)}
+                                                    okText="Xác nhận"
+                                                    cancelText="Hủy"
+                                                >
+                                                    <span style={{ cursor: "pointer", margin: "0 20px" }}>
+                                                        <DeleteTwoTone twoToneColor="#ff4d4f" />
+                                                    </span>
+                                                </Popconfirm>
                                             </div>
                                         </div>
                                     </List.Item>
