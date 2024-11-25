@@ -15,8 +15,8 @@ const FeedbackTable = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // const [filter, setFilter] = useState("");
-    // const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
+    const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
 
     // const [openViewDetail, setOpenViewDetail] = useState(false);
     // const [dataViewDetail, setDataViewDetail] = useState(null);
@@ -28,17 +28,17 @@ const FeedbackTable = () => {
 
     useEffect(() => {
         fetchCourse();
-    }, [current, pageSize]);//, filter, sortQuery
+    }, [current, pageSize, filter, sortQuery]);
 
     const fetchCourse = async () => {
         setIsLoading(true);
         let query = `page=${current - 1}&size=${pageSize}`;
-        // if (filter) {
-        //     query += `&${filter}`
-        // }
-        // if (sortQuery) {
-        //     query += `&${sortQuery}`;
-        // }
+        if (filter) {
+            query += `&${filter}`
+        }
+        if (sortQuery) {
+            query += `&${sortQuery}`;
+        }
         const res = await callFetchFeedback(query);
         //console.log("test", res)
         if (res && res.data) {
@@ -48,10 +48,10 @@ const FeedbackTable = () => {
         setIsLoading(false)
     }
 
-    // const handleSearch = (query) => {
-    //     setCurrent(1);
-    //     setFilter(query);
-    // }
+    const handleSearch = (query) => {
+        setCurrent(1);
+        setFilter(query);
+    }
 
     // const handleDeleteCourse = async (id) => {
     //     const res = await callDeleteCourse(id);
@@ -82,7 +82,6 @@ const FeedbackTable = () => {
         {
             title: 'Email',
             dataIndex: 'user',
-            sorter: true,
             render: (text, record) => {
                 return record.user ? record.user.email : "---";
             }
@@ -153,11 +152,11 @@ const FeedbackTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
-        console.log('params', pagination, filters, sorter, extra);
-        // if (sorter && sorter.field) {
-        //     const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
-        //     setSortQuery(q);
-        // }
+        // console.log('params', pagination, filters, sorter, extra);
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`;
+            setSortQuery(q);
+        }
     };
 
     // const handleExportData = () => {
@@ -181,10 +180,10 @@ const FeedbackTable = () => {
                     >Xuất dữ liệu</Button>
                     <Button
                         type='ghost'
-                    // onClick={() => {
-                    //     setFilter("");
-                    //     setSortQuery("");
-                    // }}
+                        onClick={() => {
+                            setFilter("");
+                            setSortQuery("sort=-updatedAt");
+                        }}
                     >
                         <ReloadOutlined />
                     </Button>
@@ -198,8 +197,8 @@ const FeedbackTable = () => {
             <Row gutter={[20, 20]}>
                 <Col span={24}>
                     <FeedbackSearch
-                    // handleSearch={handleSearch}
-                    // setFilter={setFilter}
+                        handleSearch={handleSearch}
+                        setFilter={setFilter}
                     />
                 </Col>
                 <Col span={24}>

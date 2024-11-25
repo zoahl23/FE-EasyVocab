@@ -11,32 +11,32 @@ const FeedbackSearch = (props) => {
     };
 
     const onFinish = (values) => {
-        console.log("Received values of form: ", values);
-        // let query = "";
+        // console.log("Received values of form: ", values);
+        let query = "";
 
-        // if (values.courseName) {
-        //     query += `&courseName=${removeVietnameseTones(values.courseName)}`
-        // }
+        if (values.email) {
+            query += `&email=${removeVietnameseTones(values.email)}`
+        }
 
-        // if (values.courseTarget) {
-        //     query += `&courseTarget=${removeVietnameseTones(values.courseTarget)}`
-        // }
+        if (values.type) {
+            query += `&type=${removeVietnameseTones(values.type)}`
+        }
 
-        // if (values.courseDescription) {
-        //     query += `&description=${removeVietnameseTones(values.courseDescription)}`
-        // }
+        if (values.status) {
+            query += `&status=${removeVietnameseTones(values.status)}`
+        }
 
-        // if (query) {
-        //     props.handleSearch(query);
-        // }
+        if (query) {
+            props.handleSearch(query);
+        }
     };
 
-    // const removeVietnameseTones = (str) => {
-    //     return str
-    //         .normalize("NFD") // Tách các dấu khỏi ký tự
-    //         .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
-    //         .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
-    // };
+    const removeVietnameseTones = (str) => {
+        return str
+            .normalize("NFD") // Tách các dấu khỏi ký tự
+            .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+            .replace(/đ/g, "d").replace(/Đ/g, "D"); // Chuyển 'đ' thành 'd'
+    };
 
     return (
         <Form
@@ -58,38 +58,51 @@ const FeedbackSearch = (props) => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`courseTarget`}
+                        name={`type`}
                         label={`Loại phản hồi`}
                     >
                         <Select
                             defaultValue={null} // ko chọn giá trị nào
                             showSearch // search
                             allowClear // clear
-                        // options={listCourse}
-                        // filterOption={(input, option) =>
-                        //     removeVietnameseTones(option?.label ?? '')
-                        //         .toLowerCase()
-                        //         .includes(removeVietnameseTones(input.toLowerCase()))
-                        // }
+                            options={[
+                                { value: "0", label: "Audio" },
+                                { value: "1", label: "Từ tiếng Anh" },
+                                { value: "2", label: "Nghĩa tiếng Việt" },
+                                { value: "3", label: "Phiên âm" },
+                                { value: "4", label: "Câu ví dụ tiếng Anh" },
+                                { value: "5", label: "Câu ví dụ tiếng Việt" },
+                                { value: "6", label: "Vấn đề khác" },
+                            ]}
+                            filterOption={(input, option) =>
+                                removeVietnameseTones(option?.label ?? '')
+                                    .toLowerCase()
+                                    .includes(removeVietnameseTones(input.toLowerCase()))
+                            }
                         />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        name={`courseId`}
+                        name={`status`}
                         label={`Trạng thái phản hồi`}
                     >
                         <Select
                             defaultValue={null} // ko chọn giá trị nào
                             showSearch // search
                             allowClear // clear
-                        // options={listCourse}
-                        // filterOption={(input, option) =>
-                        //     removeVietnameseTones(option?.label ?? '')
-                        //         .toLowerCase()
-                        //         .includes(removeVietnameseTones(input.toLowerCase()))
-                        // }
+                            options={[
+                                { value: "0", label: "Chờ xử lý" },
+                                { value: "1", label: "Đang xử lý" },
+                                { value: "2", label: "Đã xử lý" },
+                                { value: "3", label: "Từ chối" },
+                            ]}
+                            filterOption={(input, option) =>
+                                removeVietnameseTones(option?.label ?? '')
+                                    .toLowerCase()
+                                    .includes(removeVietnameseTones(input.toLowerCase()))
+                            }
                         />
                     </Form.Item>
                 </Col>
