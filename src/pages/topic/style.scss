@@ -39,6 +39,11 @@ $card-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
         user-select: none;
         cursor: pointer;
 
+        &.disabled {
+            filter: grayscale(100%); // Chuyển toàn bộ nội dung sang trắng đen
+            opacity: 0.8;            // Làm mờ nhẹ
+        }
+
         &:hover {
             transform: translateY(-5px);
             box-shadow: $card-hover;

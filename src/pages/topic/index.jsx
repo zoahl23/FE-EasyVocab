@@ -83,10 +83,10 @@ const Topic = () => {
                     {listTopic.map((topic, index) => (
                         <Col span={24} key={index} style={{ padding: 0 }}>
                             <div
-                                className="topic-card"
+                                className={`topic-card ${!isAuthenticated || subscriptionPlan === "none" && index >= 3 ? "disabled" : ""}`}
                                 onClick={() => {
                                     if (isAuthenticated) {
-                                        if (subscriptionPlan !== "none") {
+                                        if (subscriptionPlan !== "none" || index < 3) {
                                             setIsLearningMode(true);
                                             setTopicId(topic.id);
                                         }
