@@ -5,8 +5,9 @@ import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import * as XLSX from 'xlsx';
 import FeedbackSearch from "./FeedbackSearch";
-import { callDeleteFeedback, callFetchFeedback } from "../../../services/api";
+import { callDeleteFeedback, callFetchFeedback, callUpdateFeedback } from "../../../services/api";
 import FeedbackViewDetail from "./FeedbackViewDetail";
+import FeedbackModalUpdate from "./FeedbackModalUpdate";
 
 const FeedbackTable = () => {
     const [listFeedback, setListFeedback] = useState([]);
@@ -22,8 +23,8 @@ const FeedbackTable = () => {
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState(null);
 
-    // const [openModalUpdate, setOpenModalUpdate] = useState(false);
-    // const [dataUpdate, setDataUpdate] = useState(null);
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState(null);
 
     const typeMap = {
         0: { text: "Audio", color: "pink" },
@@ -169,10 +170,26 @@ const FeedbackTable = () => {
 
                         <EditTwoTone
                             twoToneColor="#f57800" style={{ cursor: "pointer" }}
-                        // onClick={() => {
-                        //     setOpenModalUpdate(true);
-                        //     setDataUpdate(record);
-                        // }}
+                            onClick={() => {
+                                switch (record.status) {
+                                    case 0:
+                                        setDataUpdate(record);
+                                        setOpenModalUpdate(true);
+                                        break;
+                                    case 1:
+                                        setDataUpdate(record);
+                                        setOpenModalUpdate(true);
+                                        break;
+                                    case 2:
+                                        message.info("Phản hồi này đã được xử lý!");
+                                        break;
+                                    case 3:
+                                        message.info("Phản hồi này đã bị từ chối!");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }}
                         />
                     </>
                 )
@@ -270,13 +287,13 @@ const FeedbackTable = () => {
                 setDataViewDetail={setDataViewDetail}
             />
 
-            {/* <FeedbackModalUpdate
+            <FeedbackModalUpdate
                 openModalUpdate={openModalUpdate}
                 setOpenModalUpdate={setOpenModalUpdate}
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
                 fetchFeedback={fetchFeedback}
-            /> */}
+            />
         </>
     );
 }
