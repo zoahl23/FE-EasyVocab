@@ -43,6 +43,10 @@ const PaymentCallback = () => {
                     getAccount();
                     navigate("/review"); // Điều hướng người dùng đến trang dashboard
                 }
+                else {
+                    message.error(`${res.message}!`);
+                    navigate("/review"); // Điều hướng người dùng đến trang dashboard
+                }
             } catch (error) {
                 message.error("Đã xảy ra lỗi trong quá trình xác thực thanh toán!");
                 console.error(error);
