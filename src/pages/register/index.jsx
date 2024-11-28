@@ -69,6 +69,26 @@ const RegisterPage = () => {
                                 <Input.Password />
                             </Form.Item>
 
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                name="confirmPassword"
+                                label="Nhập lại mật khẩu"
+                                dependencies={['password']}
+                                rules={[
+                                    { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Mật khẩu không khớp!'));
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+
                             <Form.Item>
                                 <Button
                                     type="primary"
