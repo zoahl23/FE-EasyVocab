@@ -7,12 +7,12 @@ const Event = () => {
         <MainContent>
             <div className="new-event">
                 <div className="title">
-                    <img src="../../../public/icon_new.svg" alt="" />
+                    <img src="/icon_new.svg" alt="" />
                     <p>Mới</p>
                 </div>
                 <div className="content">
                     <CardEvent
-                        image="../../../public/event_christmas.jpg"
+                        image="/event_christmas.png"
                         status="Mới"
                         date="01.12.24 - 25.12.24"
                         content="🎄EasyVocab - Christmas Vocabulary Challenge"
@@ -20,7 +20,7 @@ const Event = () => {
                         link="https://www.facebook.com/huyentrangday43"
                     />
                     <CardEvent
-                        image="../../../public/event_newyear.jpg"
+                        image="/event_newyear.png"
                         status="Mới"
                         date="26.12.24 - 15.01.25"
                         content="🎉EasyVocab - Tết Nguyên Đán Vocabulary Challenge"
@@ -29,12 +29,12 @@ const Event = () => {
                     />
                 </div>
                 <div className="title">
-                    <img src="../../../public/icon_star.svg" alt="" />
+                    <img src="/icon_star.svg" alt="" />
                     <p>Đang diễn ra</p>
                 </div>
                 <div className="content">
                     <CardEvent
-                        image="../../../public/event_Nov.jpg"
+                        image="/event_Nov.png"
                         status="Mới"
                         date="01-11-24"
                         content="🔥Ưu đãi giảm giá 30% - Đăng ký ngay!"
@@ -42,7 +42,7 @@ const Event = () => {
                         link="https://www.facebook.com/huyentrangday43"
                     />
                     <CardEvent
-                        image="../../../public/event_halloween.jpg"
+                        image="/event_halloween.png"
                         status="Mới"
                         date="10-10-24"
                         content="🎃 Easy Vocab Halloween Hunt - Săn từ vựng ma quái!"
