@@ -12,20 +12,20 @@ const Event = () => {
                 </div>
                 <div className="content">
                     <CardEvent
-                        image="https://learn.mochidemy.com/_next/image?url=https%3A%2F%2Fmochien-server.mochidemy.com%2Fmarketing%2Fhot_deal%2F1727327297-aABorsxSDy.png&w=384&q=75"
+                        image="../../../public/event_christmas.jpg"
                         status="Mới"
-                        date="12-09-24"
-                        content="Ưu đãi giảm giá 30%"
-                        button="Nhận ưu đãi ngay"
-
+                        date="01.12.24 - 25.12.24"
+                        content="🎄EasyVocab - Christmas Vocabulary Challenge"
+                        button="Thử thách ngay"
+                        link="https://www.facebook.com/huyentrangday43"
                     />
                     <CardEvent
-                        image="https://learn.mochidemy.com/_next/image?url=https%3A%2F%2Fmochien-server.mochidemy.com%2Fmarketing%2Fhot_deal%2F1727327297-aABorsxSDy.png&w=384&q=75"
+                        image="../../../public/event_newyear.jpg"
                         status="Mới"
-                        date="12-09-24"
-                        content="Ưu đãi giảm giá 30%"
-                        button="Nhận ưu đãi ngay"
-
+                        date="26.12.24 - 15.01.25"
+                        content="🎉EasyVocab - Tết Nguyên Đán Vocabulary Challenge"
+                        button="Thử thách ngay"
+                        link="https://www.facebook.com/huyentrangday43"
                     />
                 </div>
                 <div className="title">
@@ -34,20 +34,20 @@ const Event = () => {
                 </div>
                 <div className="content">
                     <CardEvent
-                        image="https://learn.mochidemy.com/_next/image?url=https%3A%2F%2Fmochien-server.mochidemy.com%2Fmarketing%2Fhot_deal%2F1727327297-aABorsxSDy.png&w=384&q=75"
+                        image="../../../public/event_Nov.jpg"
                         status="Mới"
-                        date="12-09-24"
-                        content="Ưu đãi giảm giá 30%"
+                        date="01-11-24"
+                        content="🔥Ưu đãi giảm giá 30% - Đăng ký ngay!"
                         button="Nhận ưu đãi ngay"
-
+                        link="https://www.facebook.com/huyentrangday43"
                     />
                     <CardEvent
-                        image="https://learn.mochidemy.com/_next/image?url=https%3A%2F%2Fmochien-server.mochidemy.com%2Fmarketing%2Fhot_deal%2F1727327297-aABorsxSDy.png&w=384&q=75"
+                        image="../../../public/event_halloween.jpg"
                         status="Mới"
-                        date="12-09-24"
-                        content="Ưu đãi giảm giá 30%"
-                        button="Nhận ưu đãi ngay"
-
+                        date="10-10-24"
+                        content="🎃 Easy Vocab Halloween Hunt - Săn từ vựng ma quái!"
+                        button="Tham gia ngay"
+                        link="https://www.facebook.com/huyentrangday43"
                     />
                 </div>
             </div>

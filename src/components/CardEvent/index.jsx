@@ -1,8 +1,16 @@
 import './style.scss';
 
-const CardEvent = ({ image, status, date, content, button }) => {
+const CardEvent = ({ image, status, date, content, button, link }) => {
+
+    const handleCardClick = () => {
+        if (link) {
+            window.open(link, "_blank"); // Mở link trong tab mới
+        }
+    };
+
+
     return (
-        <div className="card">
+        <div className="card" onClick={handleCardClick}>
             <div className="img">
                 <img src={image} alt="" />
             </div>
