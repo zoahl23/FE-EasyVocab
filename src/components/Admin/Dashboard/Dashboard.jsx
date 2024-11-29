@@ -4,7 +4,7 @@ import LineChart from './LineChart';
 import PieChart from './PieChart';
 import StatisticCard from './StatisticCard';
 import { useEffect, useState } from 'react';
-import { callDataPieChart, callPaymentTotal, callTotalCourse, callTotalTopic, callTotalUser, callTotalUserVip, callTotalVocab } from '../../../services/api';
+import { callDataPieChart, callPaymentTotal, callTotalCourse, callTotalTopic, callTotalUser, callTotalUserVip, callTotalVocab, callUserMonth } from '../../../services/api';
 import Loading from '../../Loading';
 
 const Dashboard = () => {
@@ -16,21 +16,7 @@ const Dashboard = () => {
     const [totalUserVip, setTotalUserVip] = useState(0);
     const [payment, setPayment] = useState(0);
     const [dataPie, setDataPie] = useState([]);
-
-    const dataCol = [
-        { month: 'Tháng 1', users: 32 },
-        { month: 'Tháng 2', users: 14 },
-        { month: 'Tháng 3', users: 39 },
-        { month: 'Tháng 4', users: 29 },
-        { month: 'Tháng 5', users: 17 },
-        { month: 'Tháng 6', users: 62 },
-        { month: 'Tháng 7', users: 24 },
-        { month: 'Tháng 8', users: 31 },
-        { month: 'Tháng 9', users: 89 },
-        { month: 'Tháng 10', users: 18 },
-        { month: 'Tháng 11', users: 36 },
-        { month: 'Tháng 12', users: 26 },
-    ];
+    const [dataMonth, setDataMonth] = useState([]);
 
     const dataLine = [
         { date: '2024-01-01', value: 20, type: 'Premium' },
@@ -76,6 +62,7 @@ const Dashboard = () => {
         const resUV = await callTotalUserVip();
         const resPay = await callPaymentTotal();
         const resPie = await callDataPieChart();
+        const resMonth = await callUserMonth();
 
         if (resU && resU.data) {
             setTotalUser(resU.data);
@@ -98,6 +85,14 @@ const Dashboard = () => {
         if (resPie && resPie.data) {
             const dataP = transformData(resPie);
             setDataPie(dataP);
+        }
+        if (resMonth && resMonth.data) {
+            const transformedData = Object.keys(resMonth.data).map((key) => ({
+                month: `Tháng ${key}`,
+                users: resMonth.data[key],
+            }));
+
+            setDataMonth(transformedData);
         }
         setIsLoading(false);
     }
@@ -128,7 +123,7 @@ const Dashboard = () => {
                     <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
                         <Col span={24}>
                             <Card title="Số lượng người dùng mới theo tháng">
-                                <ColumnChart data={dataCol} xField="month" yField="users" />
+                                <ColumnChart data={dataMonth} xField="month" yField="users" />
                             </Card>
                         </Col>
                     </Row>

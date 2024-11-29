@@ -221,6 +221,10 @@ export const callPaymentTotal = () => {
     return axios.get(`/api/statistical/revenue`);
 }
 
+export const callUserMonth = () => {
+    return axios.get(`/api/statistical/sub`);
+}
+
 // Feedback
 export const callCreateFeedback = (formType, content) => {
     return axios.post('/api/forms', { formType, content },
