@@ -148,7 +148,13 @@ const SubscriptionTable = () => {
                             placement="leftTop"
                             title={"Xác nhận xóa gói đăng ký"}
                             description={"Bạn có chắc chắn muốn xóa gói đăng ký này ?"}
-                            onConfirm={() => handleDeleteSub(record.userId)}
+                            onConfirm={() => {
+                                if (record.subscriptionPlan === "none") {
+                                    message.info("Không có gói đăng ký nào!");
+                                    return;
+                                }
+                                handleDeleteSub(record.userId);
+                            }}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
