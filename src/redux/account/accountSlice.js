@@ -10,6 +10,7 @@ const initialState = {
         "userId": "",
         "subscriptionPlan": "",
         "subscriptionEndDate": "",
+        "paid": "",
         "createdAt": "",
     }
 };
@@ -34,6 +35,7 @@ export const accountSlice = createSlice({
                 userId: action.payload.userId,
                 subscriptionPlan: action.payload.subscriptionPlan,
                 subscriptionEndDate: action.payload.subscriptionEndDate,
+                paid: action.payload.paid,
                 createdAt: action.payload.createdAt,
             };
         },
@@ -52,6 +54,7 @@ export const accountSlice = createSlice({
                 userId: action.payload.userId,
                 subscriptionPlan: action.payload.subscriptionPlan,
                 subscriptionEndDate: action.payload.subscriptionEndDate,
+                paid: action.payload.paid,
                 createdAt: action.payload.createdAt,
             };
         },
@@ -65,6 +68,7 @@ export const accountSlice = createSlice({
                 id: "",
                 subscriptionPlan: "",
                 subscriptionEndDate: "",
+                paid: "",
                 createdAt: "",
             }
         },
