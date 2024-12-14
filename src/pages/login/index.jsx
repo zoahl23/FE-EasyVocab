@@ -82,7 +82,7 @@ const LoginPage = () => {
                                     <p
                                         style={{ marginLeft: 10, cursor: 'pointer' }}
                                         onClick={() => setIsVisible(true)}
-                                    >Quên mật khẩu?</p>
+                                    ><Link>Quên mật khẩu?</Link></p>
                                 </div>
                             </Form.Item>
                             <Divider>Hoặc</Divider>
