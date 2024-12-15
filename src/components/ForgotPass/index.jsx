@@ -24,7 +24,11 @@ const ForgotPass = ({ isVisible, onClose }) => {
     };
 
     const handleVerifyOtp = async () => {
-        if (inputOtp === otpInfo?.otp) {
+        const currentTime = new Date();
+        const expiryTime = new Date(otpInfo?.expiryTime);
+        if (currentTime > expiryTime) {
+            message.error("OTP đã hết hạn, vui lòng yêu cầu mã mới!");
+        } else if (inputOtp === otpInfo?.otp) {
             message.success("OTP hợp lệ!");
             setStep(3);
         } else {
