@@ -27,7 +27,14 @@ const VocabImport = (props) => {
         customRequest: dummyRequest,
         fileList: fileList,
         onChange(info) {
-            const { status } = info.file;
+            const { status, originFileObj } = info.file;
+            const MAX_SIZE_KB = 50;
+
+            if (originFileObj && originFileObj.size > MAX_SIZE_KB * 1024) {
+                message.error(`Tệp vượt quá kích thước tối đa (${MAX_SIZE_KB}KB).`);
+                return;
+            }
+
             setFileList(info.fileList);
 
             if (status !== 'uploading') {
