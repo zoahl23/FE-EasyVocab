@@ -26,13 +26,13 @@ const UserViewDetail = (props) => {
                     <Descriptions.Item label="Id">{dataViewDetail?.userId}</Descriptions.Item>
                     <Descriptions.Item label="Tên hiển thị">{dataViewDetail?.fullName}</Descriptions.Item>
                     <Descriptions.Item label="Email" span={2}>{dataViewDetail?.email}</Descriptions.Item>
-                    <Descriptions.Item label="Role" span={2}>
+                    <Descriptions.Item label="Phân quyền" span={2}>
                         <Badge status="processing" text={dataViewDetail?.role} />
                     </Descriptions.Item>
-                    <Descriptions.Item label="Created At">
+                    <Descriptions.Item label="Ngày tạo">
                         {moment(dataViewDetail?.createdAt).format(FORMAT_DATE_DISPLAY)}
                     </Descriptions.Item>
-                    <Descriptions.Item label="Updated At">
+                    <Descriptions.Item label="Ngày cập nhật">
                         {moment(dataViewDetail?.updatedAt).format(FORMAT_DATE_DISPLAY)}
                     </Descriptions.Item>
                 </Descriptions>
