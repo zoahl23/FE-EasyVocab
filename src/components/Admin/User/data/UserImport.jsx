@@ -61,7 +61,7 @@ const UserImport = (props) => {
 
     const handleSubmit = async () => {
         const data = dataExcel.map(item => {
-            item.password = 'Easy123@';
+            item.password = 'Easy@123';
             return item;
         })
         const res = await callBulkCreateUser(data);
