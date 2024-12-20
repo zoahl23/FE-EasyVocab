@@ -17,7 +17,7 @@ const Event = () => {
                         date="01.12.24 - 25.12.24"
                         content="🎄EasyVocab - Christmas Vocabulary Challenge"
                         button="Thử thách ngay"
-                        link="https://www.facebook.com/huyentrangday43"
+                        link="https://www.facebook.com/share/p/1H44hSSTAs/"
                     />
                     <CardEvent
                         image="/event_newyear.png"
@@ -25,7 +25,7 @@ const Event = () => {
                         date="26.12.24 - 15.01.25"
                         content="🎉EasyVocab - Tết Nguyên Đán Vocabulary Challenge"
                         button="Thử thách ngay"
-                        link="https://www.facebook.com/huyentrangday43"
+                        link="https://www.facebook.com/share/p/1H44hSSTAs/"
                     />
                 </div>
                 <div className="title">
@@ -39,7 +39,7 @@ const Event = () => {
                         date="01-11-24"
                         content="🔥Ưu đãi giảm giá 30% - Đăng ký ngay!"
                         button="Nhận ưu đãi ngay"
-                        link="https://www.facebook.com/huyentrangday43"
+                        link="https://www.facebook.com/share/p/1H44hSSTAs/"
                     />
                     <CardEvent
                         image="/event_halloween.png"
@@ -47,7 +47,7 @@ const Event = () => {
                         date="10-10-24"
                         content="🎃 Easy Vocab Halloween Hunt - Săn từ vựng ma quái!"
                         button="Tham gia ngay"
-                        link="https://www.facebook.com/huyentrangday43"
+                        link="https://www.facebook.com/share/p/1H44hSSTAs/"
                     />
                 </div>
             </div>
